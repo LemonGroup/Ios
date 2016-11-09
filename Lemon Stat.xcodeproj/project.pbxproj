@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		440CEF1E1DD3E15700B92AC3 /* AuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 440CEF1D1DD3E15700B92AC3 /* AuthViewController.m */; };
+		448BA73B1DD3E5F90031D498 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 448BA73A1DD3E5F90031D498 /* logo.png */; };
 		44D3963D1DD38F4B008D9F27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3963C1DD38F4B008D9F27 /* main.m */; };
 		44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3963F1DD38F4B008D9F27 /* AppDelegate.m */; };
 		44D396431DD38F4B008D9F27 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D396421DD38F4B008D9F27 /* FirstViewController.m */; };
@@ -17,6 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		440CEF1C1DD3E15700B92AC3 /* AuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthViewController.h; sourceTree = "<group>"; };
+		440CEF1D1DD3E15700B92AC3 /* AuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthViewController.m; sourceTree = "<group>"; };
+		448BA73A1DD3E5F90031D498 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		44D396381DD38F4B008D9F27 /* Lemon Stat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lemon Stat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		44D3963C1DD38F4B008D9F27 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		44D3963E1DD38F4B008D9F27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -42,6 +47,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		440CEF211DD3E2DA00B92AC3 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				448BA73A1DD3E5F90031D498 /* logo.png */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
 		44D3962F1DD38F4A008D9F27 = {
 			isa = PBXGroup;
 			children = (
@@ -61,6 +74,7 @@
 		44D3963A1DD38F4B008D9F27 /* Lemon Stat */ = {
 			isa = PBXGroup;
 			children = (
+				440CEF211DD3E2DA00B92AC3 /* images */,
 				44D3963E1DD38F4B008D9F27 /* AppDelegate.h */,
 				44D3963F1DD38F4B008D9F27 /* AppDelegate.m */,
 				44D396411DD38F4B008D9F27 /* FirstViewController.h */,
@@ -68,6 +82,8 @@
 				44D396441DD38F4B008D9F27 /* SecondViewController.h */,
 				44D396451DD38F4B008D9F27 /* SecondViewController.m */,
 				44D396471DD38F4B008D9F27 /* Main.storyboard */,
+				440CEF1C1DD3E15700B92AC3 /* AuthViewController.h */,
+				440CEF1D1DD3E15700B92AC3 /* AuthViewController.m */,
 				44D3964A1DD38F4B008D9F27 /* Assets.xcassets */,
 				44D3964C1DD38F4B008D9F27 /* LaunchScreen.storyboard */,
 				44D3964F1DD38F4B008D9F27 /* Info.plist */,
@@ -143,6 +159,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				448BA73B1DD3E5F90031D498 /* logo.png in Resources */,
 				44D3964E1DD38F4B008D9F27 /* LaunchScreen.storyboard in Resources */,
 				44D3964B1DD38F4B008D9F27 /* Assets.xcassets in Resources */,
 				44D396491DD38F4B008D9F27 /* Main.storyboard in Resources */,
@@ -157,6 +174,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				44D396461DD38F4B008D9F27 /* SecondViewController.m in Sources */,
+				440CEF1E1DD3E15700B92AC3 /* AuthViewController.m in Sources */,
 				44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */,
 				44D396431DD38F4B008D9F27 /* FirstViewController.m in Sources */,
 				44D3963D1DD38F4B008D9F27 /* main.m in Sources */,
@@ -318,6 +336,7 @@
 				44D396541DD38F4B008D9F27 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
