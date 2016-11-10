@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		440CEF1E1DD3E15700B92AC3 /* AuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 440CEF1D1DD3E15700B92AC3 /* AuthViewController.m */; };
 		448BA73B1DD3E5F90031D498 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 448BA73A1DD3E5F90031D498 /* logo.png */; };
+		44AB8BA11DD5227900BDB75A /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AB8BA01DD5227900BDB75A /* bg.png */; };
+		44AB8BA31DD5232C00BDB75A /* logo_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AB8BA21DD5232C00BDB75A /* logo_big.png */; };
+		44AB8BA51DD5233200BDB75A /* bg_lines.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AB8BA41DD5233200BDB75A /* bg_lines.png */; };
 		44D3963D1DD38F4B008D9F27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3963C1DD38F4B008D9F27 /* main.m */; };
 		44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3963F1DD38F4B008D9F27 /* AppDelegate.m */; };
 		44D396431DD38F4B008D9F27 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D396421DD38F4B008D9F27 /* FirstViewController.m */; };
@@ -22,6 +25,9 @@
 		440CEF1C1DD3E15700B92AC3 /* AuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthViewController.h; sourceTree = "<group>"; };
 		440CEF1D1DD3E15700B92AC3 /* AuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthViewController.m; sourceTree = "<group>"; };
 		448BA73A1DD3E5F90031D498 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
+		44AB8BA01DD5227900BDB75A /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bg.png; path = images/bg.png; sourceTree = "<group>"; };
+		44AB8BA21DD5232C00BDB75A /* logo_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo_big.png; path = images/logo_big.png; sourceTree = "<group>"; };
+		44AB8BA41DD5233200BDB75A /* bg_lines.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bg_lines.png; path = images/bg_lines.png; sourceTree = "<group>"; };
 		44D396381DD38F4B008D9F27 /* Lemon Stat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lemon Stat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		44D3963C1DD38F4B008D9F27 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		44D3963E1DD38F4B008D9F27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -50,7 +56,10 @@
 		440CEF211DD3E2DA00B92AC3 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				44AB8BA41DD5233200BDB75A /* bg_lines.png */,
+				44AB8BA21DD5232C00BDB75A /* logo_big.png */,
 				448BA73A1DD3E5F90031D498 /* logo.png */,
+				44AB8BA01DD5227900BDB75A /* bg.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -159,10 +168,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44AB8BA11DD5227900BDB75A /* bg.png in Resources */,
 				448BA73B1DD3E5F90031D498 /* logo.png in Resources */,
 				44D3964E1DD38F4B008D9F27 /* LaunchScreen.storyboard in Resources */,
 				44D3964B1DD38F4B008D9F27 /* Assets.xcassets in Resources */,
 				44D396491DD38F4B008D9F27 /* Main.storyboard in Resources */,
+				44AB8BA51DD5233200BDB75A /* bg_lines.png in Resources */,
+				44AB8BA31DD5232C00BDB75A /* logo_big.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
