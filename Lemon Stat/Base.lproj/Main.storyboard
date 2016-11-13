@@ -74,6 +74,9 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Общая статистика" image="first" id="acW-dT-cKf"/>
+                    <connections>
+                        <outlet property="tableView" destination="YTs-yx-cRi" id="I5S-8t-R3m"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>

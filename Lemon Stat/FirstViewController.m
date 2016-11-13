@@ -8,9 +8,13 @@
 
 #import "FirstViewController.h"
 
-@interface FirstViewController ()
+#import <AFNetworking/AFNetworking.h>
 
-@property (strong, nonatomic) UITableView *tableView;
+@interface FirstViewController () {
+    NSArray *responseJSON;
+}
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -19,6 +23,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    [self loadData];
+    
+    
 }
 
 
@@ -27,14 +35,40 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - AFNetworking
+
+- (void)loadData {
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    
+    [manager GET:@"http://lemonstat.usite.pro/StatisticFake.json"
+      parameters:nil
+        progress:^(NSProgress * _Nonnull downloadProgress) {
+            
+        }
+         success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
+             responseJSON = [responseObject valueForKey:@"response"];
+             [self.tableView reloadData];
+             NSLog(@"JSON: %@", responseObject);
+         }
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+             NSLog(@"Error: %@", error);
+         }];
+    
+}
+
 #pragma mark - UITableViewDelegate
 
 
 
 #pragma mark - UITableViewDataSource
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return responseJSON.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -43,8 +77,8 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     
-    cell.textLabel.text = @"Путин";
-    cell.detailTextLabel.text = @"100500";
+    cell.textLabel.text = [responseJSON[indexPath.row] valueForKey:@"person"];
+    cell.detailTextLabel.text = [responseJSON[indexPath.row] valueForKey:@"number"];
     
     return cell;
 }
