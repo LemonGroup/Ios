@@ -212,6 +212,7 @@
                     <tabBarItem key="tabBarItem" title="Ежедневная статистика" image="second" id="cPa-gy-q4n"/>
                     <connections>
                         <outlet property="tableView" destination="5VV-fn-mxZ" id="BHm-Jp-Muq"/>
+                        <outlet property="totalNumberLabel" destination="5qf-G8-KGv" id="N83-AP-rZb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>

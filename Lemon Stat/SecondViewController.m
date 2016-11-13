@@ -10,13 +10,22 @@
 
 #import <AFNetworking/AFNetworking.h>
 
-static NSString *person = @"Путин";
+//**************** Временный код ******************//
+//*********** выбор персонажа и сайта *************//
+static NSString *kPerson = @"Навальный"; // Путин, Медведев, Навальный
+static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti.ru
+//*************************************************//
 
 @interface SecondViewController () {
     NSArray *responseJSON;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (weak, nonatomic) IBOutlet UILabel *totalNumberLabel;
+
+@property (strong, nonatomic) NSArray *dateArray;
+@property (strong, nonatomic) NSArray *numberArray;
 
 @end
 
@@ -41,14 +50,24 @@ static NSString *person = @"Путин";
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
-    [manager GET:@"http://lemonstat.usite.pro/StatisticDetailFake.json"
+    [manager GET:@"http://lemonstat.usite.pro/DetailStatisticFake.json"
       parameters:nil
         progress:^(NSProgress * _Nonnull downloadProgress) {
             
         }
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
              responseJSON = [responseObject valueForKey:@"response"];
+             
+             // create data arrays for site and person
+             _dateArray = [self arrayForSite:kSite
+                                   andPerson:kPerson
+                                      forKey:@"date"];
+             _numberArray = [self arrayForSite:kSite
+                                     andPerson:kPerson
+                                        forKey:@"number"];
+             
              [self.tableView reloadData];
+             [self setTotalNumber];
              NSLog(@"JSON: %@", responseObject);
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -68,7 +87,7 @@ static NSString *person = @"Путин";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return responseJSON.count;
+    return _dateArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -77,10 +96,70 @@ static NSString *person = @"Путин";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     
-    cell.textLabel.text = [responseJSON[indexPath.row] valueForKey:@"person"];
-    cell.detailTextLabel.text = [responseJSON[indexPath.row] valueForKey:@"number"];
+    // set textLabel
+    cell.textLabel.text = _dateArray[indexPath.row];
+    
+    // set detailTextLabel
+    cell.detailTextLabel.text = _numberArray[indexPath.row];
     
     return cell;
+}
+
+#pragma mark - Methods
+
+- (void)setTotalNumber {
+    
+    NSInteger totalNumber = 0;
+    
+    for (NSString *number in _numberArray) {
+        
+        totalNumber += [number integerValue];
+        
+    }
+    
+    _totalNumberLabel.text = [NSString stringWithFormat:@"%ld", totalNumber];
+    
+}
+
+- (NSArray *)arrayForSite:(NSString *)site andPerson:(NSString *)person forKey:(NSString *)key {
+    
+    NSArray *dates;
+    
+    for (id sites in responseJSON) {
+        
+        if ([[sites valueForKey:@"site"] isEqualToString:kSite]) {
+            
+            dates = [sites valueForKey:@"dates"];
+            continue;
+        }
+    }
+    
+    NSMutableArray *array = [NSMutableArray array];
+    
+    for (id obj in dates) {
+        
+        NSArray *persons = [obj valueForKey:@"persons"];
+        
+        for (id person in persons) {
+            
+            NSString *personName = [person valueForKey:@"person"];
+            
+            if ([personName isEqualToString:kPerson]) {
+                
+                if ([key isEqualToString:@"date"]) {
+                    
+                    [array addObject:[obj valueForKey:key]];
+                    
+                } else if ([key isEqualToString:@"number"]) {
+                    
+                    [array addObject:[person valueForKey:key]];
+                    
+                }
+            }
+        }
+    }
+    
+    return array;
 }
 
 @end
