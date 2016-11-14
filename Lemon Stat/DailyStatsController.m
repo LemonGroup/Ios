@@ -1,12 +1,12 @@
 //
-//  SecondViewController.m
+//  DailyStatsController.m
 //  Lemon Stat
 //
 //  Created by decidion on 09.11.16.
 //  Copyright © 2016 Decidion. All rights reserved.
 //
 
-#import "SecondViewController.h"
+#import "DailyStatsController.h"
 
 #import <AFNetworking/AFNetworking.h>
 
@@ -16,7 +16,7 @@ static NSString *kPerson = @"Навальный"; // Путин, Медведе�
 static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti.ru
 //*************************************************//
 
-@interface SecondViewController () {
+@interface DailyStatsController () {
     NSArray *responseJSON;
 }
 
@@ -29,7 +29,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 @end
 
-@implementation SecondViewController
+@implementation DailyStatsController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

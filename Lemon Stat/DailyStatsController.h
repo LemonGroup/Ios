@@ -1,5 +1,5 @@
 //
-//  SecondViewController.h
+//  DailyStatsController.h
 //  Lemon Stat
 //
 //  Created by decidion on 09.11.16.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SecondViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface DailyStatsController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 
 @end

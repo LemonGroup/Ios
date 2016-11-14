@@ -10,7 +10,7 @@
 		44D3963D1DD38F4B008D9F27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3963C1DD38F4B008D9F27 /* main.m */; };
 		44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3963F1DD38F4B008D9F27 /* AppDelegate.m */; };
 		44D396431DD38F4B008D9F27 /* GeneralStatsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D396421DD38F4B008D9F27 /* GeneralStatsController.m */; };
-		44D396461DD38F4B008D9F27 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D396451DD38F4B008D9F27 /* SecondViewController.m */; };
+		44D396461DD38F4B008D9F27 /* DailyStatsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D396451DD38F4B008D9F27 /* DailyStatsController.m */; };
 		44D396491DD38F4B008D9F27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44D396471DD38F4B008D9F27 /* Main.storyboard */; };
 		44D3964B1DD38F4B008D9F27 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44D3964A1DD38F4B008D9F27 /* Assets.xcassets */; };
 		44D3964E1DD38F4B008D9F27 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44D3964C1DD38F4B008D9F27 /* LaunchScreen.storyboard */; };
@@ -24,8 +24,8 @@
 		44D3963F1DD38F4B008D9F27 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		44D396411DD38F4B008D9F27 /* GeneralStatsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneralStatsController.h; sourceTree = "<group>"; };
 		44D396421DD38F4B008D9F27 /* GeneralStatsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeneralStatsController.m; sourceTree = "<group>"; };
-		44D396441DD38F4B008D9F27 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
-		44D396451DD38F4B008D9F27 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		44D396441DD38F4B008D9F27 /* DailyStatsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DailyStatsController.h; sourceTree = "<group>"; };
+		44D396451DD38F4B008D9F27 /* DailyStatsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DailyStatsController.m; sourceTree = "<group>"; };
 		44D396481DD38F4B008D9F27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		44D3964A1DD38F4B008D9F27 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		44D3964D1DD38F4B008D9F27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -81,8 +81,8 @@
 				44D3963F1DD38F4B008D9F27 /* AppDelegate.m */,
 				44D396411DD38F4B008D9F27 /* GeneralStatsController.h */,
 				44D396421DD38F4B008D9F27 /* GeneralStatsController.m */,
-				44D396441DD38F4B008D9F27 /* SecondViewController.h */,
-				44D396451DD38F4B008D9F27 /* SecondViewController.m */,
+				44D396441DD38F4B008D9F27 /* DailyStatsController.h */,
+				44D396451DD38F4B008D9F27 /* DailyStatsController.m */,
 				44D396471DD38F4B008D9F27 /* Main.storyboard */,
 				44D3964A1DD38F4B008D9F27 /* Assets.xcassets */,
 				44D3964C1DD38F4B008D9F27 /* LaunchScreen.storyboard */,
@@ -231,7 +231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44D396461DD38F4B008D9F27 /* SecondViewController.m in Sources */,
+				44D396461DD38F4B008D9F27 /* DailyStatsController.m in Sources */,
 				44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */,
 				44D396431DD38F4B008D9F27 /* GeneralStatsController.m in Sources */,
 				44D3963D1DD38F4B008D9F27 /* main.m in Sources */,
