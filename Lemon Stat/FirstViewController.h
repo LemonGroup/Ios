@@ -1,5 +1,5 @@
 //
-//  GeneralStatsController.h
+//  FirstViewController.h
 //  Lemon Stat
 //
 //  Created by decidion on 09.11.16.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GeneralStatsController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface FirstViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 
 @end

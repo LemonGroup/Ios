@@ -1,16 +1,16 @@
 //
-//  GeneralStatsController.m
+//  FirstViewController.m
 //  Lemon Stat
 //
 //  Created by decidion on 09.11.16.
 //  Copyright © 2016 Decidion. All rights reserved.
 //
 
-#import "GeneralStatsController.h"
+#import "FirstViewController.h"
 
 #import <AFNetworking/AFNetworking.h>
 
-@interface GeneralStatsController () {
+@interface FirstViewController () {
     NSArray *responseJSON;
 }
 
@@ -18,7 +18,7 @@
 
 @end
 
-@implementation GeneralStatsController
+@implementation FirstViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
