@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		44D3963D1DD38F4B008D9F27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3963C1DD38F4B008D9F27 /* main.m */; };
 		44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3963F1DD38F4B008D9F27 /* AppDelegate.m */; };
-		44D396431DD38F4B008D9F27 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D396421DD38F4B008D9F27 /* FirstViewController.m */; };
+		44D396431DD38F4B008D9F27 /* GeneralStatsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D396421DD38F4B008D9F27 /* GeneralStatsController.m */; };
 		44D396461DD38F4B008D9F27 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D396451DD38F4B008D9F27 /* SecondViewController.m */; };
 		44D396491DD38F4B008D9F27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44D396471DD38F4B008D9F27 /* Main.storyboard */; };
 		44D3964B1DD38F4B008D9F27 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44D3964A1DD38F4B008D9F27 /* Assets.xcassets */; };
@@ -22,8 +22,8 @@
 		44D3963C1DD38F4B008D9F27 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		44D3963E1DD38F4B008D9F27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		44D3963F1DD38F4B008D9F27 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		44D396411DD38F4B008D9F27 /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
-		44D396421DD38F4B008D9F27 /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
+		44D396411DD38F4B008D9F27 /* GeneralStatsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneralStatsController.h; sourceTree = "<group>"; };
+		44D396421DD38F4B008D9F27 /* GeneralStatsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeneralStatsController.m; sourceTree = "<group>"; };
 		44D396441DD38F4B008D9F27 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		44D396451DD38F4B008D9F27 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		44D396481DD38F4B008D9F27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -79,8 +79,8 @@
 			children = (
 				44D3963E1DD38F4B008D9F27 /* AppDelegate.h */,
 				44D3963F1DD38F4B008D9F27 /* AppDelegate.m */,
-				44D396411DD38F4B008D9F27 /* FirstViewController.h */,
-				44D396421DD38F4B008D9F27 /* FirstViewController.m */,
+				44D396411DD38F4B008D9F27 /* GeneralStatsController.h */,
+				44D396421DD38F4B008D9F27 /* GeneralStatsController.m */,
 				44D396441DD38F4B008D9F27 /* SecondViewController.h */,
 				44D396451DD38F4B008D9F27 /* SecondViewController.m */,
 				44D396471DD38F4B008D9F27 /* Main.storyboard */,
@@ -233,7 +233,7 @@
 			files = (
 				44D396461DD38F4B008D9F27 /* SecondViewController.m in Sources */,
 				44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */,
-				44D396431DD38F4B008D9F27 /* FirstViewController.m in Sources */,
+				44D396431DD38F4B008D9F27 /* GeneralStatsController.m in Sources */,
 				44D3963D1DD38F4B008D9F27 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
