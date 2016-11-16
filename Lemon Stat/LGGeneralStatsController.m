@@ -1,16 +1,16 @@
 //
-//  GeneralStatsController.m
+//  LGGeneralStatsController.m
 //  Lemon Stat
 //
 //  Created by decidion on 09.11.16.
 //  Copyright © 2016 Decidion. All rights reserved.
 //
 
-#import "GeneralStatsController.h"
+#import "LGGeneralStatsController.h"
 
 #import <AFNetworking/AFNetworking.h>
 
-@interface GeneralStatsController () {
+@interface LGGeneralStatsController () {
     NSArray *_responseJSON;
 }
 
@@ -18,7 +18,7 @@
 
 @end
 
-@implementation GeneralStatsController
+@implementation LGGeneralStatsController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
