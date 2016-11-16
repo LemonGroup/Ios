@@ -11,7 +11,7 @@
 #import <AFNetworking/AFNetworking.h>
 
 @interface GeneralStatsController () {
-    NSArray *responseJSON;
+    NSArray *_responseJSON;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -41,15 +41,17 @@
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
-    [manager GET:@"http://lemonstat.usite.pro/StatisticFake.json"
+    [manager GET:@"http://yrsoft.cu.cc:8080/stat/over_stat?site=lenta.ru"
       parameters:nil
         progress:^(NSProgress * _Nonnull downloadProgress) {
             
         }
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
-             responseJSON = [responseObject valueForKey:@"response"];
+             _responseJSON = responseObject;
+             
+             
              [self.tableView reloadData];
-             NSLog(@"JSON: %@", responseObject);
+             NSLog(@"JSON: %@", _responseJSON);
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
@@ -68,7 +70,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return responseJSON.count;
+    return _responseJSON.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -77,8 +79,10 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     
-    cell.textLabel.text = [responseJSON[indexPath.row] valueForKey:@"person"];
-    cell.detailTextLabel.text = [responseJSON[indexPath.row] valueForKey:@"number"];
+    cell.textLabel.text = [_responseJSON[indexPath.row] valueForKey:@"person"];
+    
+    NSString *numberOfMentions = [_responseJSON[indexPath.row] valueForKey:@"numberOfMentions"];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", numberOfMentions];
     
     return cell;
 }

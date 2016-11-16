@@ -17,7 +17,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 //*************************************************//
 
 @interface DailyStatsController () {
-    NSArray *responseJSON;
+    NSArray *_responseJSON;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -56,7 +56,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
             
         }
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
-             responseJSON = [responseObject valueForKey:@"response"];
+             _responseJSON = [responseObject valueForKey:@"response"];
              
              // create data arrays for site and person
              _dateArray = [self arrayForSite:kSite
@@ -125,7 +125,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     
     NSArray *dates;
     
-    for (id sites in responseJSON) {
+    for (id sites in _responseJSON) {
         
         if ([[sites valueForKey:@"site"] isEqualToString:kSite]) {
             
