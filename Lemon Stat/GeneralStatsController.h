@@ -1,5 +1,5 @@
 //
-//  LGDailyStatsController.h
+//  GeneralStatsController.h
 //  Lemon Stat
 //
 //  Created by decidion on 09.11.16.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LGDailyStatsController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface GeneralStatsController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 
 @end
