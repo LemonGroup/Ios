@@ -23,6 +23,15 @@
 
 @implementation LGPopoverViewController
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _isRecognizeDisappear = NO;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -67,6 +76,14 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    if (_isRecognizeDisappear) {
+        [self.delegate disappearedPopoverViewController:self];
+    }
 }
 
 - (void)dealloc {
@@ -143,19 +160,21 @@
                               heightButton);
     
     [button setBackgroundColor:[UIColor yellowColor]];
-    [button setTitle:@"Применить" forState:UIControlStateNormal];
+    
+    NSString *title = [self.delegate titleButtonForPopoverViewController:self];
+    [button setTitle:title forState:UIControlStateNormal];
+    
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
-//    [button addTarget:self
-//               action:@selector(actionReturnKey:)
-//     forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self.delegate
+               action:@selector(actionReturn:)
+     forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:button];
     
 //    self.returnKeyButton = button;
     
 }
-
 
 #pragma mark - UIPickerViewDelegate
 

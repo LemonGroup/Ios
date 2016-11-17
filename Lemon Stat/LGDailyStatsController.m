@@ -23,11 +23,10 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
 @property (strong, nonatomic) NSArray *dateArray;
 @property (strong, nonatomic) NSArray *numberArray;
-
-@property (assign, nonatomic) LGPopoverType type;
 
 @end
 
@@ -38,8 +37,8 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     // Do any additional setup after loading the view, typically from a nib.
     
     [self loadData];
+    
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -166,7 +165,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (void)createPopover:(UIView *)sender {
     
-    CGSize contentSize = CGSizeMake(280,200);
+    CGSize contentSize = CGSizeMake(280,280);
     
     LGPopoverViewController *vc= [[LGPopoverViewController alloc] init];
     vc.preferredContentSize = contentSize;
@@ -190,6 +189,8 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
             break;
     }
     
+    self.popoverViewController = vc;
+    
     UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController:vc];
     destNav.modalPresentationStyle = UIModalPresentationPopover;
     
@@ -205,16 +206,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 #pragma mark - UITextFieldDelegate
 
-//- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-//
-//    [textField resignFirstResponder];
-//
-//    return YES;
-//}
-
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    
-    self.type = (LGPopoverType)textField.tag;
     
     [self createPopover:textField];
     
@@ -234,7 +226,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd MMMM YYYY"];
     
-    switch (self.type) {
+    switch (_popoverViewController.type) {
         case LGPopoverTypeStartDate: {
             self.selectedStartDate = datePicker.date;
             self.startDateLabel.text = [dateFormatter stringFromDate:datePicker.date];
@@ -252,7 +244,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (void)stringChange:(NSString *)string {
     
-    switch (self.type) {
+    switch (_popoverViewController.type) {
         case LGPopoverTypeSites: {
             self.siteLabel.text = string;
         }
@@ -264,6 +256,53 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
         default:
             break;
     }
+}
+
+- (NSString *)titleButtonForPopoverViewController:(LGPopoverViewController *)popoverViewController {
+    
+    if (popoverViewController.type == LGPopoverTypeEndDate) {
+        return @"Применить";
+    } else {
+        return @"Дальше";
+    }
+}
+
+- (void)actionReturn:(UIButton *)button {
+    
+    switch (_popoverViewController.type) {
+        case LGPopoverTypeSites: {
+            [_popoverViewController dismissViewControllerAnimated:YES completion:^{
+                [self.personLabel becomeFirstResponder];
+            }];
+        }
+            break;
+        case LGPopoverTypePersons: {
+            [_popoverViewController dismissViewControllerAnimated:YES completion:^{
+                [self.startDateLabel becomeFirstResponder];
+            }];
+        }
+            break;
+        case LGPopoverTypeStartDate: {
+            [_popoverViewController dismissViewControllerAnimated:YES completion:^{
+                [self.endDateLabel becomeFirstResponder];
+            }];
+        }
+            break;
+        case LGPopoverTypeEndDate: {
+            [_popoverViewController dismissViewControllerAnimated:YES completion:^{
+                [self actionApply:nil];
+            }];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma mark - Actions
+
+- (IBAction)actionApply:(id)sender {
+    // Метод заполнения таблицы или графика
 }
 
 @end

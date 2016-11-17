@@ -120,12 +120,6 @@
 				44D396451DD38F4B008D9F27 /* LGDailyStatsController.m */,
 				58F7D89B1DDD382500EA542E /* LGPopoverViewController.h */,
 				58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */,
-				9F5AE4B91DDE0B3700EAC350 /* LGPersonListSingleton.h */,
-				9F5AE4BA1DDE0B3700EAC350 /* LGPersonListSingleton.m */,
-				9F5AE4BC1DDE0B6300EAC350 /* LGSiteListSingleton.h */,
-				9F5AE4BD1DDE0B6300EAC350 /* LGSiteListSingleton.m */,
-				9F5AE4BF1DDE1B2C00EAC350 /* LGPerson.h */,
-				9F5AE4C01DDE1B2C00EAC350 /* LGPerson.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -133,6 +127,12 @@
 		58F7D8991DDD37B600EA542E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				9F5AE4B91DDE0B3700EAC350 /* LGPersonListSingleton.h */,
+				9F5AE4BA1DDE0B3700EAC350 /* LGPersonListSingleton.m */,
+				9F5AE4BC1DDE0B6300EAC350 /* LGSiteListSingleton.h */,
+				9F5AE4BD1DDE0B6300EAC350 /* LGSiteListSingleton.m */,
+				9F5AE4BF1DDE1B2C00EAC350 /* LGPerson.h */,
+				9F5AE4C01DDE1B2C00EAC350 /* LGPerson.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";

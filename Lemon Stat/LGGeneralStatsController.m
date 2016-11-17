@@ -17,6 +17,7 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
 @end
 
@@ -29,7 +30,6 @@
     [self loadData];
     
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -90,13 +90,6 @@
 
 #pragma mark - UITextFieldDelegate
 
-//- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-//
-//    [textField resignFirstResponder];
-//
-//    return YES;
-//}
-
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     
     [self createPopover:textField];
@@ -114,13 +107,18 @@
 
 - (void)createPopover:(UIView *)sender {
     
-    CGSize contentSize = CGSizeMake(280,200);
+    CGSize contentSize = CGSizeMake(280,280);
     
     LGPopoverViewController *vc= [[LGPopoverViewController alloc] init];
     vc.preferredContentSize = contentSize;
     vc.type = LGPopoverTypeSites;
     vc.delegate = self;
     vc.currentString = self.siteLabel.text;
+    vc.isRecognizeDisappear = YES;
+    
+    [self willChangeValueForKey:@"popoverViewController"];
+    self.popoverViewController = vc;
+    [self didChangeValueForKey:@"popoverViewController"];
     
     UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController:vc];
     destNav.modalPresentationStyle = UIModalPresentationPopover;
@@ -139,6 +137,28 @@
 
 - (void)stringChange:(NSString *)string {
     self.siteLabel.text = string;
+}
+
+- (NSString *)titleButtonForPopoverViewController:(LGPopoverViewController *)popoverViewController {
+    return @"Применить";
+}
+
+- (void)actionReturn:(UIButton *)button {
+    
+    [_popoverViewController dismissViewControllerAnimated:YES completion:^{
+        [self actionApply:nil];
+    }];
+     
+}
+
+- (void)disappearedPopoverViewController:(LGPopoverViewController *)popoverViewController {
+    [self actionApply:nil];
+}
+
+#pragma mark - Actions
+
+- (void)actionApply:(id)sender {
+    // Метод заполнения таблицы или графика
 }
 
 @end

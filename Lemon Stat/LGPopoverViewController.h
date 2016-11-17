@@ -27,13 +27,21 @@ typedef enum {
 @property (strong, nonatomic) NSDate *currentDate;
 @property (strong, nonatomic) NSString *currentString;
 
+@property (assign, nonatomic) BOOL isRecognizeDisappear; // If know disappeared popover. Default is NO
+
 @end
 
 @protocol LGPopoverViewControllerDelegate <NSObject>
 
+- (void)actionReturn:(UIButton *)button;
+
 - (void)stringChange:(NSString *)string;
+- (NSString *)titleButtonForPopoverViewController:(LGPopoverViewController *)popoverViewController;
 
 @optional
 - (void)dateChange:(UIDatePicker *)datePicker;
+
+// вызывается когда контроллер исчезнет
+- (void)disappearedPopoverViewController:(LGPopoverViewController *)popoverViewController;
 
 @end
