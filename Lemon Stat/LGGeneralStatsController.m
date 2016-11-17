@@ -12,7 +12,7 @@
 
 #import <AFNetworking/AFNetworking.h>
 
-@interface LGGeneralStatsController () <UITextFieldDelegate, UIPopoverPresentationControllerDelegate> {
+@interface LGGeneralStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate> {
     NSArray *_responseJSON;
 }
 
@@ -27,7 +27,6 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [self loadData];
-    
     
 }
 
@@ -89,7 +88,62 @@
     return cell;
 }
 
+#pragma mark - UITextFieldDelegate
 
+//- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+//
+//    [textField resignFirstResponder];
+//
+//    return YES;
+//}
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    
+    [self createPopover:textField];
+    
+    return NO;
+}
+
+#pragma mark - UIAdaptivePresentationControllerDelegate
+
+- (UIModalPresentationStyle) adaptivePresentationStyleForPresentationController: (UIPresentationController * ) controller {
+    return UIModalPresentationNone;
+}
+
+#pragma mark - Methods
+
+- (void)createPopover:(UIView *)sender {
+    
+    CGSize contentSize = CGSizeMake(280,200);
+    
+    LGPopoverViewController *vc= [[LGPopoverViewController alloc] init];
+    vc.preferredContentSize = contentSize;
+    
+    UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController:vc];
+    destNav.modalPresentationStyle = UIModalPresentationPopover;
+    destNav.navigationBarHidden = YES;
+    
+    UIPopoverPresentationController *presentationController = [destNav popoverPresentationController];
+    presentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    presentationController.delegate = self;
+    presentationController.sourceView = sender;
+    presentationController.sourceRect = sender.bounds;
+    
+//    destNav.navigationBarHidden = YES;
+//    _infoPopoverController = destNav.popoverPresentationController;
+//    self.infoPopoverController.delegate = self;
+//    self.infoPopoverController.sourceView = textField;
+//    self.infoPopoverController.sourceRect = textField.bounds;
+
+//    if (sender.tag == InfoControllerButtonInfoHourglass) {
+//        infoController.buttonInfo = InfoControllerButtonInfoHourglass;
+//    } else if (sender.tag == InfoControllerButtonInfoDelay) {
+//        infoController.buttonInfo = InfoControllerButtonInfoDelay;
+//    }
+//    infoController.contentSize = contentSize;
+    
+    [self presentViewController:destNav animated:YES completion:nil];
+    
+}
 
 @end

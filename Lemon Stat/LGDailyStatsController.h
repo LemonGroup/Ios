@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LGDailyStatsController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface LGDailyStatsController : UIViewController
 
 
 @end

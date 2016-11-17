@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		44D3963D1DD38F4B008D9F27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3963C1DD38F4B008D9F27 /* main.m */; };
 		44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3963F1DD38F4B008D9F27 /* AppDelegate.m */; };
-		44D396431DD38F4B008D9F27 /* GeneralStatsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D396421DD38F4B008D9F27 /* GeneralStatsController.m */; };
-		44D396461DD38F4B008D9F27 /* DailyStatsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D396451DD38F4B008D9F27 /* DailyStatsController.m */; };
+		44D396431DD38F4B008D9F27 /* LGGeneralStatsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D396421DD38F4B008D9F27 /* LGGeneralStatsController.m */; };
+		44D396461DD38F4B008D9F27 /* LGDailyStatsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D396451DD38F4B008D9F27 /* LGDailyStatsController.m */; };
 		44D396491DD38F4B008D9F27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44D396471DD38F4B008D9F27 /* Main.storyboard */; };
 		44D3964B1DD38F4B008D9F27 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44D3964A1DD38F4B008D9F27 /* Assets.xcassets */; };
 		44D3964E1DD38F4B008D9F27 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44D3964C1DD38F4B008D9F27 /* LaunchScreen.storyboard */; };
+		58F7D89D1DDD382500EA542E /* LGPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */; };
 		EB22D02DFDEABE11EEF2D978 /* libPods-Lemon Stat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76746111F38473DB376B8929 /* libPods-Lemon Stat.a */; };
 /* End PBXBuildFile section */
 
@@ -22,14 +23,16 @@
 		44D3963C1DD38F4B008D9F27 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		44D3963E1DD38F4B008D9F27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		44D3963F1DD38F4B008D9F27 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		44D396411DD38F4B008D9F27 /* GeneralStatsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneralStatsController.h; sourceTree = "<group>"; };
-		44D396421DD38F4B008D9F27 /* GeneralStatsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeneralStatsController.m; sourceTree = "<group>"; };
-		44D396441DD38F4B008D9F27 /* DailyStatsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DailyStatsController.h; sourceTree = "<group>"; };
-		44D396451DD38F4B008D9F27 /* DailyStatsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DailyStatsController.m; sourceTree = "<group>"; };
+		44D396411DD38F4B008D9F27 /* LGGeneralStatsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGGeneralStatsController.h; sourceTree = "<group>"; };
+		44D396421DD38F4B008D9F27 /* LGGeneralStatsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGGeneralStatsController.m; sourceTree = "<group>"; };
+		44D396441DD38F4B008D9F27 /* LGDailyStatsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGDailyStatsController.h; sourceTree = "<group>"; };
+		44D396451DD38F4B008D9F27 /* LGDailyStatsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGDailyStatsController.m; sourceTree = "<group>"; };
 		44D396481DD38F4B008D9F27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		44D3964A1DD38F4B008D9F27 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		44D3964D1DD38F4B008D9F27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		44D3964F1DD38F4B008D9F27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		58F7D89B1DDD382500EA542E /* LGPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPopoverViewController.h; sourceTree = "<group>"; };
+		58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPopoverViewController.m; sourceTree = "<group>"; };
 		75046E052D82B8C004385DA2 /* Pods-Lemon Stat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemon Stat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Lemon Stat/Pods-Lemon Stat.debug.xcconfig"; sourceTree = "<group>"; };
 		76746111F38473DB376B8929 /* libPods-Lemon Stat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Lemon Stat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8364878FE0831A8E8CBD2E86 /* Pods-Lemon Stat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemon Stat.release.xcconfig"; path = "Pods/Target Support Files/Pods-Lemon Stat/Pods-Lemon Stat.release.xcconfig"; sourceTree = "<group>"; };
@@ -79,10 +82,9 @@
 			children = (
 				44D3963E1DD38F4B008D9F27 /* AppDelegate.h */,
 				44D3963F1DD38F4B008D9F27 /* AppDelegate.m */,
-				44D396411DD38F4B008D9F27 /* GeneralStatsController.h */,
-				44D396421DD38F4B008D9F27 /* GeneralStatsController.m */,
-				44D396441DD38F4B008D9F27 /* DailyStatsController.h */,
-				44D396451DD38F4B008D9F27 /* DailyStatsController.m */,
+				58F7D89A1DDD37C600EA542E /* Views */,
+				58F7D8991DDD37B600EA542E /* Models */,
+				58F7D8981DDD379900EA542E /* Controllers */,
 				44D396471DD38F4B008D9F27 /* Main.storyboard */,
 				44D3964A1DD38F4B008D9F27 /* Assets.xcassets */,
 				44D3964C1DD38F4B008D9F27 /* LaunchScreen.storyboard */,
@@ -98,6 +100,33 @@
 				44D3963C1DD38F4B008D9F27 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		58F7D8981DDD379900EA542E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				44D396411DD38F4B008D9F27 /* LGGeneralStatsController.h */,
+				44D396421DD38F4B008D9F27 /* LGGeneralStatsController.m */,
+				44D396441DD38F4B008D9F27 /* LGDailyStatsController.h */,
+				44D396451DD38F4B008D9F27 /* LGDailyStatsController.m */,
+				58F7D89B1DDD382500EA542E /* LGPopoverViewController.h */,
+				58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		58F7D8991DDD37B600EA542E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		58F7D89A1DDD37C600EA542E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		87CA58AA612C5371FF338AC8 /* Frameworks */ = {
@@ -231,9 +260,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44D396461DD38F4B008D9F27 /* DailyStatsController.m in Sources */,
+				44D396461DD38F4B008D9F27 /* LGDailyStatsController.m in Sources */,
 				44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */,
-				44D396431DD38F4B008D9F27 /* GeneralStatsController.m in Sources */,
+				44D396431DD38F4B008D9F27 /* LGGeneralStatsController.m in Sources */,
+				58F7D89D1DDD382500EA542E /* LGPopoverViewController.m in Sources */,
 				44D3963D1DD38F4B008D9F27 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,7 +384,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 75046E052D82B8C004385DA2 /* Pods-Lemon Stat.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = CAV9SBW57D;
 				INFOPLIST_FILE = "Lemon Stat/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -368,7 +397,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8364878FE0831A8E8CBD2E86 /* Pods-Lemon Stat.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = CAV9SBW57D;
 				INFOPLIST_FILE = "Lemon Stat/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

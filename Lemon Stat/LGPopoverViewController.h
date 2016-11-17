@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LGPopoverViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
+@interface LGPopoverViewController : UIViewController
 
 @end
