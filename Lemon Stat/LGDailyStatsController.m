@@ -18,16 +18,16 @@ static NSString *kPerson = @"Навальный"; // Путин, Медведе�
 static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti.ru
 //*************************************************//
 
-@interface LGDailyStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate> {
+@interface LGDailyStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate> {
     NSArray *_responseJSON;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UILabel *totalNumberLabel;
-
 @property (strong, nonatomic) NSArray *dateArray;
 @property (strong, nonatomic) NSArray *numberArray;
+
+@property (assign, nonatomic) LGPopoverType type;
 
 @end
 
@@ -170,29 +170,34 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     
     LGPopoverViewController *vc= [[LGPopoverViewController alloc] init];
     vc.preferredContentSize = contentSize;
+    vc.delegate = self;
+    vc.type = (LGPopoverType)sender.tag;
+    
+    switch (sender.tag) {
+        case LGPopoverTypeSites:
+            vc.currentString = self.siteLabel.text;
+            break;
+        case LGPopoverTypePersons:
+            vc.currentString = self.personLabel.text;
+            break;
+        case LGPopoverTypeStartDate:
+            vc.currentDate = _selectedStartDate;
+            break;
+        case LGPopoverTypeEndDate:
+            vc.currentDate = _selectedEndDate;
+            break;
+        default:
+            break;
+    }
     
     UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController:vc];
     destNav.modalPresentationStyle = UIModalPresentationPopover;
-    destNav.navigationBarHidden = YES;
     
     UIPopoverPresentationController *presentationController = [destNav popoverPresentationController];
     presentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
     presentationController.delegate = self;
     presentationController.sourceView = sender;
     presentationController.sourceRect = sender.bounds;
-    
-//    destNav.navigationBarHidden = YES;
-//    _infoPopoverController = destNav.popoverPresentationController;
-//    self.infoPopoverController.delegate = self;
-//    self.infoPopoverController.sourceView = textField;
-//    self.infoPopoverController.sourceRect = textField.bounds;
-
-//    if (sender.tag == InfoControllerButtonInfoHourglass) {
-//        infoController.buttonInfo = InfoControllerButtonInfoHourglass;
-//    } else if (sender.tag == InfoControllerButtonInfoDelay) {
-//        infoController.buttonInfo = InfoControllerButtonInfoDelay;
-//    }
-//    infoController.contentSize = contentSize;
     
     [self presentViewController:destNav animated:YES completion:nil];
     
@@ -209,6 +214,8 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     
+    self.type = (LGPopoverType)textField.tag;
+    
     [self createPopover:textField];
     
     return NO;
@@ -218,6 +225,45 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (UIModalPresentationStyle) adaptivePresentationStyleForPresentationController: (UIPresentationController * ) controller {
     return UIModalPresentationNone;
+}
+
+#pragma mark - LGPopoverViewControllerDelegate
+
+- (void)dateChange:(UIDatePicker *)datePicker {
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd MMMM YYYY"];
+    
+    switch (self.type) {
+        case LGPopoverTypeStartDate: {
+            self.selectedStartDate = datePicker.date;
+            self.startDateLabel.text = [dateFormatter stringFromDate:datePicker.date];
+        }
+            break;
+        case LGPopoverTypeEndDate: {
+            self.selectedEndDate = datePicker.date;
+            self.endDateLabel.text = [dateFormatter stringFromDate:datePicker.date];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)stringChange:(NSString *)string {
+    
+    switch (self.type) {
+        case LGPopoverTypeSites: {
+            self.siteLabel.text = string;
+        }
+            break;
+        case LGPopoverTypePersons: {
+            self.personLabel.text = string;
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 @end
