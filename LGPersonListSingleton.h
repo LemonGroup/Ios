@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LGPerson.h"
 
 @interface LGPersonListSingleton : NSObject
+
+@property (strong, nonatomic) NSArray <LGPerson*>* person;
 
 +(LGPersonListSingleton*) sharedPersonList;
 
