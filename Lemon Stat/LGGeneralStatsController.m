@@ -10,7 +10,7 @@
 
 #import <AFNetworking/AFNetworking.h>
 
-@interface LGGeneralStatsController () {
+@interface LGGeneralStatsController () <UITextFieldDelegate, UIPopoverPresentationControllerDelegate> {
     NSArray *_responseJSON;
 }
 

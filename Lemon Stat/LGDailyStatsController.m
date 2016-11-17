@@ -16,7 +16,7 @@ static NSString *kPerson = @"Навальный"; // Путин, Медведе�
 static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti.ru
 //*************************************************//
 
-@interface LGDailyStatsController () {
+@interface LGDailyStatsController () <UITextFieldDelegate, UIPopoverPresentationControllerDelegate> {
     NSArray *_responseJSON;
 }
 
