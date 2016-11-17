@@ -8,6 +8,8 @@
 
 #import "LGGeneralStatsController.h"
 
+#import "LGPopoverViewController.h"
+
 #import <AFNetworking/AFNetworking.h>
 
 @interface LGGeneralStatsController () <UITextFieldDelegate, UIPopoverPresentationControllerDelegate> {

@@ -8,6 +8,8 @@
 
 #import "LGDailyStatsController.h"
 
+#import "LGPopoverViewController.h"
+
 #import <AFNetworking/AFNetworking.h>
 
 //**************** Временный код ******************//
