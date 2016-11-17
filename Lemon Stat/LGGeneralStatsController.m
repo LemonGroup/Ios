@@ -12,7 +12,7 @@
 
 #import <AFNetworking/AFNetworking.h>
 
-@interface LGGeneralStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate> {
+@interface LGGeneralStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate> {
     NSArray *_responseJSON;
 }
 
@@ -118,10 +118,12 @@
     
     LGPopoverViewController *vc= [[LGPopoverViewController alloc] init];
     vc.preferredContentSize = contentSize;
+    vc.type = LGPopoverTypeSites;
+    vc.delegate = self;
+    vc.currentString = self.siteLabel.text;
     
     UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController:vc];
     destNav.modalPresentationStyle = UIModalPresentationPopover;
-    destNav.navigationBarHidden = YES;
     
     UIPopoverPresentationController *presentationController = [destNav popoverPresentationController];
     presentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
@@ -129,21 +131,14 @@
     presentationController.sourceView = sender;
     presentationController.sourceRect = sender.bounds;
     
-//    destNav.navigationBarHidden = YES;
-//    _infoPopoverController = destNav.popoverPresentationController;
-//    self.infoPopoverController.delegate = self;
-//    self.infoPopoverController.sourceView = textField;
-//    self.infoPopoverController.sourceRect = textField.bounds;
-
-//    if (sender.tag == InfoControllerButtonInfoHourglass) {
-//        infoController.buttonInfo = InfoControllerButtonInfoHourglass;
-//    } else if (sender.tag == InfoControllerButtonInfoDelay) {
-//        infoController.buttonInfo = InfoControllerButtonInfoDelay;
-//    }
-//    infoController.contentSize = contentSize;
-    
     [self presentViewController:destNav animated:YES completion:nil];
     
+}
+
+#pragma mark - LGPopoverViewControllerDelegate
+
+- (void)stringChange:(NSString *)string {
+    self.siteLabel.text = string;
 }
 
 @end
