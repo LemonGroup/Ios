@@ -42,6 +42,10 @@
     _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
     _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
     
+    if ([self.delegate respondsToSelector:@selector(recognizeDisappearForPopoverViewController:)]) {
+        _isRecognizeDisappear = [self.delegate recognizeDisappearForPopoverViewController:self];
+    }
+    
     // create button
     [self createButton];
 }
@@ -69,8 +73,6 @@
         default:
             break;
     }
-
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -130,8 +132,13 @@
     UIDatePicker *datePicker = [[UIDatePicker alloc] init];
     datePicker.center = self.view.center;
     datePicker.datePickerMode = UIDatePickerModeDate;
-    datePicker.minimumDate = [[NSDate alloc] initWithTimeIntervalSince1970:0];
-    datePicker.maximumDate = [NSDate date];
+    
+    if([self.delegate respondsToSelector:@selector(dateRangeForDatePicker:forPopoverViewController:)]) {
+        [self.delegate dateRangeForDatePicker:datePicker forPopoverViewController:self];
+    } else {
+        datePicker.minimumDate = [[NSDate alloc] initWithTimeIntervalSince1970:0];
+        datePicker.maximumDate = [NSDate date];
+    }
     
     if (_currentDate) {
         datePicker.date = _currentDate;
@@ -193,9 +200,7 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    
     return _arrayFake.count;
-    
 }
 
 @end
