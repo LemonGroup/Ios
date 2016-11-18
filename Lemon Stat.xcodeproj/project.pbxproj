@@ -15,6 +15,7 @@
 		44D3964B1DD38F4B008D9F27 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44D3964A1DD38F4B008D9F27 /* Assets.xcassets */; };
 		44D3964E1DD38F4B008D9F27 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44D3964C1DD38F4B008D9F27 /* LaunchScreen.storyboard */; };
 		58F7D89D1DDD382500EA542E /* LGPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */; };
+		9F52525E1DDEF9A300940016 /* LGSegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F52525D1DDEF9A300940016 /* LGSegmentedViewController.m */; };
 		9F5AE4BB1DDE0B3700EAC350 /* LGPersonListSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4BA1DDE0B3700EAC350 /* LGPersonListSingleton.m */; };
 		9F5AE4BE1DDE0B6300EAC350 /* LGSiteListSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4BD1DDE0B6300EAC350 /* LGSiteListSingleton.m */; };
 		9F5AE4C11DDE1B2C00EAC350 /* LGPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4C01DDE1B2C00EAC350 /* LGPerson.m */; };
@@ -39,6 +40,8 @@
 		75046E052D82B8C004385DA2 /* Pods-Lemon Stat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemon Stat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Lemon Stat/Pods-Lemon Stat.debug.xcconfig"; sourceTree = "<group>"; };
 		76746111F38473DB376B8929 /* libPods-Lemon Stat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Lemon Stat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8364878FE0831A8E8CBD2E86 /* Pods-Lemon Stat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemon Stat.release.xcconfig"; path = "Pods/Target Support Files/Pods-Lemon Stat/Pods-Lemon Stat.release.xcconfig"; sourceTree = "<group>"; };
+		9F52525C1DDEF9A300940016 /* LGSegmentedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSegmentedViewController.h; sourceTree = "<group>"; };
+		9F52525D1DDEF9A300940016 /* LGSegmentedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSegmentedViewController.m; sourceTree = "<group>"; };
 		9F5AE4B91DDE0B3700EAC350 /* LGPersonListSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGPersonListSingleton.h; path = ../LGPersonListSingleton.h; sourceTree = "<group>"; };
 		9F5AE4BA1DDE0B3700EAC350 /* LGPersonListSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGPersonListSingleton.m; path = ../LGPersonListSingleton.m; sourceTree = "<group>"; };
 		9F5AE4BC1DDE0B6300EAC350 /* LGSiteListSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSiteListSingleton.h; sourceTree = "<group>"; };
@@ -120,6 +123,8 @@
 				44D396451DD38F4B008D9F27 /* LGDailyStatsController.m */,
 				58F7D89B1DDD382500EA542E /* LGPopoverViewController.h */,
 				58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */,
+				9F52525C1DDEF9A300940016 /* LGSegmentedViewController.h */,
+				9F52525D1DDEF9A300940016 /* LGSegmentedViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -277,6 +282,7 @@
 			files = (
 				44D396461DD38F4B008D9F27 /* LGDailyStatsController.m in Sources */,
 				9F5AE4BE1DDE0B6300EAC350 /* LGSiteListSingleton.m in Sources */,
+				9F52525E1DDEF9A300940016 /* LGSegmentedViewController.m in Sources */,
 				9F5AE4BB1DDE0B3700EAC350 /* LGPersonListSingleton.m in Sources */,
 				44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */,
 				44D396431DD38F4B008D9F27 /* LGGeneralStatsController.m in Sources */,

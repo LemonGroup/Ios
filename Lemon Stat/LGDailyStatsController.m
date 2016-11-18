@@ -305,4 +305,8 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     // Метод заполнения таблицы или графика
 }
 
+#pragma mark - Segment Control
+
+
+
 @end
