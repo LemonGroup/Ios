@@ -25,9 +25,12 @@ typedef enum {
 
 // Data for pickers
 @property (strong, nonatomic) NSDate *currentDate;
+@property (strong, nonatomic, readonly) NSDate *minDate;
+@property (strong, nonatomic, readonly) NSDate *maxDate;
+
 @property (strong, nonatomic) NSString *currentString;
 
-@property (assign, nonatomic) BOOL isRecognizeDisappear; // If know disappeared popover. Default is NO
+@property (assign, nonatomic, readonly) BOOL isRecognizeDisappear; // If know disappeared popover. Default is NO
 
 @end
 
@@ -40,7 +43,10 @@ typedef enum {
 
 @optional
 - (void)dateChange:(UIDatePicker *)datePicker;
+- (void)dateRangeForDatePicker:(UIDatePicker *)datePicker forPopoverViewController:(LGPopoverViewController *)popoverViewController;
 
+// отслеживание исчезновение контроллера
+- (BOOL)recognizeDisappearForPopoverViewController:(LGPopoverViewController *)popoverViewController;
 // вызывается когда контроллер исчезнет
 - (void)disappearedPopoverViewController:(LGPopoverViewController *)popoverViewController;
 

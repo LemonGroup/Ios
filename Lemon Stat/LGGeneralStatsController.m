@@ -114,7 +114,6 @@
     vc.type = LGPopoverTypeSites;
     vc.delegate = self;
     vc.currentString = self.siteLabel.text;
-    vc.isRecognizeDisappear = YES;
     
     [self willChangeValueForKey:@"popoverViewController"];
     self.popoverViewController = vc;
@@ -145,10 +144,12 @@
 
 - (void)actionReturn:(UIButton *)button {
     
-    [_popoverViewController dismissViewControllerAnimated:YES completion:^{
-        [self actionApply:nil];
-    }];
+    [_popoverViewController dismissViewControllerAnimated:YES completion:nil];
      
+}
+
+- (BOOL)recognizeDisappearForPopoverViewController:(LGPopoverViewController *)popoverViewController {
+    return YES;
 }
 
 - (void)disappearedPopoverViewController:(LGPopoverViewController *)popoverViewController {
@@ -159,6 +160,7 @@
 
 - (void)actionApply:(id)sender {
     // Метод заполнения таблицы или графика
+    NSLog(@"Вывод информации");
 }
 
 

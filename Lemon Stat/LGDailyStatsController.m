@@ -258,6 +258,37 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     }
 }
 
+- (void)dateRangeForDatePicker:(UIDatePicker *)datePicker forPopoverViewController:(LGPopoverViewController *)popoverViewController {
+    
+    switch (popoverViewController.type) {
+        case LGPopoverTypeStartDate: {
+            
+            datePicker.minimumDate = [[NSDate alloc] initWithTimeIntervalSince1970:0];
+            
+            if (self.selectedEndDate) {         // если установлена конечная дата
+                datePicker.maximumDate = _selectedEndDate;
+            } else {
+                datePicker.maximumDate = [NSDate date];
+            }
+        }
+            break;
+        case LGPopoverTypeEndDate: {
+            
+            if (self.selectedStartDate) {         // если установлена начальная дата
+                datePicker.minimumDate = _selectedStartDate;
+            } else {
+                datePicker.minimumDate = [[NSDate alloc] initWithTimeIntervalSince1970:0];
+            }
+            
+            datePicker.maximumDate = [NSDate date];
+            
+        }
+            break;
+        default:
+            break;
+    }
+}
+
 - (NSString *)titleButtonForPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
     if (popoverViewController.type == LGPopoverTypeEndDate) {
