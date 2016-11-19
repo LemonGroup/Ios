@@ -10,18 +10,11 @@
 
 @protocol LGPopoverViewControllerDelegate;
 
-typedef enum {
-    LGPopoverTypeSites = 1,
-    LGPopoverTypePersons = 2,
-    LGPopoverTypeStartDate = 3,
-    LGPopoverTypeEndDate = 4
-} LGPopoverType;
-
 @interface LGPopoverViewController : UIViewController
 
 @property (weak, nonatomic) id<LGPopoverViewControllerDelegate> delegate;
 
-@property (assign, nonatomic) LGPopoverType type;
+//@property (assign, nonatomic) LGPopoverType type;
 
 // Data for pickers
 @property (strong, nonatomic) NSDate *currentDate;
@@ -42,8 +35,16 @@ typedef enum {
 - (NSString *)titleButtonForPopoverViewController:(LGPopoverViewController *)popoverViewController;
 
 @optional
-- (void)dateChange:(UIDatePicker *)datePicker;
+// header
+- (NSString *)titleForPopoverViewController:(LGPopoverViewController *)popoverViewController;
+
+// Если метод arrayForPopoverViewController: не реализован или возвращает nil, то будет создан datePicker
+// for picker with own array
+- (NSArray *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController;
+- (NSString *)labelCurrentRowForPopoverViewController:(LGPopoverViewController *)popoverViewController;
+// for date picker
 - (void)dateRangeForDatePicker:(UIDatePicker *)datePicker forPopoverViewController:(LGPopoverViewController *)popoverViewController;
+- (void)dateChange:(UIDatePicker *)datePicker;  // вызываеся каждый раз, когда меняется дата;
 
 // отслеживание исчезновение контроллера
 - (BOOL)recognizeDisappearForPopoverViewController:(LGPopoverViewController *)popoverViewController;
