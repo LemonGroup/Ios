@@ -241,6 +241,9 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
         case LGPopoverTypePersons:
             return @"Выберите личность";
             break;
+        case LGPopoverTypeStartDate:
+            return @"Выберите начальную дату";
+            break;
             
         default:
             return nil;

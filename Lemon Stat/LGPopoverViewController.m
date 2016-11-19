@@ -15,6 +15,8 @@
 
 @property (strong, nonatomic) NSArray *arrayFake;
 
+@property (weak, nonatomic) UIButton *returnButton;
+
 @end
 
 @implementation LGPopoverViewController
@@ -128,9 +130,25 @@
 
 - (void)createDatePicker {
     
-    UIDatePicker *datePicker = [[UIDatePicker alloc] init];
-    datePicker.center = self.view.center;
+    UIDatePicker *datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0,
+                                                                              0,
+                                                                              self.preferredContentSize.width,
+                                                                              self.preferredContentSize.height - CGRectGetHeight(self.returnButton.frame))];
+    
+    CGFloat heightNavBar = CGRectGetHeight(self.navigationController.navigationBar.frame);
+    
+    CGRect rect;
+    if (!self.navigationController.navigationBarHidden) {
+        rect = CGRectMake(0, 0, self.preferredContentSize.width, self.preferredContentSize.height - CGRectGetHeight(self.returnButton.frame));
+    } else {
+        rect = CGRectMake(0, 0, self.preferredContentSize.width, self.preferredContentSize.height - CGRectGetHeight(self.returnButton.frame));
+    }
+    
+    //datePicker.center = self.view.center;
     datePicker.datePickerMode = UIDatePickerModeDate;
+    datePicker.backgroundColor = [UIColor redColor];
+    
+    
     
     if([self.delegate respondsToSelector:@selector(dateRangeForDatePicker:forPopoverViewController:)]) {
         [self.delegate dateRangeForDatePicker:datePicker forPopoverViewController:self];
@@ -178,7 +196,7 @@
     
     [self.view addSubview:button];
     
-//    self.returnKeyButton = button;
+    self.returnButton = button;
     
 }
 
