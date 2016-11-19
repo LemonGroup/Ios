@@ -1,5 +1,5 @@
 //
-//  GeneralStatsController.h
+//  LGGeneralStatsController.h
 //  Lemon Stat
 //
 //  Created by decidion on 09.11.16.
@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GeneralStatsController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface LGGeneralStatsController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UITextField *siteLabel;
 
 @end
 
