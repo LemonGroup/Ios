@@ -22,7 +22,7 @@
 		9F5AE4BB1DDE0B3700EAC350 /* LGPersonListSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4BA1DDE0B3700EAC350 /* LGPersonListSingleton.m */; };
 		9F5AE4BE1DDE0B6300EAC350 /* LGSiteListSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4BD1DDE0B6300EAC350 /* LGSiteListSingleton.m */; };
 		9F5AE4C11DDE1B2C00EAC350 /* LGPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4C01DDE1B2C00EAC350 /* LGPerson.m */; };
-		9FD179361DE0DD9900AD9809 /* LGTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD179351DE0DD9900AD9809 /* LGTabBarController.m */; };
+		9FD179391DE0E10F00AD9809 /* LGTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD179381DE0E10F00AD9809 /* LGTabBarController.m */; };
 		EB22D02DFDEABE11EEF2D978 /* libPods-Lemon Stat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76746111F38473DB376B8929 /* libPods-Lemon Stat.a */; };
 /* End PBXBuildFile section */
 
@@ -55,8 +55,8 @@
 		9F5AE4BD1DDE0B6300EAC350 /* LGSiteListSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSiteListSingleton.m; sourceTree = "<group>"; };
 		9F5AE4BF1DDE1B2C00EAC350 /* LGPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPerson.h; sourceTree = "<group>"; };
 		9F5AE4C01DDE1B2C00EAC350 /* LGPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPerson.m; sourceTree = "<group>"; };
-		9FD179341DE0DD9900AD9809 /* LGTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGTabBarController.h; path = ../LGTabBarController.h; sourceTree = "<group>"; };
-		9FD179351DE0DD9900AD9809 /* LGTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGTabBarController.m; path = ../LGTabBarController.m; sourceTree = "<group>"; };
+		9FD179371DE0E10F00AD9809 /* LGTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTabBarController.h; sourceTree = "<group>"; };
+		9FD179381DE0E10F00AD9809 /* LGTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTabBarController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,8 +145,8 @@
 				44D396451DD38F4B008D9F27 /* LGDailyStatsController.m */,
 				58F7D89B1DDD382500EA542E /* LGPopoverViewController.h */,
 				58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */,
-				9FD179341DE0DD9900AD9809 /* LGTabBarController.h */,
-				9FD179351DE0DD9900AD9809 /* LGTabBarController.m */,
+				9FD179371DE0E10F00AD9809 /* LGTabBarController.h */,
+				9FD179381DE0E10F00AD9809 /* LGTabBarController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -353,7 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FD179361DE0DD9900AD9809 /* LGTabBarController.m in Sources */,
+				9FD179391DE0E10F00AD9809 /* LGTabBarController.m in Sources */,
 				44D396461DD38F4B008D9F27 /* LGDailyStatsController.m in Sources */,
 				9F5AE4BE1DDE0B6300EAC350 /* LGSiteListSingleton.m in Sources */,
 				9F5AE4BB1DDE0B3700EAC350 /* LGPersonListSingleton.m in Sources */,
