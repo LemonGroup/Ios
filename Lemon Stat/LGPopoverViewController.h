@@ -14,8 +14,6 @@
 
 @property (weak, nonatomic) id<LGPopoverViewControllerDelegate> delegate;
 
-//@property (assign, nonatomic) LGPopoverType type;
-
 // Data for pickers
 @property (strong, nonatomic) NSDate *currentDate;
 @property (strong, nonatomic, readonly) NSDate *minDate;

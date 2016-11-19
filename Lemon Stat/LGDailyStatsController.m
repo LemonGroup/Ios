@@ -25,7 +25,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
-@property (assign, nonatomic) LGPopoverType textFieldType;
+@property (weak, nonatomic) UITextField *currentTextField;
 
 @property (strong, nonatomic) NSArray *dateArray;
 @property (strong, nonatomic) NSArray *numberArray;
@@ -173,7 +173,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     return array;
 }
 
-- (void)createPopover:(UIView *)sender {
+- (void)createPopover:(UITextField *)sender {
     
     CGSize contentSize = CGSizeMake(280,280);
     
@@ -183,16 +183,16 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     //vc.type = (LGPopoverType)sender.tag;
     
     switch (sender.tag) {
-        case LGPopoverTypeSites:
+        case TextFieldTypeSites:
             vc.currentString = self.siteLabel.text;
             break;
-        case LGPopoverTypePersons:
+        case TextFieldTypePersons:
             vc.currentString = self.personLabel.text;
             break;
-        case LGPopoverTypeStartDate:
+        case TextFieldTypeStartDate:
             vc.currentDate = _selectedStartDate;
             break;
-        case LGPopoverTypeEndDate:
+        case TextFieldTypeEndDate:
             vc.currentDate = _selectedEndDate;
             break;
         default:
@@ -200,7 +200,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     }
     
     self.popoverViewController = vc;
-    self.textFieldType = (LGPopoverType)sender.tag;
+    self.currentTextField = sender;
     
     UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController:vc];
     destNav.modalPresentationStyle = UIModalPresentationPopover;
@@ -234,17 +234,17 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (NSString *)titleForPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
-    switch (self.textFieldType) {
-        case LGPopoverTypeSites:
+    switch (self.currentTextField.tag) {
+        case TextFieldTypeSites:
             return @"Выберите сайт";
             break;
-        case LGPopoverTypePersons:
+        case TextFieldTypePersons:
             return @"Выберите личность";
             break;
-        case LGPopoverTypeStartDate:
+        case TextFieldTypeStartDate:
             return @"Выберите начальную дату";
             break;
-        case LGPopoverTypeEndDate:
+        case TextFieldTypeEndDate:
             return @"Выберите конечную дату";
             break;
             
@@ -257,11 +257,11 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (NSArray *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
-    switch (self.textFieldType) {
-        case LGPopoverTypeSites:
+    switch (self.currentTextField.tag) {
+        case TextFieldTypeSites:
             return _sitesFake;
             break;
-        case LGPopoverTypePersons:
+        case TextFieldTypePersons:
             return _personsFake;
             break;
         default:
@@ -272,11 +272,11 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (NSString *)labelCurrentRowForPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
-    switch (self.textFieldType) {
-        case LGPopoverTypeSites:
+    switch (self.currentTextField.tag) {
+        case TextFieldTypeSites:
             return _siteLabel.text;
             break;
-        case LGPopoverTypePersons:
+        case TextFieldTypePersons:
             return _personLabel.text;
             break;
         default:
@@ -288,12 +288,12 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (void)stringChange:(NSString *)string {
     
-    switch (self.textFieldType) {
-        case LGPopoverTypeSites: {
+    switch (self.currentTextField.tag) {
+        case TextFieldTypeSites: {
             self.siteLabel.text = string;
         }
             break;
-        case LGPopoverTypePersons: {
+        case TextFieldTypePersons: {
             self.personLabel.text = string;
         }
             break;
@@ -307,13 +307,13 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd MMMM YYYY"];
     
-    switch (self.textFieldType) {
-        case LGPopoverTypeStartDate: {
+    switch (self.currentTextField.tag) {
+        case TextFieldTypeStartDate: {
             self.selectedStartDate = datePicker.date;
             self.startDateLabel.text = [dateFormatter stringFromDate:datePicker.date];
         }
             break;
-        case LGPopoverTypeEndDate: {
+        case TextFieldTypeEndDate: {
             self.selectedEndDate = datePicker.date;
             self.endDateLabel.text = [dateFormatter stringFromDate:datePicker.date];
         }
@@ -325,8 +325,8 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (void)dateRangeForDatePicker:(UIDatePicker *)datePicker forPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
-    switch (self.textFieldType) {
-        case LGPopoverTypeStartDate: {
+    switch (self.currentTextField.tag) {
+        case TextFieldTypeStartDate: {
             
             datePicker.minimumDate = [[NSDate alloc] initWithTimeIntervalSince1970:0];
             
@@ -337,7 +337,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
             }
         }
             break;
-        case LGPopoverTypeEndDate: {
+        case TextFieldTypeEndDate: {
             
             if (self.selectedStartDate) {         // если установлена начальная дата
                 datePicker.minimumDate = _selectedStartDate;
@@ -356,7 +356,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (NSString *)titleButtonForPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
-    if (self.textFieldType == LGPopoverTypeEndDate) {
+    if (self.currentTextField.tag == TextFieldTypeEndDate) {
         return @"Применить";
     } else {
         return @"Дальше";
@@ -365,26 +365,26 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (void)actionReturn:(UIButton *)button {
     
-    switch (self.textFieldType) {
-        case LGPopoverTypeSites: {
+    switch (self.currentTextField.tag) {
+        case TextFieldTypeSites: {
             [_popoverViewController dismissViewControllerAnimated:YES completion:^{
                 [self.personLabel becomeFirstResponder];
             }];
         }
             break;
-        case LGPopoverTypePersons: {
+        case TextFieldTypePersons: {
             [_popoverViewController dismissViewControllerAnimated:YES completion:^{
                 [self.startDateLabel becomeFirstResponder];
             }];
         }
             break;
-        case LGPopoverTypeStartDate: {
+        case TextFieldTypeStartDate: {
             [_popoverViewController dismissViewControllerAnimated:YES completion:^{
                 [self.endDateLabel becomeFirstResponder];
             }];
         }
             break;
-        case LGPopoverTypeEndDate: {
+        case TextFieldTypeEndDate: {
             [_popoverViewController dismissViewControllerAnimated:YES completion:^{
                 [self actionApply:nil];
             }];

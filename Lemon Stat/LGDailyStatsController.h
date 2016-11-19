@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    LGPopoverTypeSites = 1,
-    LGPopoverTypePersons = 2,
-    LGPopoverTypeStartDate = 3,
-    LGPopoverTypeEndDate = 4
-} LGPopoverType;
+    TextFieldTypeSites = 1,
+    TextFieldTypePersons = 2,
+    TextFieldTypeStartDate = 3,
+    TextFieldTypeEndDate = 4
+} TextFieldType;
 
 @interface LGDailyStatsController : UIViewController
 
