@@ -114,16 +114,41 @@
     pickerView.delegate = self;
     pickerView.dataSource = self;
     
-    if (![_currentString isEqualToString:@""]) {
+    NSInteger row;
+    
+    if ([self.delegate respondsToSelector:@selector(labelCurrentRowForPopoverViewController:)]) {
         
-        NSInteger row = [array indexOfObject:_currentString];
-        [pickerView selectRow:row inComponent:0 animated:NO];
+        NSString *labelCurrentRow = [self.delegate labelCurrentRowForPopoverViewController:self];
+        
+        if (![labelCurrentRow isEqualToString:@""]) {
+            
+            row = [array indexOfObject:labelCurrentRow];
+            [pickerView selectRow:row inComponent:0 animated:NO];
+            
+        } else {
+            
+            row = [pickerView selectedRowInComponent:0];
+            [self.delegate stringChange:_arrayFake[row]];
+            
+        }
         
     } else {
         
-        NSInteger row = [pickerView selectedRowInComponent:0];
+        row = [pickerView selectedRowInComponent:0];
         [self.delegate stringChange:_arrayFake[row]];
+        
     }
+    
+//    if (![_currentString isEqualToString:@""]) {
+//        
+//        NSInteger row = [array indexOfObject:_currentString];
+//        [pickerView selectRow:row inComponent:0 animated:NO];
+//        
+//    } else {
+//        
+//        NSInteger row = [pickerView selectedRowInComponent:0];
+//        [self.delegate stringChange:_arrayFake[row]];
+//    }
     
     [self.view addSubview:pickerView];
 }
@@ -142,11 +167,7 @@
     
     UIDatePicker *datePicker = [[UIDatePicker alloc] initWithFrame:rect];
     
-    //datePicker.center = self.view.center;
     datePicker.datePickerMode = UIDatePickerModeDate;
-    datePicker.backgroundColor = [UIColor redColor];
-    
-    
     
     if([self.delegate respondsToSelector:@selector(dateRangeForDatePicker:forPopoverViewController:)]) {
         [self.delegate dateRangeForDatePicker:datePicker forPopoverViewController:self];

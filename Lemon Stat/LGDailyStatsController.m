@@ -244,6 +244,10 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
         case LGPopoverTypeStartDate:
             return @"Выберите начальную дату";
             break;
+        case LGPopoverTypeEndDate:
+            return @"Выберите конечную дату";
+            break;
+            
             
         default:
             return nil;
@@ -264,6 +268,22 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
             return nil;
             break;
     }
+}
+
+- (NSString *)labelCurrentRowForPopoverViewController:(LGPopoverViewController *)popoverViewController {
+    
+    switch (self.textFieldType) {
+        case LGPopoverTypeSites:
+            return _siteLabel.text;
+            break;
+        case LGPopoverTypePersons:
+            return _personLabel.text;
+            break;
+        default:
+            return nil;
+            break;
+    }
+    
 }
 
 - (void)stringChange:(NSString *)string {
