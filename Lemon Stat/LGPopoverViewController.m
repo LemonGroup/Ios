@@ -130,19 +130,17 @@
 
 - (void)createDatePicker {
     
-    UIDatePicker *datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0,
-                                                                              0,
-                                                                              self.preferredContentSize.width,
-                                                                              self.preferredContentSize.height - CGRectGetHeight(self.returnButton.frame))];
-    
     CGFloat heightNavBar = CGRectGetHeight(self.navigationController.navigationBar.frame);
     
     CGRect rect;
+    
     if (!self.navigationController.navigationBarHidden) {
-        rect = CGRectMake(0, 0, self.preferredContentSize.width, self.preferredContentSize.height - CGRectGetHeight(self.returnButton.frame));
+        rect = CGRectMake(0, heightNavBar, self.preferredContentSize.width, self.preferredContentSize.height - CGRectGetHeight(self.returnButton.frame));
     } else {
-        rect = CGRectMake(0, 0, self.preferredContentSize.width, self.preferredContentSize.height - CGRectGetHeight(self.returnButton.frame));
+        rect = CGRectMake(0, 0, self.preferredContentSize.width, self.preferredContentSize.height + heightNavBar - CGRectGetHeight(self.returnButton.frame));
     }
+    
+    UIDatePicker *datePicker = [[UIDatePicker alloc] initWithFrame:rect];
     
     //datePicker.center = self.view.center;
     datePicker.datePickerMode = UIDatePickerModeDate;
