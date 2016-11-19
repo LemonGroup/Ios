@@ -13,11 +13,9 @@
 
 @interface LGPopoverViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 
-// Fake Data
-@property (strong, nonatomic) NSArray *personsFake;
-@property (strong, nonatomic) NSArray *sitesFake;
-
 @property (strong, nonatomic) NSArray *arrayFake;
+
+@property (weak, nonatomic) UIButton *returnButton;
 
 @end
 
@@ -38,10 +36,6 @@
     
     //self.view.backgroundColor = [UIColor whiteColor];
     
-    // filling fake data
-    _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
-    _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
-    
     if ([self.delegate respondsToSelector:@selector(recognizeDisappearForPopoverViewController:)]) {
         _isRecognizeDisappear = [self.delegate recognizeDisappearForPopoverViewController:self];
     }
@@ -53,25 +47,32 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    switch (self.type) {
-        case LGPopoverTypeSites:
-            self.navigationItem.title = @"Выберите сайт";
-            [self createPickerWithArray:self.sitesFake];
-            break;
-        case LGPopoverTypePersons:
-            self.navigationItem.title = @"Выберите личность";
-            [self createPickerWithArray:self.personsFake];
-            break;
-        case LGPopoverTypeStartDate:
-            self.navigationItem.title = @"Выберите дату начала";
+    if ([self.delegate respondsToSelector:@selector(titleForPopoverViewController:)]) {
+        
+        NSString *title = [self.delegate titleForPopoverViewController:self];
+        
+        if (title) {
+            self.navigationItem.title = title;
+        } else {
+            self.navigationController.navigationBarHidden = YES;
+        }
+        
+    } else {
+        self.navigationController.navigationBarHidden = YES;
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(arrayForPopoverViewController:)]) {
+        
+        NSArray *arrayData = [self.delegate arrayForPopoverViewController:self];
+        
+        if (arrayData) {
+            [self createPickerWithArray:arrayData];
+        } else {
             [self createDatePicker];
-            break;
-        case LGPopoverTypeEndDate:
-            self.navigationItem.title = @"Выберите дату окончания";
-            [self createDatePicker];
-            break;
-        default:
-            break;
+        }
+        
+    } else {
+        [self createDatePicker];
     }
 }
 
@@ -113,24 +114,59 @@
     pickerView.delegate = self;
     pickerView.dataSource = self;
     
-    if (![_currentString isEqualToString:@""]) {
+    NSInteger row;
+    
+    if ([self.delegate respondsToSelector:@selector(labelCurrentRowForPopoverViewController:)]) {
         
-        NSInteger row = [array indexOfObject:_currentString];
-        [pickerView selectRow:row inComponent:0 animated:NO];
+        NSString *labelCurrentRow = [self.delegate labelCurrentRowForPopoverViewController:self];
+        
+        if (![labelCurrentRow isEqualToString:@""]) {
+            
+            row = [array indexOfObject:labelCurrentRow];
+            [pickerView selectRow:row inComponent:0 animated:NO];
+            
+        } else {
+            
+            row = [pickerView selectedRowInComponent:0];
+            [self.delegate stringChange:_arrayFake[row]];
+            
+        }
         
     } else {
         
-        NSInteger row = [pickerView selectedRowInComponent:0];
+        row = [pickerView selectedRowInComponent:0];
         [self.delegate stringChange:_arrayFake[row]];
+        
     }
+    
+//    if (![_currentString isEqualToString:@""]) {
+//        
+//        NSInteger row = [array indexOfObject:_currentString];
+//        [pickerView selectRow:row inComponent:0 animated:NO];
+//        
+//    } else {
+//        
+//        NSInteger row = [pickerView selectedRowInComponent:0];
+//        [self.delegate stringChange:_arrayFake[row]];
+//    }
     
     [self.view addSubview:pickerView];
 }
 
 - (void)createDatePicker {
     
-    UIDatePicker *datePicker = [[UIDatePicker alloc] init];
-    datePicker.center = self.view.center;
+    CGFloat heightNavBar = CGRectGetHeight(self.navigationController.navigationBar.frame);
+    
+    CGRect rect;
+    
+    if (!self.navigationController.navigationBarHidden) {
+        rect = CGRectMake(0, heightNavBar, self.preferredContentSize.width, self.preferredContentSize.height - CGRectGetHeight(self.returnButton.frame));
+    } else {
+        rect = CGRectMake(0, 0, self.preferredContentSize.width, self.preferredContentSize.height + heightNavBar - CGRectGetHeight(self.returnButton.frame));
+    }
+    
+    UIDatePicker *datePicker = [[UIDatePicker alloc] initWithFrame:rect];
+    
     datePicker.datePickerMode = UIDatePickerModeDate;
     
     if([self.delegate respondsToSelector:@selector(dateRangeForDatePicker:forPopoverViewController:)]) {
@@ -179,7 +215,7 @@
     
     [self.view addSubview:button];
     
-//    self.returnKeyButton = button;
+    self.returnButton = button;
     
 }
 
