@@ -142,7 +142,7 @@
 #pragma mark - LGPopoverViewControllerDelegate
 
 - (NSString *)titleForPopoverViewController:(LGPopoverViewController *)popoverViewController {
-    return @"куку";
+    return @"Выберите сайт";
 }
 
 - (NSArray *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController {

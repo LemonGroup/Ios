@@ -47,12 +47,16 @@
     
     if ([self.delegate respondsToSelector:@selector(titleForPopoverViewController:)]) {
         
-        self.navigationItem.title = [self.delegate titleForPopoverViewController:self];
+        NSString *title = [self.delegate titleForPopoverViewController:self];
+        
+        if (title) {
+            self.navigationItem.title = title;
+        } else {
+            self.navigationController.navigationBarHidden = YES;
+        }
         
     } else {
-        
         self.navigationController.navigationBarHidden = YES;
-        
     }
     
     if ([self.delegate respondsToSelector:@selector(arrayForPopoverViewController:)]) {

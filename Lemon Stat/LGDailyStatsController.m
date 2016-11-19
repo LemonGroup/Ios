@@ -232,6 +232,22 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 #pragma mark - LGPopoverViewControllerDelegate
 
+- (NSString *)titleForPopoverViewController:(LGPopoverViewController *)popoverViewController {
+    
+    switch (self.textFieldType) {
+        case LGPopoverTypeSites:
+            return @"Выберите сайт";
+            break;
+        case LGPopoverTypePersons:
+            return @"Выберите личность";
+            break;
+            
+        default:
+            return nil;
+            break;
+    }
+}
+
 - (NSArray *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
     switch (self.textFieldType) {
