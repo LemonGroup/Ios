@@ -13,10 +13,6 @@
 
 @interface LGPopoverViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 
-// Fake Data
-@property (strong, nonatomic) NSArray *personsFake;
-@property (strong, nonatomic) NSArray *sitesFake;
-
 @property (strong, nonatomic) NSArray *arrayFake;
 
 @end
@@ -38,10 +34,6 @@
     
     //self.view.backgroundColor = [UIColor whiteColor];
     
-    // filling fake data
-    _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
-    _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
-    
     if ([self.delegate respondsToSelector:@selector(recognizeDisappearForPopoverViewController:)]) {
         _isRecognizeDisappear = [self.delegate recognizeDisappearForPopoverViewController:self];
     }
@@ -53,25 +45,28 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    switch (self.type) {
-        case LGPopoverTypeSites:
-            self.navigationItem.title = @"Выберите сайт";
-            [self createPickerWithArray:self.sitesFake];
-            break;
-        case LGPopoverTypePersons:
-            self.navigationItem.title = @"Выберите личность";
-            [self createPickerWithArray:self.personsFake];
-            break;
-        case LGPopoverTypeStartDate:
-            self.navigationItem.title = @"Выберите дату начала";
+    if ([self.delegate respondsToSelector:@selector(titleForPopoverViewController:)]) {
+        
+        self.navigationItem.title = [self.delegate titleForPopoverViewController:self];
+        
+    } else {
+        
+        self.navigationController.navigationBarHidden = YES;
+        
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(arrayForPopoverViewController:)]) {
+        
+        NSArray *arrayData = [self.delegate arrayForPopoverViewController:self];
+        
+        if (arrayData) {
+            [self createPickerWithArray:arrayData];
+        } else {
             [self createDatePicker];
-            break;
-        case LGPopoverTypeEndDate:
-            self.navigationItem.title = @"Выберите дату окончания";
-            [self createDatePicker];
-            break;
-        default:
-            break;
+        }
+        
+    } else {
+        [self createDatePicker];
     }
 }
 

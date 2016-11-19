@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    LGPopoverTypeSites = 1,
+    LGPopoverTypePersons = 2,
+    LGPopoverTypeStartDate = 3,
+    LGPopoverTypeEndDate = 4
+} LGPopoverType;
+
 @interface LGDailyStatsController : UIViewController
 
 @property (strong, nonatomic) NSDate *selectedStartDate;

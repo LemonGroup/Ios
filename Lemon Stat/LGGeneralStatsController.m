@@ -19,6 +19,10 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
+// Fake Data //
+@property (strong, nonatomic) NSArray *personsFake;
+@property (strong, nonatomic) NSArray *sitesFake;
+
 @end
 
 @implementation LGGeneralStatsController
@@ -26,6 +30,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    // filling fake data
+    _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
+    _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
     
     [self loadData];
     
@@ -111,7 +119,6 @@
     
     LGPopoverViewController *vc= [[LGPopoverViewController alloc] init];
     vc.preferredContentSize = contentSize;
-    vc.type = LGPopoverTypeSites;
     vc.delegate = self;
     vc.currentString = self.siteLabel.text;
     
@@ -133,6 +140,14 @@
 }
 
 #pragma mark - LGPopoverViewControllerDelegate
+
+- (NSString *)titleForPopoverViewController:(LGPopoverViewController *)popoverViewController {
+    return @"куку";
+}
+
+- (NSArray *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController {
+    return _sitesFake;
+}
 
 - (void)stringChange:(NSString *)string {
     self.siteLabel.text = string;
