@@ -46,7 +46,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
     _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
     
-    [self loadData];
+//    [self loadData];
     
 }
 
@@ -61,30 +61,45 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
-    [manager GET:@"http://lemonstat.usite.pro/DetailStatisticFake.json"
+    NSString *requestString = [self requestString];
+    
+    [manager GET:requestString
       parameters:nil
-        progress:^(NSProgress * _Nonnull downloadProgress) {
-            
-        }
+        progress:nil
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
-             _responseJSON = [responseObject valueForKey:@"response"];
              
-             // create data arrays for site and person
-             _dateArray = [self arrayForSite:kSite
-                                   andPerson:kPerson
-                                      forKey:@"date"];
-             _numberArray = [self arrayForSite:kSite
-                                     andPerson:kPerson
-                                        forKey:@"number"];
+             _responseJSON = responseObject;
              
              [self.tableView reloadData];
              [self setTotalNumber];
-             NSLog(@"JSON: %@", responseObject);
+             NSLog(@"JSON: %@", _responseJSON);
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
          }];
     
+}
+
+#pragma mark - Requests Methods
+
+- (NSString *)requestString {
+    
+    NSString *site = _siteLabel.text;
+    NSString *person = [_personLabel.text lowercaseString];
+    
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    
+    NSString *startDate = [formatter stringFromDate:_selectedStartDate];
+    NSString *endDate = [formatter stringFromDate:_selectedEndDate];
+    
+    NSString *notEncoded = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/daily_stat?site=%@&person=%@&start_date=%@&end_date=%@", site, person, startDate, endDate];
+    
+    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:notEncoded];
+    NSString *encoded = [notEncoded stringByAddingPercentEncodingWithAllowedCharacters:characterSet];
+    
+    return encoded;
 }
 
 #pragma mark - UITableViewDelegate
@@ -98,7 +113,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _dateArray.count;
+    return _responseJSON.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -108,10 +123,11 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     
     // set textLabel
-    cell.textLabel.text = _dateArray[indexPath.row];
+    cell.textLabel.text = [_responseJSON[indexPath.row] valueForKey:@"date"];
     
     // set detailTextLabel
-    cell.detailTextLabel.text = _numberArray[indexPath.row];
+    NSString *numberOfNewPages = [_responseJSON[indexPath.row] valueForKey:@"numberOfNewPages"];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", numberOfNewPages];
     
     return cell;
 }
@@ -122,14 +138,14 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     
     NSInteger totalNumber = 0;
     
-    for (NSString *number in _numberArray) {
+    for (id obj in _responseJSON) {
+        
+        NSNumber *number = [obj valueForKey:@"numberOfNewPages"];
         
         totalNumber += [number integerValue];
-        
     }
     
     _totalNumberLabel.text = [NSString stringWithFormat:@"%ld", totalNumber];
-    
 }
 
 - (NSArray *)arrayForSite:(NSString *)site andPerson:(NSString *)person forKey:(NSString *)key {
@@ -399,6 +415,8 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (IBAction)actionApply:(id)sender {
     // Метод заполнения таблицы или графика
+    
+    [self loadData];
 }
 
 #pragma mark - Segment Control

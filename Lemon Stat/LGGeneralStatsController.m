@@ -35,7 +35,7 @@
     _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
     _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
     
-    [self loadData];
+    //[self loadData];
     
 }
 
@@ -50,22 +50,38 @@
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
-    [manager GET:@"http://yrsoft.cu.cc:8080/stat/over_stat?site=lenta.ru"
-      parameters:nil
-        progress:^(NSProgress * _Nonnull downloadProgress) {
-            
-        }
-         success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
-             _responseJSON = responseObject;
-             
-             
-             [self.tableView reloadData];
-             NSLog(@"JSON: %@", _responseJSON);
-         }
-         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-             NSLog(@"Error: %@", error);
-         }];
+    NSString *requestString = [self requestString];
     
+    if (requestString) {
+        
+        [manager GET:requestString
+          parameters:nil
+            progress:^(NSProgress * _Nonnull downloadProgress) {
+                
+            }
+             success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
+                 _responseJSON = responseObject;
+                 
+                 
+                 [self.tableView reloadData];
+                 NSLog(@"JSON: %@", _responseJSON);
+             }
+             failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                 NSLog(@"Error: %@", error);
+             }];
+    }
+}
+
+#pragma mark - Requests Methods
+
+- (NSString *)requestString {
+    
+    NSString *notEncoded = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?site=%@", _siteLabel.text];
+    
+    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:notEncoded];
+    NSString *encoded = [notEncoded stringByAddingPercentEncodingWithAllowedCharacters:characterSet];
+    
+    return encoded;
 }
 
 #pragma mark - UITableViewDelegate
@@ -180,6 +196,9 @@
 - (void)actionApply:(id)sender {
     // Метод заполнения таблицы или графика
     NSLog(@"Вывод информации");
+    
+    [self loadData];
+    
 }
 
 
