@@ -10,4 +10,15 @@
 
 @implementation LGPerson
 
++ (LGPerson *)personWithID:(NSNumber *)personID andName:(NSString *)personName {
+    
+    LGPerson *person = [[LGPerson alloc] init];
+    
+    person.personID = personID;
+    person.personName = personName;
+    
+    return person;
+    
+}
+
 @end

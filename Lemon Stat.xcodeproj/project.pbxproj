@@ -19,6 +19,7 @@
 		44F0F2B21DE0B71E00A25E03 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B01DE0B71E00A25E03 /* logo.png */; };
 		44F0F2B41DE0BD6000A25E03 /* lines.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B31DE0BD6000A25E03 /* lines.png */; };
 		58A149FD1DE26EEB00439EAC /* NSString+Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A149FC1DE26EEB00439EAC /* NSString+Request.m */; };
+		58A14A011DE350DE00439EAC /* LGSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A14A001DE350DE00439EAC /* LGSite.m */; };
 		58F7D89D1DDD382500EA542E /* LGPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */; };
 		9F5AE4BB1DDE0B3700EAC350 /* LGPersonListSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4BA1DDE0B3700EAC350 /* LGPersonListSingleton.m */; };
 		9F5AE4BE1DDE0B6300EAC350 /* LGSiteListSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4BD1DDE0B6300EAC350 /* LGSiteListSingleton.m */; };
@@ -47,6 +48,8 @@
 		44F0F2B31DE0BD6000A25E03 /* lines.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lines.png; path = images/lines.png; sourceTree = "<group>"; };
 		58A149FB1DE26EEB00439EAC /* NSString+Request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Request.h"; sourceTree = "<group>"; };
 		58A149FC1DE26EEB00439EAC /* NSString+Request.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Request.m"; sourceTree = "<group>"; };
+		58A149FF1DE350DE00439EAC /* LGSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSite.h; sourceTree = "<group>"; };
+		58A14A001DE350DE00439EAC /* LGSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSite.m; sourceTree = "<group>"; };
 		58F7D89B1DDD382500EA542E /* LGPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPopoverViewController.h; sourceTree = "<group>"; };
 		58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPopoverViewController.m; sourceTree = "<group>"; };
 		75046E052D82B8C004385DA2 /* Pods-Lemon Stat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemon Stat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Lemon Stat/Pods-Lemon Stat.debug.xcconfig"; sourceTree = "<group>"; };
@@ -169,10 +172,12 @@
 			children = (
 				9F5AE4B91DDE0B3700EAC350 /* LGPersonListSingleton.h */,
 				9F5AE4BA1DDE0B3700EAC350 /* LGPersonListSingleton.m */,
-				9F5AE4BC1DDE0B6300EAC350 /* LGSiteListSingleton.h */,
-				9F5AE4BD1DDE0B6300EAC350 /* LGSiteListSingleton.m */,
 				9F5AE4BF1DDE1B2C00EAC350 /* LGPerson.h */,
 				9F5AE4C01DDE1B2C00EAC350 /* LGPerson.m */,
+				9F5AE4BC1DDE0B6300EAC350 /* LGSiteListSingleton.h */,
+				9F5AE4BD1DDE0B6300EAC350 /* LGSiteListSingleton.m */,
+				58A149FF1DE350DE00439EAC /* LGSite.h */,
+				58A14A001DE350DE00439EAC /* LGSite.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -377,6 +382,7 @@
 				44D3963D1DD38F4B008D9F27 /* main.m in Sources */,
 				9F5AE4C11DDE1B2C00EAC350 /* LGPerson.m in Sources */,
 				58A149FD1DE26EEB00439EAC /* NSString+Request.m in Sources */,
+				58A14A011DE350DE00439EAC /* LGSite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

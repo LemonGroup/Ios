@@ -10,7 +10,9 @@
 
 @interface LGPerson : NSObject
 
-@property (strong, nonatomic) NSString* name;
-@property (strong, nonatomic) NSArray* keyWord;
+@property (strong, nonatomic) NSNumber *personID;
+@property (strong, nonatomic) NSString *personName;
+
++ (LGPerson *)personWithID:(NSNumber *)personID andName:(NSString *)personName;
 
 @end
