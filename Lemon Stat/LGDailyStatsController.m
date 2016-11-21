@@ -12,6 +12,8 @@
 
 #import <AFNetworking/AFNetworking.h>
 
+#import "NSString+Request.h"
+
 //**************** Временный код ******************//
 //*********** выбор персонажа и сайта *************//
 static NSString *kPerson = @"Навальный"; // Путин, Медведев, Навальный
@@ -96,10 +98,10 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     
     NSString *notEncoded = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/daily_stat?site=%@&person=%@&start_date=%@&end_date=%@", site, person, startDate, endDate];
     
-    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:notEncoded];
-    NSString *encoded = [notEncoded stringByAddingPercentEncodingWithAllowedCharacters:characterSet];
+//    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:notEncoded];
+//    NSString *encoded = [notEncoded stringByAddingPercentEncodingWithAllowedCharacters:characterSet];
     
-    return encoded;
+    return [notEncoded encodeString];
 }
 
 #pragma mark - UITableViewDelegate

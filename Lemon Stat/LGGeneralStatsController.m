@@ -12,6 +12,8 @@
 
 #import <AFNetworking/AFNetworking.h>
 
+#import "NSString+Request.h"
+
 @interface LGGeneralStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate> {
     NSArray *_responseJSON;
 }
@@ -78,10 +80,11 @@
     
     NSString *notEncoded = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?site=%@", _siteLabel.text];
     
-    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:notEncoded];
-    NSString *encoded = [notEncoded stringByAddingPercentEncodingWithAllowedCharacters:characterSet];
     
-    return encoded;
+//    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:notEncoded];
+//    NSString *encoded = [notEncoded stringByAddingPercentEncodingWithAllowedCharacters:characterSet];
+    
+    return [notEncoded encodeString];
 }
 
 #pragma mark - UITableViewDelegate
