@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+@class LGSite;
+
 @interface LGSiteListSingleton : NSObject
+
+@property (strong, nonatomic) NSMutableArray<LGSite *> *sites;
 
 +(LGSiteListSingleton*) sharedSiteList;
 

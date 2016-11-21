@@ -11,7 +11,7 @@
 
 @interface LGPersonListSingleton : NSObject
 
-@property (strong, nonatomic) NSArray <LGPerson*>* person;
+@property (strong, nonatomic) NSMutableArray<LGPerson *> *persons;
 
 +(LGPersonListSingleton*) sharedPersonList;
 

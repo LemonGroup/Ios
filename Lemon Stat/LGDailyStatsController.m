@@ -12,6 +12,8 @@
 
 #import <AFNetworking/AFNetworking.h>
 
+#import "NSString+Request.h"
+
 //**************** Временный код ******************//
 //*********** выбор персонажа и сайта *************//
 static NSString *kPerson = @"Навальный"; // Путин, Медведев, Навальный
@@ -85,8 +87,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 - (NSString *)requestString {
     
     NSString *site = _siteLabel.text;
-    NSString *person = [_personLabel.text lowercaseString];
-    
+    NSString *person = _personLabel.text;
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd"];
@@ -94,12 +95,9 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     NSString *startDate = [formatter stringFromDate:_selectedStartDate];
     NSString *endDate = [formatter stringFromDate:_selectedEndDate];
     
-    NSString *notEncoded = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/daily_stat?site=%@&person=%@&start_date=%@&end_date=%@", site, person, startDate, endDate];
+    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/daily_stat?site=%@&person=%@&start_date=%@&end_date=%@", site, person, startDate, endDate];
     
-    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:notEncoded];
-    NSString *encoded = [notEncoded stringByAddingPercentEncodingWithAllowedCharacters:characterSet];
-    
-    return encoded;
+    return [string encodeURLString];
 }
 
 #pragma mark - UITableViewDelegate
