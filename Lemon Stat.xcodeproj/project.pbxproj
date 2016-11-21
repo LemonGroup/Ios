@@ -110,6 +110,7 @@
 				58F7D89A1DDD37C600EA542E /* Views */,
 				58F7D8991DDD37B600EA542E /* Models */,
 				58F7D8981DDD379900EA542E /* Controllers */,
+				58A149FE1DE33C2B00439EAC /* Categories */,
 				44D396471DD38F4B008D9F27 /* Main.storyboard */,
 				44D3964A1DD38F4B008D9F27 /* Assets.xcassets */,
 				44D3964C1DD38F4B008D9F27 /* LaunchScreen.storyboard */,
@@ -137,6 +138,15 @@
 			name = images;
 			sourceTree = "<group>";
 		};
+		58A149FE1DE33C2B00439EAC /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				58A149FB1DE26EEB00439EAC /* NSString+Request.h */,
+				58A149FC1DE26EEB00439EAC /* NSString+Request.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		58F7D8981DDD379900EA542E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -150,8 +160,6 @@
 				58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */,
 				9FD179371DE0E10F00AD9809 /* LGTabBarController.h */,
 				9FD179381DE0E10F00AD9809 /* LGTabBarController.m */,
-				58A149FB1DE26EEB00439EAC /* NSString+Request.h */,
-				58A149FC1DE26EEB00439EAC /* NSString+Request.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

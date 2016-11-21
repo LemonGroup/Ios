@@ -10,6 +10,6 @@
 
 @interface NSString (Request)
 
-- (NSString *)encodeString;
+- (NSString *)encodeURLString;
 
 @end

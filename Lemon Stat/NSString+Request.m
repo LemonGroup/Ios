@@ -10,7 +10,7 @@
 
 @implementation NSString (Request)
 
-- (NSString *)encodeString {
+- (NSString *)encodeURLString {
     
     NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:self];
     NSString *encoded = [self stringByAddingPercentEncodingWithAllowedCharacters:characterSet];

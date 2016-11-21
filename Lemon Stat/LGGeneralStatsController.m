@@ -78,13 +78,9 @@
 
 - (NSString *)requestString {
     
-    NSString *notEncoded = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?site=%@", _siteLabel.text];
+    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?site=%@", _siteLabel.text];
     
-    
-//    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:notEncoded];
-//    NSString *encoded = [notEncoded stringByAddingPercentEncodingWithAllowedCharacters:characterSet];
-    
-    return [notEncoded encodeString];
+    return [string encodeURLString];
 }
 
 #pragma mark - UITableViewDelegate
