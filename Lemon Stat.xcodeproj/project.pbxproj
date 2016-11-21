@@ -19,10 +19,10 @@
 		44F0F2B21DE0B71E00A25E03 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B01DE0B71E00A25E03 /* logo.png */; };
 		44F0F2B41DE0BD6000A25E03 /* lines.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B31DE0BD6000A25E03 /* lines.png */; };
 		58F7D89D1DDD382500EA542E /* LGPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */; };
-		9F52525E1DDEF9A300940016 /* LGSegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F52525D1DDEF9A300940016 /* LGSegmentedViewController.m */; };
 		9F5AE4BB1DDE0B3700EAC350 /* LGPersonListSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4BA1DDE0B3700EAC350 /* LGPersonListSingleton.m */; };
 		9F5AE4BE1DDE0B6300EAC350 /* LGSiteListSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4BD1DDE0B6300EAC350 /* LGSiteListSingleton.m */; };
 		9F5AE4C11DDE1B2C00EAC350 /* LGPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4C01DDE1B2C00EAC350 /* LGPerson.m */; };
+		9FD179391DE0E10F00AD9809 /* LGTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD179381DE0E10F00AD9809 /* LGTabBarController.m */; };
 		EB22D02DFDEABE11EEF2D978 /* libPods-Lemon Stat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76746111F38473DB376B8929 /* libPods-Lemon Stat.a */; };
 /* End PBXBuildFile section */
 
@@ -49,14 +49,14 @@
 		75046E052D82B8C004385DA2 /* Pods-Lemon Stat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemon Stat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Lemon Stat/Pods-Lemon Stat.debug.xcconfig"; sourceTree = "<group>"; };
 		76746111F38473DB376B8929 /* libPods-Lemon Stat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Lemon Stat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8364878FE0831A8E8CBD2E86 /* Pods-Lemon Stat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemon Stat.release.xcconfig"; path = "Pods/Target Support Files/Pods-Lemon Stat/Pods-Lemon Stat.release.xcconfig"; sourceTree = "<group>"; };
-		9F52525C1DDEF9A300940016 /* LGSegmentedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSegmentedViewController.h; sourceTree = "<group>"; };
-		9F52525D1DDEF9A300940016 /* LGSegmentedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSegmentedViewController.m; sourceTree = "<group>"; };
 		9F5AE4B91DDE0B3700EAC350 /* LGPersonListSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGPersonListSingleton.h; path = ../LGPersonListSingleton.h; sourceTree = "<group>"; };
 		9F5AE4BA1DDE0B3700EAC350 /* LGPersonListSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGPersonListSingleton.m; path = ../LGPersonListSingleton.m; sourceTree = "<group>"; };
 		9F5AE4BC1DDE0B6300EAC350 /* LGSiteListSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSiteListSingleton.h; sourceTree = "<group>"; };
 		9F5AE4BD1DDE0B6300EAC350 /* LGSiteListSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSiteListSingleton.m; sourceTree = "<group>"; };
 		9F5AE4BF1DDE1B2C00EAC350 /* LGPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPerson.h; sourceTree = "<group>"; };
 		9F5AE4C01DDE1B2C00EAC350 /* LGPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPerson.m; sourceTree = "<group>"; };
+		9FD179371DE0E10F00AD9809 /* LGTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTabBarController.h; sourceTree = "<group>"; };
+		9FD179381DE0E10F00AD9809 /* LGTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTabBarController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,16 +137,16 @@
 		58F7D8981DDD379900EA542E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				44F0F2AB1DE0B5E800A25E03 /* LGAuthViewController.h */,
+				44F0F2AC1DE0B5E800A25E03 /* LGAuthViewController.m */,
 				44D396411DD38F4B008D9F27 /* LGGeneralStatsController.h */,
 				44D396421DD38F4B008D9F27 /* LGGeneralStatsController.m */,
 				44D396441DD38F4B008D9F27 /* LGDailyStatsController.h */,
-				44F0F2AB1DE0B5E800A25E03 /* LGAuthViewController.h */,
-				44F0F2AC1DE0B5E800A25E03 /* LGAuthViewController.m */,
 				44D396451DD38F4B008D9F27 /* LGDailyStatsController.m */,
 				58F7D89B1DDD382500EA542E /* LGPopoverViewController.h */,
 				58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */,
-				9F52525C1DDEF9A300940016 /* LGSegmentedViewController.h */,
-				9F52525D1DDEF9A300940016 /* LGSegmentedViewController.m */,
+				9FD179371DE0E10F00AD9809 /* LGTabBarController.h */,
+				9FD179381DE0E10F00AD9809 /* LGTabBarController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -353,9 +353,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FD179391DE0E10F00AD9809 /* LGTabBarController.m in Sources */,
 				44D396461DD38F4B008D9F27 /* LGDailyStatsController.m in Sources */,
 				9F5AE4BE1DDE0B6300EAC350 /* LGSiteListSingleton.m in Sources */,
-				9F52525E1DDEF9A300940016 /* LGSegmentedViewController.m in Sources */,
 				9F5AE4BB1DDE0B3700EAC350 /* LGPersonListSingleton.m in Sources */,
 				44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */,
 				44F0F2AD1DE0B5E800A25E03 /* LGAuthViewController.m in Sources */,
