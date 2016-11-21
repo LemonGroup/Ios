@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *loginTextField;
 
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+
+@property (strong, nonatomic) NSString * token;
 @end
 
 @implementation LGAuthViewController
@@ -35,7 +37,7 @@
 - (IBAction)enterButton:(id)sender {
     
     NSString * urlString = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/user/auth?user=%@&pass=%@",self.loginTextField.text,self.passwordTextField.text];
-    //NSString * token;
+    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
     [manager GET:urlString
@@ -44,13 +46,37 @@
             
         }
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
-             
-             NSLog(@"TOKEN-JSON: %@", responseObject[@"token"]);
+             self.token = responseObject[@"token"];
+             NSLog(@"-------------------TOKEN-JSON: %@", self.token);
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
          }];
+    
+    
+    
+    //-------------------
+    [manager HEAD:self.token parameters:nil success: nil   failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"Error: %@", error);
+    }];
+    
+    
+    //-------------------
 
+    
+    [manager GET:@"http://localhost:8080/catalog/catalogs"
+      parameters:nil
+        progress:^(NSProgress * _Nonnull downloadProgress) {
+            
+        }
+         success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
+             NSLog(@"-------------------JSON WITH TOKEN: %@", responseObject);
+         }
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+             NSLog(@"Error: %@", error);
+         }];
+     
+     
 }
 
 /*
