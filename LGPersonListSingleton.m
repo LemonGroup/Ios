@@ -10,13 +10,14 @@
 
 @implementation LGPersonListSingleton
 
-static LGPersonListSingleton* _sharedPersonList = nil;
-
-+(LGPersonListSingleton*) sharedPersonList{
++ (LGPersonListSingleton *)sharedPersonList {
+    
+    static LGPersonListSingleton* _sharedPersonList = nil;
     
     @synchronized(self) {
         if (!_sharedPersonList) {
             _sharedPersonList = [[LGPersonListSingleton alloc] init];
+            _sharedPersonList.persons = [NSMutableArray array];
         }
     }
     return _sharedPersonList;

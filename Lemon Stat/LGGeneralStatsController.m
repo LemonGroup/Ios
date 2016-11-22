@@ -10,6 +10,9 @@
 
 #import "LGPopoverViewController.h"
 
+#import "LGSiteListSingleton.h"
+#import "LGSite.h"
+
 #import <AFNetworking/AFNetworking.h>
 
 #import "NSString+Request.h"
@@ -21,9 +24,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
-// Fake Data //
-@property (strong, nonatomic) NSArray *personsFake;
-@property (strong, nonatomic) NSArray *sitesFake;
+@property (weak, nonatomic) IBOutlet UITextField *siteLabel;
 
 @end
 
@@ -33,12 +34,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // filling fake data
-    _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
-    _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
-    
-    //[self loadData];
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,7 +41,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - AFNetworking
+
+#pragma mark - Requests Methods
 
 - (void)loadData {
     
@@ -74,11 +70,20 @@
     }
 }
 
-#pragma mark - Requests Methods
-
 - (NSString *)requestString {
     
-    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?site=%@", _siteLabel.text];
+    NSInteger siteID = 0;
+    
+    for (LGSite *site in [[LGSiteListSingleton sharedSiteList] sites]) {
+        
+        if ([site.siteURL isEqualToString:_siteLabel.text]) {
+            siteID = [site.siteID integerValue];
+            continue;
+        }
+        
+    }
+    
+    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?siteId=%ld", siteID];
     
     return [string encodeURLString];
 }
@@ -161,7 +166,16 @@
 }
 
 - (NSArray *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController {
-    return _sitesFake;
+    
+    NSMutableArray *array = [NSMutableArray array];
+    
+    for (LGSite *site in [[LGSiteListSingleton sharedSiteList] sites]) {
+        
+        [array addObject:site.siteURL];
+        
+    }
+    
+    return array;
 }
 
 - (NSString *)labelCurrentRowForPopoverViewController:(LGPopoverViewController *)popoverViewController {
@@ -199,7 +213,5 @@
     [self loadData];
     
 }
-
-
 
 @end

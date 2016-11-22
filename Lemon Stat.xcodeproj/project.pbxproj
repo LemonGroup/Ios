@@ -155,14 +155,14 @@
 			children = (
 				44F0F2AB1DE0B5E800A25E03 /* LGAuthViewController.h */,
 				44F0F2AC1DE0B5E800A25E03 /* LGAuthViewController.m */,
+				9FD179371DE0E10F00AD9809 /* LGTabBarController.h */,
+				9FD179381DE0E10F00AD9809 /* LGTabBarController.m */,
 				44D396411DD38F4B008D9F27 /* LGGeneralStatsController.h */,
 				44D396421DD38F4B008D9F27 /* LGGeneralStatsController.m */,
 				44D396441DD38F4B008D9F27 /* LGDailyStatsController.h */,
 				44D396451DD38F4B008D9F27 /* LGDailyStatsController.m */,
 				58F7D89B1DDD382500EA542E /* LGPopoverViewController.h */,
 				58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */,
-				9FD179371DE0E10F00AD9809 /* LGTabBarController.h */,
-				9FD179381DE0E10F00AD9809 /* LGTabBarController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

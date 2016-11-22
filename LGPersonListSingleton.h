@@ -13,6 +13,6 @@
 
 @property (strong, nonatomic) NSMutableArray<LGPerson *> *persons;
 
-+(LGPersonListSingleton*) sharedPersonList;
++ (LGPersonListSingleton *)sharedPersonList;
 
 @end

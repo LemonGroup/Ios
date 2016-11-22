@@ -10,6 +10,11 @@
 
 #import "LGPopoverViewController.h"
 
+#import "LGSiteListSingleton.h"
+#import "LGSite.h"
+#import "LGPersonListSingleton.h"
+#import "LGPerson.h"
+
 #import <AFNetworking/AFNetworking.h>
 
 #import "NSString+Request.h"
@@ -27,14 +32,17 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
+@property (weak, nonatomic) IBOutlet UITextField *siteLabel;
+@property (weak, nonatomic) IBOutlet UITextField *personLabel;
+@property (weak, nonatomic) IBOutlet UITextField *startDateLabel;
+@property (weak, nonatomic) IBOutlet UITextField *endDateLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *totalNumberLabel;
+
 @property (weak, nonatomic) UITextField *currentTextField;
 
-@property (strong, nonatomic) NSArray *dateArray;
-@property (strong, nonatomic) NSArray *numberArray;
-
-// Fake Data //
-@property (strong, nonatomic) NSArray *personsFake;
-@property (strong, nonatomic) NSArray *sitesFake;
+@property (strong, nonatomic) NSDate *selectedStartDate;
+@property (strong, nonatomic) NSDate *selectedEndDate;
 
 @end
 
@@ -44,12 +52,6 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // filling fake data
-    _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
-    _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
-    
-//    [self loadData];
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,7 +59,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - AFNetworking
+#pragma mark - Requests Methods
 
 - (void)loadData {
     
@@ -82,12 +84,29 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     
 }
 
-#pragma mark - Requests Methods
-
 - (NSString *)requestString {
     
-    NSString *site = _siteLabel.text;
-    NSString *person = _personLabel.text;
+    NSInteger siteID = 0;
+    
+    for (LGSite *site in [[LGSiteListSingleton sharedSiteList] sites]) {
+        
+        if ([site.siteURL isEqualToString:_siteLabel.text]) {
+            siteID = [site.siteID integerValue];
+            continue;
+        }
+        
+    }
+    
+    NSInteger personID = 0;
+    
+    for (LGPerson *person in [[LGPersonListSingleton sharedPersonList] persons]) {
+        
+        if ([person.personName isEqualToString:_personLabel.text]) {
+            personID = [person.personID integerValue];
+            continue;
+        }
+        
+    }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd"];
@@ -95,7 +114,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     NSString *startDate = [formatter stringFromDate:_selectedStartDate];
     NSString *endDate = [formatter stringFromDate:_selectedEndDate];
     
-    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/daily_stat?site=%@&person=%@&start_date=%@&end_date=%@", site, person, startDate, endDate];
+    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/daily_stat?site=%ld&person=%ld&start_date=%@&end_date=%@", siteID, personID, startDate, endDate];
     
     return [string encodeURLString];
 }
@@ -262,7 +281,6 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
             return @"Выберите конечную дату";
             break;
             
-            
         default:
             return nil;
             break;
@@ -271,17 +289,34 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (NSArray *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
+    NSMutableArray *array = [NSMutableArray array];
+    
     switch (self.currentTextField.tag) {
-        case TextFieldTypeSites:
-            return _sitesFake;
+        case TextFieldTypeSites: {
+            
+            for (LGSite *site in [[LGSiteListSingleton sharedSiteList] sites]) {
+                
+                [array addObject:site.siteURL];
+                
+            }
+        }
             break;
-        case TextFieldTypePersons:
-            return _personsFake;
+        case TextFieldTypePersons: {
+            
+            for (LGPerson *person in [[LGPersonListSingleton sharedPersonList] persons]) {
+                
+                [array addObject:person.personName];
+                
+            }
+        }
             break;
         default:
             return nil;
             break;
     }
+    
+    return array;
+    
 }
 
 - (NSString *)labelCurrentRowForPopoverViewController:(LGPopoverViewController *)popoverViewController {
