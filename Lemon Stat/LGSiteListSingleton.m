@@ -10,17 +10,17 @@
 
 @implementation LGSiteListSingleton
 
++ (LGSiteListSingleton *)sharedSiteList {
     
-static LGSiteListSingleton* _sharedSiteList = nil;
+    static LGSiteListSingleton* _sharedSiteList = nil;
     
-+(LGSiteListSingleton*) sharedSiteList{
-        
-        @synchronized(self) {
-            if (!_sharedSiteList) {
-                _sharedSiteList = [[LGSiteListSingleton alloc] init];
-            }
+    @synchronized(self) {
+        if (!_sharedSiteList) {
+            _sharedSiteList = [[LGSiteListSingleton alloc] init];
+            _sharedSiteList.sites = [NSMutableArray array];
         }
-        return _sharedSiteList;
+    }
+    return _sharedSiteList;
     
 }
 

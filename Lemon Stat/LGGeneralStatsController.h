@@ -10,7 +10,5 @@
 
 @interface LGGeneralStatsController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UITextField *siteLabel;
-
 @end
 
