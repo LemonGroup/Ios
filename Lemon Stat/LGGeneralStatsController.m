@@ -24,9 +24,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
-// Fake Data //
-@property (strong, nonatomic) NSArray *personsFake;
-@property (strong, nonatomic) NSArray *sitesFake;
+@property (weak, nonatomic) IBOutlet UITextField *siteLabel;
 
 @end
 
@@ -35,15 +33,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    // filling fake data
-    _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
-    _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
-    
-    NSLog(@"%@", [LGSiteListSingleton sharedSiteList]);
-    NSLog(@"Array = %@", [[LGSiteListSingleton sharedSiteList] sites]);
-    
-    //[self loadData];
     
 }
 
@@ -224,7 +213,5 @@
     [self loadData];
     
 }
-
-
 
 @end

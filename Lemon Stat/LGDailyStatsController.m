@@ -32,19 +32,17 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
+@property (weak, nonatomic) IBOutlet UITextField *siteLabel;
+@property (weak, nonatomic) IBOutlet UITextField *personLabel;
+@property (weak, nonatomic) IBOutlet UITextField *startDateLabel;
+@property (weak, nonatomic) IBOutlet UITextField *endDateLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *totalNumberLabel;
+
 @property (weak, nonatomic) UITextField *currentTextField;
-
-@property (strong, nonatomic) NSArray *dateArray;
-@property (strong, nonatomic) NSArray *numberArray;
-
 
 @property (strong, nonatomic) NSDate *selectedStartDate;
 @property (strong, nonatomic) NSDate *selectedEndDate;
-
-
-// Fake Data //
-@property (strong, nonatomic) NSArray *personsFake;
-@property (strong, nonatomic) NSArray *sitesFake;
 
 @end
 
@@ -53,12 +51,6 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    // filling fake data
-    _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
-    _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
-    
-//    [self loadData];
     
 }
 
@@ -288,7 +280,6 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
         case TextFieldTypeEndDate:
             return @"Выберите конечную дату";
             break;
-            
             
         default:
             return nil;
