@@ -37,6 +37,11 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 @property (strong, nonatomic) NSArray *dateArray;
 @property (strong, nonatomic) NSArray *numberArray;
 
+
+@property (strong, nonatomic) NSDate *selectedStartDate;
+@property (strong, nonatomic) NSDate *selectedEndDate;
+
+
 // Fake Data //
 @property (strong, nonatomic) NSArray *personsFake;
 @property (strong, nonatomic) NSArray *sitesFake;
@@ -62,7 +67,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - AFNetworking
+#pragma mark - Requests Methods
 
 - (void)loadData {
     
@@ -87,12 +92,29 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     
 }
 
-#pragma mark - Requests Methods
-
 - (NSString *)requestString {
     
-    NSString *site = _siteLabel.text;
-    NSString *person = _personLabel.text;
+    NSInteger siteID = 0;
+    
+    for (LGSite *site in [[LGSiteListSingleton sharedSiteList] sites]) {
+        
+        if ([site.siteURL isEqualToString:_siteLabel.text]) {
+            siteID = [site.siteID integerValue];
+            continue;
+        }
+        
+    }
+    
+    NSInteger personID = 0;
+    
+    for (LGPerson *person in [[LGPersonListSingleton sharedPersonList] persons]) {
+        
+        if ([person.personName isEqualToString:_personLabel.text]) {
+            personID = [person.personID integerValue];
+            continue;
+        }
+        
+    }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd"];
@@ -100,7 +122,7 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     NSString *startDate = [formatter stringFromDate:_selectedStartDate];
     NSString *endDate = [formatter stringFromDate:_selectedEndDate];
     
-    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/daily_stat?site=%@&person=%@&start_date=%@&end_date=%@", site, person, startDate, endDate];
+    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/daily_stat?site=%ld&person=%ld&start_date=%@&end_date=%@", siteID, personID, startDate, endDate];
     
     return [string encodeURLString];
 }

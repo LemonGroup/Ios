@@ -52,7 +52,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - AFNetworking
+
+#pragma mark - Requests Methods
 
 - (void)loadData {
     
@@ -80,11 +81,20 @@
     }
 }
 
-#pragma mark - Requests Methods
-
 - (NSString *)requestString {
     
-    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?site=%@", _siteLabel.text];
+    NSInteger siteID = 0;
+    
+    for (LGSite *site in [[LGSiteListSingleton sharedSiteList] sites]) {
+        
+        if ([site.siteURL isEqualToString:_siteLabel.text]) {
+            siteID = [site.siteID integerValue];
+            continue;
+        }
+        
+    }
+    
+    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?siteId=%ld", siteID];
     
     return [string encodeURLString];
 }

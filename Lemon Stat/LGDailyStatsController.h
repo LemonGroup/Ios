@@ -17,9 +17,6 @@ typedef enum {
 
 @interface LGDailyStatsController : UIViewController
 
-@property (strong, nonatomic) NSDate *selectedStartDate;
-@property (strong, nonatomic) NSDate *selectedEndDate;
-
 @property (weak, nonatomic) IBOutlet UITextField *siteLabel;
 @property (weak, nonatomic) IBOutlet UITextField *personLabel;
 @property (weak, nonatomic) IBOutlet UITextField *startDateLabel;
