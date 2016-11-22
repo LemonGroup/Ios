@@ -14,6 +14,6 @@
 
 @property (strong, nonatomic) NSMutableArray<LGSite *> *sites;
 
-+(LGSiteListSingleton*) sharedSiteList;
++ (LGSiteListSingleton *)sharedSiteList;
 
 @end

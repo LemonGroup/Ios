@@ -10,6 +10,9 @@
 
 #import "LGPopoverViewController.h"
 
+#import "LGSiteListSingleton.h"
+#import "LGSite.h"
+
 #import <AFNetworking/AFNetworking.h>
 
 #import "NSString+Request.h"
@@ -36,6 +39,9 @@
     // filling fake data
     _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
     _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
+    
+    NSLog(@"%@", [LGSiteListSingleton sharedSiteList]);
+    NSLog(@"Array = %@", [[LGSiteListSingleton sharedSiteList] sites]);
     
     //[self loadData];
     
@@ -161,7 +167,16 @@
 }
 
 - (NSArray *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController {
-    return _sitesFake;
+    
+    NSMutableArray *array = [NSMutableArray array];
+    
+    for (LGSite *site in [[LGSiteListSingleton sharedSiteList] sites]) {
+        
+        [array addObject:site.siteURL];
+        
+    }
+    
+    return array;
 }
 
 - (NSString *)labelCurrentRowForPopoverViewController:(LGPopoverViewController *)popoverViewController {

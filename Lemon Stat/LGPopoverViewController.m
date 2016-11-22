@@ -13,7 +13,7 @@
 
 @interface LGPopoverViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 
-@property (strong, nonatomic) NSArray *arrayFake;
+@property (strong, nonatomic) NSArray *dataArray;
 
 @property (weak, nonatomic) UIButton *returnButton;
 
@@ -107,7 +107,7 @@
 
 - (void)createPickerWithArray:(NSArray *)array {
     
-    self.arrayFake = array;
+    self.dataArray = array;
     
     UIPickerView *pickerView = [[UIPickerView alloc] init];
     pickerView.center = self.view.center;
@@ -128,27 +128,16 @@
         } else {
             
             row = [pickerView selectedRowInComponent:0];
-            [self.delegate stringChange:_arrayFake[row]];
+            [self.delegate stringChange:array[row]];
             
         }
         
     } else {
         
         row = [pickerView selectedRowInComponent:0];
-        [self.delegate stringChange:_arrayFake[row]];
+        [self.delegate stringChange:array[row]];
         
     }
-    
-//    if (![_currentString isEqualToString:@""]) {
-//        
-//        NSInteger row = [array indexOfObject:_currentString];
-//        [pickerView selectRow:row inComponent:0 animated:NO];
-//        
-//    } else {
-//        
-//        NSInteger row = [pickerView selectedRowInComponent:0];
-//        [self.delegate stringChange:_arrayFake[row]];
-//    }
     
     [self.view addSubview:pickerView];
 }
@@ -222,11 +211,11 @@
 #pragma mark - UIPickerViewDelegate
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return _arrayFake[row];
+    return _dataArray[row];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    [self.delegate stringChange:_arrayFake[row]];
+    [self.delegate stringChange:_dataArray[row]];
 }
 
 #pragma mark - UIPickerViewDataSource
@@ -236,7 +225,7 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return _arrayFake.count;
+    return _dataArray.count;
 }
 
 @end

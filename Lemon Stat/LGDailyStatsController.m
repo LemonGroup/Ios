@@ -10,6 +10,11 @@
 
 #import "LGPopoverViewController.h"
 
+#import "LGSiteListSingleton.h"
+#import "LGSite.h"
+#import "LGPersonListSingleton.h"
+#import "LGPerson.h"
+
 #import <AFNetworking/AFNetworking.h>
 
 #import "NSString+Request.h"
@@ -271,17 +276,34 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (NSArray *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
+    NSMutableArray *array = [NSMutableArray array];
+    
     switch (self.currentTextField.tag) {
-        case TextFieldTypeSites:
-            return _sitesFake;
+        case TextFieldTypeSites: {
+            
+            for (LGSite *site in [[LGSiteListSingleton sharedSiteList] sites]) {
+                
+                [array addObject:site.siteURL];
+                
+            }
+        }
             break;
-        case TextFieldTypePersons:
-            return _personsFake;
+        case TextFieldTypePersons: {
+            
+            for (LGPerson *person in [[LGPersonListSingleton sharedPersonList] persons]) {
+                
+                [array addObject:person.personName];
+                
+            }
+        }
             break;
         default:
             return nil;
             break;
     }
+    
+    return array;
+    
 }
 
 - (NSString *)labelCurrentRowForPopoverViewController:(LGPopoverViewController *)popoverViewController {
