@@ -9,14 +9,13 @@
 #import "LGGeneralStatsController.h"
 
 #import "LGPopoverViewController.h"
-<<<<<<< HEAD
+
 #import <PNChart/PNChart.h>
-=======
 
 #import "LGSiteListSingleton.h"
 #import "LGSite.h"
 
->>>>>>> 2296d2c10c0fcd0e9916fc9334f1715bf1f15598
+
 #import <AFNetworking/AFNetworking.h>
 
 #import "NSString+Request.h"
@@ -29,7 +28,9 @@
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
 @property (weak, nonatomic) IBOutlet UITextField *siteLabel;
-
+// Fake Data //
+@property (strong, nonatomic) NSArray *personsFake;
+@property (strong, nonatomic) NSArray *sitesFake;
 @end
 
 @implementation LGGeneralStatsController
@@ -38,7 +39,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-<<<<<<< HEAD
+
     // filling fake data
     _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
     _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
@@ -53,8 +54,7 @@
     //[barChart strokeChart];
     //[self.view addSubview:barChart];
     //barChart.alpha = 0;
-=======
->>>>>>> 2296d2c10c0fcd0e9916fc9334f1715bf1f15598
+
 }
 
 - (void)didReceiveMemoryWarning {

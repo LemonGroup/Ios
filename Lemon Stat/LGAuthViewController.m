@@ -54,7 +54,7 @@
              NSLog(@"Error: %@", error);
          }];
     
-    
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"%@", self.token] forHTTPHeaderField:@"Auth-Token"];
     
     //-------------------
         /*
