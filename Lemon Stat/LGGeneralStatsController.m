@@ -9,7 +9,7 @@
 #import "LGGeneralStatsController.h"
 
 #import "LGPopoverViewController.h"
-
+#import <PNChart/PNChart.h>
 #import <AFNetworking/AFNetworking.h>
 
 @interface LGGeneralStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate> {
@@ -36,7 +36,15 @@
     _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
     
     //[self loadData];
-    
+    //For BarC hart
+    PNBarChart * barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 135.0, SCREEN_WIDTH, 480)];
+    //[barChart setXLabels:_personsFake];
+    //[barChart setYValues:@[@1,  @10, @2]];
+    //[barChart setXLabels:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5"]];
+    //[barChart setYValues:@[@1,  @10, @2, @6, @3]];
+    //[barChart strokeChart];
+    //[self.view addSubview:barChart];
+    //barChart.alpha = 0;
 }
 
 - (void)didReceiveMemoryWarning {

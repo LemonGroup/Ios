@@ -36,6 +36,7 @@
 }
 - (IBAction)enterButton:(id)sender {
     
+    
     NSString * urlString = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/user/auth?user=%@&pass=%@",self.loginTextField.text,self.passwordTextField.text];
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -56,7 +57,8 @@
     
     
     //-------------------
-    [manager HEAD:self.token parameters:nil success: nil   failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        /*
+    [manager HEAD :[NSString stringWithFormat:@"Auth-Token: %@",self.token] parameters:nil success: nil   failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"Error: %@", error);
     }];
     
@@ -64,7 +66,7 @@
     //-------------------
 
     
-    [manager GET:@"http://localhost:8080/catalog/catalogs"
+    [manager GET:@"http://yrsoft.cu.cc:8080/catalog/catalogs"
       parameters:nil
         progress:^(NSProgress * _Nonnull downloadProgress) {
             
@@ -75,8 +77,8 @@
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
          }];
-     
-     
+     */
+    
 }
 
 /*
@@ -88,5 +90,10 @@
     // Pass the selected object to the new view controller.
 }
 */
+- (IBAction)loginpassEdittingChanged:(id)sender {
+    if([self.loginTextField.text length] == 0 | [self.passwordTextField.text length] ==0)
+    self.enterButton.userInteractionEnabled = NO;
+    else self.enterButton.userInteractionEnabled = YES;
+}
 
 @end
