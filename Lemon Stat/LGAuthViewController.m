@@ -13,15 +13,16 @@
 
 #import "NSString+Request.h"
 
+#import "LGSiteListSingleton.h"
+#import "LGSite.h"
+#import "LGPersonListSingleton.h"
+#import "LGPerson.h"
+
 @interface LGAuthViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *loginTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UILabel *responseLabel;
-
-@property (strong, nonatomic) NSString *token;
-@property (assign, nonatomic) NSInteger groupID;
-@property (assign, nonatomic) NSInteger privilege;
 
 @end
 
@@ -38,7 +39,13 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Requests
+- (void)dealloc {
+    
+    NSLog(@"LGAuthController is dealocated");
+    
+}
+
+#pragma mark - Requests Methods
 
 - (void)requestAuth {
     
@@ -53,13 +60,18 @@
              if (responseObject) {
                  
                  NSLog(@"-------------------TOKEN-JSON: %@", responseObject);
+                 extern NSString *gToken;
+                 extern NSInteger gGroupID;
+                 extern NSInteger gPrivilege;
                  
-                 _token = [responseObject valueForKey:@"token"];
-                 _groupID = [[responseObject valueForKey:@"groupId"] integerValue];
-                 _privilege = [[responseObject valueForKey:@"privilege"] integerValue];
+                 gToken = [responseObject valueForKey:@"token"];
+                 gGroupID = [[responseObject valueForKey:@"groupId"] integerValue];
+                 gPrivilege = [[responseObject valueForKey:@"privilege"] integerValue];
+                 
+                 [self requestGetSites];
+                 [self requestGetPersons];
                  
                  [self presentNavigationController];
-                 NSLog(@"++");
              }
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -73,6 +85,83 @@
     NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/user/auth?user=%@&pass=%@",self.loginTextField.text,self.passwordTextField.text];
     
     return [string encodeURLString];
+}
+
+- (void)requestGetSites {
+    
+    extern NSString *gToken;
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+    
+    NSString *string = @"http://yrsoft.cu.cc:8080/catalog/sites";
+    
+    [manager GET:[string encodeURLString]
+      parameters:nil
+        progress:nil
+         success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
+             
+             [self createSiteListWithJSONArray:responseObject];
+             
+             NSLog(@"JSON: %@", responseObject);
+             
+         }
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+             NSLog(@"Error: %@", error);
+         }];
+    
+}
+
+- (void)createSiteListWithJSONArray:(NSArray *)responseJSON {
+    
+    LGSiteListSingleton *siteList = [LGSiteListSingleton sharedSiteList];
+    
+    for (id obj in responseJSON) {
+        
+        LGSite *site = [LGSite siteWithID:[obj valueForKey:@"id"] andURL:[obj valueForKey:@"site"]];
+        
+        [siteList.sites addObject:site];
+        
+    }
+}
+
+- (void)requestGetPersons {
+    
+    extern NSString *gToken;
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+    
+    NSString *string = @"http://yrsoft.cu.cc:8080/catalog/persons";
+    
+    [manager GET:[string encodeURLString]
+      parameters:nil
+        progress:nil
+         success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
+             
+             [self createPersonListWithJSONArray:responseObject];
+             
+             NSLog(@"JSON: %@", responseObject);
+             
+         }
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+             NSLog(@"Error: %@", error);
+         }];
+    
+}
+
+- (void)createPersonListWithJSONArray:(NSArray *)responseJSON {
+    
+    LGPersonListSingleton *personList = [LGPersonListSingleton sharedPersonList];
+    
+    for (id obj in responseJSON) {
+        
+        LGPerson *person = [LGPerson personWithID:[obj valueForKey:@"id"] andName:[obj valueForKey:@"personName"]];
+        
+        [personList.persons addObject:person];
+        
+    }
+    
 }
 
 #pragma mark - Actions

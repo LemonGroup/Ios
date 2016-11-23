@@ -46,7 +46,7 @@
     
     //[self loadData];
     //For BarC hart
-    PNBarChart * barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 135.0, SCREEN_WIDTH, 480)];
+    //PNBarChart * barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 135.0, SCREEN_WIDTH, 480)];
     //[barChart setXLabels:_personsFake];
     //[barChart setYValues:@[@1,  @10, @2]];
     //[barChart setXLabels:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5"]];
@@ -67,8 +67,10 @@
 
 - (void)loadData {
     
+    extern NSString *gToken;
+    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager.requestSerializer setValue:[NSString stringWithFormat:@"this-is-fake-token"] forHTTPHeaderField:@"Auth-Token"];
+    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
     NSString *requestString = [self requestString];
     

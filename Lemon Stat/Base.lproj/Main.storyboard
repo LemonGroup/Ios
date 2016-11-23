@@ -252,7 +252,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
-                <tabBarController id="49e-Tb-3d3" customClass="LGTabBarController" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarController" id="49e-Tb-3d3" customClass="LGTabBarController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="tW8-z1-AQs">
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="gzA-Vh-D0p">
@@ -418,7 +418,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2uq-BR-oeH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2" y="-686"/>
+            <point key="canvasLocation" x="-12" y="-659"/>
         </scene>
     </scenes>
     <resources>

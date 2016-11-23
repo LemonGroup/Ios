@@ -63,8 +63,10 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (void)loadData {
     
+    extern NSString *gToken;
+    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager.requestSerializer setValue:[NSString stringWithFormat:@"this-is-fake-token"] forHTTPHeaderField:@"Auth-Token"];
+    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
     NSString *requestString = [self requestString];
     

@@ -14,6 +14,4 @@
 
 - (IBAction)changeSegment:(id)sender;
 
-
-
 @end
