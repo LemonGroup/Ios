@@ -50,26 +50,21 @@
       parameters:nil
         progress:nil
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
-             NSLog(@"success");
              if (responseObject) {
-                                  
+                 
+                 NSLog(@"-------------------TOKEN-JSON: %@", responseObject);
+                 
                  _token = [responseObject valueForKey:@"token"];
                  _groupID = [[responseObject valueForKey:@"groupId"] integerValue];
                  _privilege = [[responseObject valueForKey:@"privilege"] integerValue];
                  
                  [self presentNavigationController];
                  NSLog(@"++");
-             } else {
-                 
-                 _responseLabel.text = @"Неверное сочитание логина и пароля";
-                 NSLog(@"--");
              }
-             
-             NSLog(@"-------------------TOKEN-JSON: %@", responseObject);
-             
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
+             _responseLabel.text = @"Неверные логин и/или пароль";
          }];
 }
 
