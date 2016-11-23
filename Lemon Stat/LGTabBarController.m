@@ -16,7 +16,6 @@ NSString *gToken;
 NSInteger gGroupID;
 NSInteger gPrivilege;
 
-
 @interface LGTabBarController ()
 
 @end
@@ -27,10 +26,7 @@ NSInteger gPrivilege;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading 
-    
-//    [self requestGetSites];
-//    [self requestGetPersons];
+    // Do any additional setup after loading
     
 }
 

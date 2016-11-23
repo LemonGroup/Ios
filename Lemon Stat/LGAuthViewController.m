@@ -164,6 +164,16 @@
     
 }
 
+#pragma mark - Methods
+
+- (void)presentNavigationController {
+    
+    UINavigationController *navigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
+    
+}
+
 #pragma mark - Actions
 
 - (BOOL)verificationFillingOfFields {
@@ -187,14 +197,6 @@
     if ([self verificationFillingOfFields]) {
         [self requestAuth];
     }
-}
-
-- (void)presentNavigationController {
-        
-    UINavigationController *navigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
-    
-    [self presentViewController:navigationController animated:YES completion:nil];
-    
 }
 
 #pragma mark - UITextFieldDelegate

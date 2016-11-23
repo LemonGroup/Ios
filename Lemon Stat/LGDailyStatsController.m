@@ -417,34 +417,25 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 
 - (void)actionReturn:(UIButton *)button {
     
-    switch (self.currentTextField.tag) {
-        case TextFieldTypeSites: {
-            [_popoverViewController dismissViewControllerAnimated:YES completion:^{
+    [_popoverViewController dismissViewControllerAnimated:YES completion:^{
+        
+        switch (self.currentTextField.tag) {
+            case TextFieldTypeSites:
                 [self.personLabel becomeFirstResponder];
-            }];
-        }
-            break;
-        case TextFieldTypePersons: {
-            [_popoverViewController dismissViewControllerAnimated:YES completion:^{
+                break;
+            case TextFieldTypePersons:
                 [self.startDateLabel becomeFirstResponder];
-            }];
-        }
-            break;
-        case TextFieldTypeStartDate: {
-            [_popoverViewController dismissViewControllerAnimated:YES completion:^{
+                break;
+            case TextFieldTypeStartDate:
                 [self.endDateLabel becomeFirstResponder];
-            }];
-        }
-            break;
-        case TextFieldTypeEndDate: {
-            [_popoverViewController dismissViewControllerAnimated:YES completion:^{
+                break;
+            case TextFieldTypeEndDate:
                 [self actionApply:nil];
-            }];
+                break;
+            default:
+                break;
         }
-            break;
-        default:
-            break;
-    }
+    }];
 }
 
 #pragma mark - Actions
