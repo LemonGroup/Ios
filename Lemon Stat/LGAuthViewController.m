@@ -7,9 +7,8 @@
 //
 
 #import "LGAuthViewController.h"
-#import <AFNetworking/AFNetworking.h>
 
-#import "LGTabBarController.h"
+#import <AFNetworking/AFNetworking.h>
 
 #import "NSString+Request.h"
 
@@ -37,12 +36,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc {
-    
-    NSLog(@"LGAuthController is dealocated");
-    
 }
 
 #pragma mark - Requests Methods
@@ -109,7 +102,6 @@
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
          }];
-    
 }
 
 - (void)createSiteListWithJSONArray:(NSArray *)responseJSON {
@@ -121,7 +113,6 @@
         LGSite *site = [LGSite siteWithID:[obj valueForKey:@"id"] andURL:[obj valueForKey:@"site"]];
         
         [siteList.sites addObject:site];
-        
     }
 }
 
@@ -147,7 +138,6 @@
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
          }];
-    
 }
 
 - (void)createPersonListWithJSONArray:(NSArray *)responseJSON {
@@ -159,9 +149,7 @@
         LGPerson *person = [LGPerson personWithID:[obj valueForKey:@"id"] andName:[obj valueForKey:@"personName"]];
         
         [personList.persons addObject:person];
-        
     }
-    
 }
 
 #pragma mark - Methods
@@ -230,14 +218,5 @@
     // Pass the selected object to the new view controller.
 }
 */
-
-//- (IBAction)loginpassEdittingChanged:(id)sender {
-//    
-//    if([self.loginTextField.text length] == 0 || [self.passwordTextField.text length] == 0) {
-//        self.enterButton.userInteractionEnabled = NO;
-//    } else {
-//        self.enterButton.userInteractionEnabled = YES;
-//    }
-//}
 
 @end

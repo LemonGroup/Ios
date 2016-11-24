@@ -163,7 +163,6 @@
     
     [self.delegate dateChange:datePicker];
     [self.view addSubview:datePicker];
-    
 }
 
 - (void)createButton {
@@ -193,7 +192,6 @@
     [self.view addSubview:button];
     
     self.returnButton = button;
-    
 }
 
 #pragma mark - UIPickerViewDelegate

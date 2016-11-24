@@ -10,13 +10,11 @@
 
 #import "LGPopoverViewController.h"
 
+#import <AFNetworking/AFNetworking.h>
 #import <PNChart/PNChart.h>
 
 #import "LGSiteListSingleton.h"
 #import "LGSite.h"
-
-
-#import <AFNetworking/AFNetworking.h>
 
 #import "NSString+Request.h"
 
@@ -28,9 +26,7 @@
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
 @property (weak, nonatomic) IBOutlet UITextField *siteLabel;
-// Fake Data //
-@property (strong, nonatomic) NSArray *personsFake;
-@property (strong, nonatomic) NSArray *sitesFake;
+
 @end
 
 @implementation LGGeneralStatsController
@@ -38,11 +34,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-
-    // filling fake data
-    _personsFake = @[@"Путин", @"Медведев", @"Навальный"];
-    _sitesFake = @[@"lenta.ru", @"vesti.ru", @"rbk.ru"];
     
     //[self loadData];
     //For BarC hart
@@ -83,7 +74,6 @@
             }
              success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
                  _responseJSON = responseObject;
-                 
                  
                  [self.tableView reloadData];
                  NSLog(@"JSON: %@", _responseJSON);

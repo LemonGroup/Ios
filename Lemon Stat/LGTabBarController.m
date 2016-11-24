@@ -8,13 +8,9 @@
 
 #import "LGTabBarController.h"
 
-#import <AFNetworking/AFNetworking.h>
-
-#import "NSString+Request.h"
-
-NSString *gToken;
-NSInteger gGroupID;
-NSInteger gPrivilege;
+NSString *gToken;           // Токен (присваевается при входе в систему)
+NSInteger gGroupID;         // ID группы (присваевается при входе в систему)
+NSInteger gPrivilege;       // Привелегия (присваевается при входе в систему)
 
 @interface LGTabBarController ()
 

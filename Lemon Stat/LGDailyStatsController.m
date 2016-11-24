@@ -10,20 +10,21 @@
 
 #import "LGPopoverViewController.h"
 
+#import <AFNetworking/AFNetworking.h>
+
 #import "LGSiteListSingleton.h"
 #import "LGSite.h"
 #import "LGPersonListSingleton.h"
 #import "LGPerson.h"
 
-#import <AFNetworking/AFNetworking.h>
-
 #import "NSString+Request.h"
 
-//**************** Временный код ******************//
-//*********** выбор персонажа и сайта *************//
-static NSString *kPerson = @"Навальный"; // Путин, Медведев, Навальный
-static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti.ru
-//*************************************************//
+typedef enum {
+    TextFieldTypeSites = 1,
+    TextFieldTypePersons = 2,
+    TextFieldTypeStartDate = 3,
+    TextFieldTypeEndDate = 4
+} TextFieldType;
 
 @interface LGDailyStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate> {
     NSArray *_responseJSON;
@@ -168,47 +169,6 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     _totalNumberLabel.text = [NSString stringWithFormat:@"%ld", totalNumber];
 }
 
-- (NSArray *)arrayForSite:(NSString *)site andPerson:(NSString *)person forKey:(NSString *)key {
-    
-    NSArray *dates;
-    
-    for (id sites in _responseJSON) {
-        
-        if ([[sites valueForKey:@"site"] isEqualToString:kSite]) {
-            
-            dates = [sites valueForKey:@"dates"];
-            continue;
-        }
-    }
-    
-    NSMutableArray *array = [NSMutableArray array];
-    
-    for (id obj in dates) {
-        
-        NSArray *persons = [obj valueForKey:@"persons"];
-        
-        for (id person in persons) {
-            
-            NSString *personName = [person valueForKey:@"person"];
-            
-            if ([personName isEqualToString:kPerson]) {
-                
-                if ([key isEqualToString:@"date"]) {
-                    
-                    [array addObject:[obj valueForKey:key]];
-                    
-                } else if ([key isEqualToString:@"number"]) {
-                    
-                    [array addObject:[person valueForKey:key]];
-                    
-                }
-            }
-        }
-    }
-    
-    return array;
-}
-
 - (void)createPopover:(UITextField *)sender {
     
     CGSize contentSize = CGSizeMake(280,280);
@@ -298,18 +258,14 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
         case TextFieldTypeSites: {
             
             for (LGSite *site in [[LGSiteListSingleton sharedSiteList] sites]) {
-                
                 [array addObject:site.siteURL];
-                
             }
         }
             break;
         case TextFieldTypePersons: {
             
             for (LGPerson *person in [[LGPersonListSingleton sharedPersonList] persons]) {
-                
                 [array addObject:person.personName];
-                
             }
         }
             break;
@@ -319,7 +275,6 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
     }
     
     return array;
-    
 }
 
 - (NSString *)labelCurrentRowForPopoverViewController:(LGPopoverViewController *)popoverViewController {
@@ -447,7 +402,5 @@ static NSString *kSite = @"www.lenta.ru"; // www.lenta.ru, www.rbk.ru, www.vesti
 }
 
 #pragma mark - Segment Control
-
-
 
 @end
