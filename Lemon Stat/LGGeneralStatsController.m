@@ -154,7 +154,6 @@
     LGPopoverViewController *vc= [[LGPopoverViewController alloc] init];
     vc.preferredContentSize = contentSize;
     vc.delegate = self;
-//    vc.currentString = self.siteLabel.text;
     
     [self willChangeValueForKey:@"popoverViewController"];
     self.popoverViewController = vc;

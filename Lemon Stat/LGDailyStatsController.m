@@ -31,7 +31,6 @@ typedef enum {
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
 @property (weak, nonatomic) IBOutlet UITextField *siteField;
 @property (weak, nonatomic) IBOutlet UITextField *personField;
@@ -40,8 +39,11 @@ typedef enum {
 
 @property (weak, nonatomic) IBOutlet UILabel *totalNumberLabel;
 
-@property (weak, nonatomic) IBOutlet UIButton *applyButton;
 @property (weak, nonatomic) IBOutlet UILabel *responseLabel;
+
+@property (weak, nonatomic) UIButton *applyButton;
+
+@property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
 @property (weak, nonatomic) UITextField *currentTextField;
 
@@ -212,6 +214,24 @@ typedef enum {
     
     [self presentViewController:destNav animated:YES completion:nil];
     
+}
+
+- (void)createRefreshButton {
+    
+    if (_applyButton == nil) {
+        
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        [button setTitle:@"Обновить" forState:UIControlStateNormal];
+        [button addTarget:self
+                   action:@selector(actionRefresh:)
+         forControlEvents:UIControlEventTouchUpInside];
+        button.frame = CGRectMake(0, 0, 100, 20);
+        button.center = _responseLabel.center;
+        
+        _applyButton = button;
+        
+        [self.view addSubview:button];
+    }
 }
 
 #pragma mark - UITextFieldDelegate
@@ -414,24 +434,6 @@ typedef enum {
 }
 
 #pragma mark - Actions
-
-- (void)createRefreshButton {
-    
-    if (_applyButton == nil) {
-        
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-        [button setTitle:@"Обновить" forState:UIControlStateNormal];
-        [button addTarget:self
-                   action:@selector(actionRefresh:)
-         forControlEvents:UIControlEventTouchUpInside];
-        button.frame = CGRectMake(0, 0, 100, 20);
-        button.center = _responseLabel.center;
-        
-        _applyButton = button;
-        
-        [self.view addSubview:button];
-    }
-}
 
 - (void)actionRefresh:(id)sender {
     // Метод заполнения таблицы или графика
