@@ -33,12 +33,15 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
-@property (weak, nonatomic) IBOutlet UITextField *siteLabel;
-@property (weak, nonatomic) IBOutlet UITextField *personLabel;
-@property (weak, nonatomic) IBOutlet UITextField *startDateLabel;
-@property (weak, nonatomic) IBOutlet UITextField *endDateLabel;
+@property (weak, nonatomic) IBOutlet UITextField *siteField;
+@property (weak, nonatomic) IBOutlet UITextField *personField;
+@property (weak, nonatomic) IBOutlet UITextField *startDateField;
+@property (weak, nonatomic) IBOutlet UITextField *endDateField;
 
 @property (weak, nonatomic) IBOutlet UILabel *totalNumberLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *applyButton;
+@property (weak, nonatomic) IBOutlet UILabel *responseLabel;
 
 @property (weak, nonatomic) UITextField *currentTextField;
 
@@ -62,16 +65,16 @@ typedef enum {
 
 #pragma mark - Requests Methods
 
-- (void)loadData {
+- (void)requestStat {
     
     extern NSString *gToken;
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
-    NSString *requestString = [self requestString];
+    NSString *urlString = [self stringForRequest];
     
-    [manager GET:requestString
+    [manager GET:urlString
       parameters:nil
         progress:nil
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
@@ -88,13 +91,13 @@ typedef enum {
     
 }
 
-- (NSString *)requestString {
+- (NSString *)stringForRequest {
     
     NSInteger siteID = 0;
     
     for (LGSite *site in [[LGSiteListSingleton sharedSiteList] sites]) {
         
-        if ([site.siteURL isEqualToString:_siteLabel.text]) {
+        if ([site.siteURL isEqualToString:_siteField.text]) {
             siteID = [site.siteID integerValue];
             continue;
         }
@@ -105,7 +108,7 @@ typedef enum {
     
     for (LGPerson *person in [[LGPersonListSingleton sharedPersonList] persons]) {
         
-        if ([person.personName isEqualToString:_personLabel.text]) {
+        if ([person.personName isEqualToString:_personField.text]) {
             personID = [person.personID integerValue];
             continue;
         }
@@ -118,7 +121,7 @@ typedef enum {
     NSString *startDate = [formatter stringFromDate:_selectedStartDate];
     NSString *endDate = [formatter stringFromDate:_selectedEndDate];
     
-    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/daily_stat?site=%ld&person=%ld&start_date=%@&end_date=%@", siteID, personID, startDate, endDate];
+    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/daily_stat?siteId=%ld&personId=%ld&start_date=%@&end_date=%@", siteID, personID, startDate, endDate];
     
     return [string encodeURLString];
 }
@@ -180,10 +183,10 @@ typedef enum {
     
     switch (sender.tag) {
         case TextFieldTypeSites:
-            vc.currentString = self.siteLabel.text;
+            vc.currentString = self.siteField.text;
             break;
         case TextFieldTypePersons:
-            vc.currentString = self.personLabel.text;
+            vc.currentString = self.personField.text;
             break;
         case TextFieldTypeStartDate:
             vc.currentDate = _selectedStartDate;
@@ -281,10 +284,10 @@ typedef enum {
     
     switch (self.currentTextField.tag) {
         case TextFieldTypeSites:
-            return _siteLabel.text;
+            return _siteField.text;
             break;
         case TextFieldTypePersons:
-            return _personLabel.text;
+            return _personField.text;
             break;
         default:
             return nil;
@@ -297,11 +300,11 @@ typedef enum {
     
     switch (self.currentTextField.tag) {
         case TextFieldTypeSites: {
-            self.siteLabel.text = string;
+            self.siteField.text = string;
         }
             break;
         case TextFieldTypePersons: {
-            self.personLabel.text = string;
+            self.personField.text = string;
         }
             break;
         default:
@@ -317,12 +320,12 @@ typedef enum {
     switch (self.currentTextField.tag) {
         case TextFieldTypeStartDate: {
             self.selectedStartDate = datePicker.date;
-            self.startDateLabel.text = [dateFormatter stringFromDate:datePicker.date];
+            self.startDateField.text = [dateFormatter stringFromDate:datePicker.date];
         }
             break;
         case TextFieldTypeEndDate: {
             self.selectedEndDate = datePicker.date;
-            self.endDateLabel.text = [dateFormatter stringFromDate:datePicker.date];
+            self.endDateField.text = [dateFormatter stringFromDate:datePicker.date];
         }
             break;
         default:
@@ -363,10 +366,26 @@ typedef enum {
 
 - (NSString *)titleButtonForPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
-    if (self.currentTextField.tag == TextFieldTypeEndDate) {
-        return @"Применить";
-    } else {
+    NSArray *fields = @[_siteField, _personField, _startDateField, _endDateField];
+    
+    NSInteger sum = 0;
+    
+    for (UITextField *textField in fields) {
+        
+        if ([textField.text length] != 0) {
+            ++sum;
+        }
+        
+    }
+    
+    if (sum < 3) {
         return @"Дальше";
+    } else {
+        [self createRefreshButton];
+        [_responseLabel removeFromSuperview];
+//        _responseLabel.hidden = YES;
+//        _applyButton.hidden = NO;
+        return @"Применить";
     }
 }
 
@@ -374,31 +393,50 @@ typedef enum {
     
     [_popoverViewController dismissViewControllerAnimated:YES completion:^{
         
-        switch (self.currentTextField.tag) {
-            case TextFieldTypeSites:
-                [self.personLabel becomeFirstResponder];
+        NSArray *fields = @[_siteField, _personField, _startDateField, _endDateField];
+        
+        NSInteger currentIndex = [fields indexOfObject:_currentTextField];
+        
+        for (NSInteger i = 0, j = currentIndex + 1; i < fields.count; i++, j++) {
+            
+            j == fields.count ? j = 0 : j;
+            
+            if ([fields[j] text].length == 0) {
+                [fields[j] becomeFirstResponder];
                 break;
-            case TextFieldTypePersons:
-                [self.startDateLabel becomeFirstResponder];
-                break;
-            case TextFieldTypeStartDate:
-                [self.endDateLabel becomeFirstResponder];
-                break;
-            case TextFieldTypeEndDate:
-                [self actionApply:nil];
-                break;
-            default:
-                break;
+            }
+            
+            if (i == fields.count - 1) {
+                [self actionRefresh:nil];
+            }
         }
     }];
 }
 
 #pragma mark - Actions
 
-- (IBAction)actionApply:(id)sender {
+- (void)createRefreshButton {
+    
+    if (_applyButton == nil) {
+        
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        [button setTitle:@"Обновить" forState:UIControlStateNormal];
+        [button addTarget:self
+                   action:@selector(actionRefresh:)
+         forControlEvents:UIControlEventTouchUpInside];
+        button.frame = CGRectMake(0, 0, 100, 20);
+        button.center = _responseLabel.center;
+        
+        _applyButton = button;
+        
+        [self.view addSubview:button];
+    }
+}
+
+- (void)actionRefresh:(id)sender {
     // Метод заполнения таблицы или графика
     
-    [self loadData];
+    [self requestStat];
 }
 
 #pragma mark - Segment Control

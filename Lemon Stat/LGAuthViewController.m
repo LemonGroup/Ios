@@ -44,9 +44,9 @@
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
-    NSString *requestString = [self requestString];
+    NSString *urlString = [self stringForRequest];
     
-    [manager GET:requestString
+    [manager GET:urlString
       parameters:nil
         progress:nil
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
@@ -73,7 +73,7 @@
          }];
 }
 
-- (NSString *)requestString {
+- (NSString *)stringForRequest {
     
     NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/user/auth?user=%@&pass=%@",self.loginTextField.text,self.passwordTextField.text];
     
@@ -162,8 +162,6 @@
     
 }
 
-#pragma mark - Actions
-
 - (BOOL)verificationFillingOfFields {
     
     if ([_loginTextField.text length] == 0 && [_passwordTextField.text length] == 0) {
@@ -179,6 +177,8 @@
     
     return YES;
 }
+
+#pragma mark - Actions
 
 - (IBAction)actionJoin:(id)sender {
     

@@ -190,14 +190,6 @@
                                     <outlet property="delegate" destination="8rJ-Kc-sve" id="Vmv-Cn-1Mz"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e5A-Dm-w8Y">
-                                <rect key="frame" x="148" y="215" width="81" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Применить"/>
-                                <connections>
-                                    <action selector="actionApply:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="dEs-cE-mC8"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="с" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0h2-6F-rep">
                                 <rect key="frame" x="21" y="182" width="10" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -232,22 +224,30 @@
                                     <outlet property="delegate" destination="8rJ-Kc-sve" id="9bK-FD-Jmh"/>
                                 </connections>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Заполните все поля" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spV-Ye-udc">
+                                <rect key="frame" x="15" y="220" width="344" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Ежедневная статистика" image="second" id="cPa-gy-q4n"/>
                     <connections>
-                        <outlet property="endDateLabel" destination="Yh9-aW-VCP" id="Gln-9L-ccc"/>
-                        <outlet property="personLabel" destination="jWH-M2-tRg" id="Oe7-3w-nuN"/>
-                        <outlet property="siteLabel" destination="Hha-Lk-OVb" id="8yw-CK-KO3"/>
-                        <outlet property="startDateLabel" destination="7gL-Nn-kYS" id="uvR-wM-sBn"/>
+                        <outlet property="endDateField" destination="Yh9-aW-VCP" id="ovj-My-XUP"/>
+                        <outlet property="personField" destination="jWH-M2-tRg" id="UjA-JS-FpP"/>
+                        <outlet property="responseLabel" destination="spV-Ye-udc" id="ArD-RN-Me0"/>
+                        <outlet property="siteField" destination="Hha-Lk-OVb" id="zQn-7S-5Tt"/>
+                        <outlet property="startDateField" destination="7gL-Nn-kYS" id="hML-SB-1RJ"/>
                         <outlet property="tableView" destination="5VV-fn-mxZ" id="BHm-Jp-Muq"/>
                         <outlet property="totalNumberLabel" destination="5qf-G8-KGv" id="N83-AP-rZb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="350" y="1021"/>
+            <point key="canvasLocation" x="349.60000000000002" y="1020.5397301349326"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
