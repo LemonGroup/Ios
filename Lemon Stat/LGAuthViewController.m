@@ -17,7 +17,7 @@
 #import "LGPersonListSingleton.h"
 #import "LGPerson.h"
 
-@interface LGAuthViewController () <UITextFieldDelegate>
+@interface LGAuthViewController () <UITextFieldDelegate, UIResponderStandardEditActions>
 
 @property (weak, nonatomic) IBOutlet UITextField *loginTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
@@ -36,6 +36,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UIResponderStandardEditActions
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
 }
 
 #pragma mark - Requests Methods
