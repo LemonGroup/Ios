@@ -502,6 +502,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 75046E052D82B8C004385DA2 /* Pods-Lemon Stat.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = CAV9SBW57D;
 				INFOPLIST_FILE = "Lemon Stat/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -515,6 +517,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8364878FE0831A8E8CBD2E86 /* Pods-Lemon Stat.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = CAV9SBW57D;
 				INFOPLIST_FILE = "Lemon Stat/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
