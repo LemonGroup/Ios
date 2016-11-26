@@ -91,6 +91,7 @@
     extern NSString *gToken;
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
     NSString *string = @"http://yrsoft.cu.cc:8080/catalog/sites";
@@ -127,6 +128,7 @@
     extern NSString *gToken;
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
     NSString *string = @"http://yrsoft.cu.cc:8080/catalog/persons";

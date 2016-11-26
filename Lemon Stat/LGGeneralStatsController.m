@@ -53,7 +53,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-
 #pragma mark - Requests Methods
 
 - (void)loadData {
