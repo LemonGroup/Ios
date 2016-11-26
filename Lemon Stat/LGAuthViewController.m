@@ -17,11 +17,21 @@
 #import "LGPersonListSingleton.h"
 #import "LGPerson.h"
 
+typedef enum {
+    LGAuthViewControllerButtonTypeJoin = 1,
+    LGAuthViewControllerButtonTypeChangePass = 2
+} LGAuthViewControllerButtonType;
+
 @interface LGAuthViewController () <UITextFieldDelegate, UIResponderStandardEditActions>
 
 @property (weak, nonatomic) IBOutlet UITextField *loginTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (strong, nonatomic) UITextField *changePasswordTextField;
+@property (strong, nonatomic) UITextField *changeRepeatedPasswordTextField;
 @property (weak, nonatomic) IBOutlet UILabel *responseLabel;
+
+@property (strong, nonatomic) IBOutlet UIView *yellowLayer;
+@property (strong, nonatomic) IBOutlet UIButton *joinButton;
 
 @end
 
@@ -50,7 +60,7 @@
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
-    NSString *urlString = [self stringForRequest];
+    NSString *urlString = [self stringForRequestAuth];
     
     [manager GET:urlString
       parameters:nil
@@ -67,10 +77,22 @@
                  gGroupID = [[responseObject valueForKey:@"groupId"] integerValue];
                  gPrivilege = [[responseObject valueForKey:@"privilege"] integerValue];
                  
+                 // Проверка на первый запуск приложения
+                 static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
+                 NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+//                 if ([defaults boolForKey:hasRunAppOnceKey] == NO)
+                 {
+                     // Some code you want to run on first use...
+                     [defaults setBool:YES forKey:hasRunAppOnceKey];
+                     NSLog(@"Первый запуск приложения");
+                     [self setNewPassword];
+                     
+                 }
+                 
                  [self requestGetSites];
                  [self requestGetPersons];
                  
-                 [self presentNavigationController];
+                 //[self presentNavigationController];
              }
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -79,7 +101,7 @@
          }];
 }
 
-- (NSString *)stringForRequest {
+- (NSString *)stringForRequestAuth {
     
     NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/user/auth?user=%@&pass=%@",self.loginTextField.text,self.passwordTextField.text];
     
@@ -160,7 +182,107 @@
     }
 }
 
+- (void)requestChangePassword {
+    
+    extern NSString *gToken;
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager.requestSerializer setValue:@"application/json; charset: UTF-8" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+    
+    NSString *string = @"http://yrsoft.cu.cc:8080/catalog/accounts/password";
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setObject:@10 forKey:@"id"];
+    [parameters setObject:_changeRepeatedPasswordTextField.text forKey:@"password"];
+    
+    [manager PUT:string
+      parameters:parameters
+         success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+             [self presentNavigationController];
+             NSLog(@"%@", responseObject);
+         }
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+             NSLog(@"Error: %@", error);
+         }];
+    
+}
+
 #pragma mark - Methods
+
+- (UITextField *)createTextField {
+    
+    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0,
+                                                                           CGRectGetWidth(_passwordTextField.frame),
+                                                                           CGRectGetHeight(_passwordTextField.frame))];
+    textField.center = _passwordTextField.center;
+    
+    textField.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.0f];
+    textField.layer.cornerRadius = 5;
+    
+    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
+    textField.leftView = paddingView;
+    textField.leftViewMode = UITextFieldViewModeAlways;
+    
+    return textField;
+}
+
+- (void)setNewPassword {
+    
+    UITextField *newPasswordTextField = [self createTextField];
+    [_yellowLayer addSubview:newPasswordTextField];
+    _changePasswordTextField = newPasswordTextField;
+    
+    
+    UITextField *newRepeatedPasswordTextField = [self createTextField];
+    [_yellowLayer addSubview:newRepeatedPasswordTextField];
+    _changeRepeatedPasswordTextField = newRepeatedPasswordTextField;
+    
+    [self animationYellowLayout];
+    
+}
+
+- (void)animationYellowLayout {
+    
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         
+                         NSInteger space = 9;
+                         
+                         _yellowLayer.transform = CGAffineTransformMakeTranslation(0, -155);
+                         _yellowLayer.frame = CGRectMake(CGRectGetMinX(_yellowLayer.frame),
+                                                         CGRectGetMinY(_yellowLayer.frame),
+                                                         CGRectGetWidth(_yellowLayer.frame),
+                                                         CGRectGetHeight(_yellowLayer.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
+                         
+                         _joinButton.center = CGPointMake(CGRectGetMidX(_joinButton.frame),
+                                                          CGRectGetMidY(_joinButton.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
+                         
+                         _responseLabel.center = CGPointMake(CGRectGetMidX(_responseLabel.frame),
+                                                             CGRectGetMidY(_responseLabel.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
+                         
+                         _changePasswordTextField.backgroundColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
+                         _changePasswordTextField.center = CGPointMake(CGRectGetMidX(_changePasswordTextField.frame),
+                                                                       CGRectGetMidY(_changePasswordTextField.frame) + CGRectGetHeight(_passwordTextField.frame) + space);
+                         _changePasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Введите новый пароль"
+                                                                                                      attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0f]}];
+                         
+                         
+                         _changeRepeatedPasswordTextField.backgroundColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
+                         _changeRepeatedPasswordTextField.center = CGPointMake(CGRectGetMidX(_changeRepeatedPasswordTextField.frame),
+                                                                               CGRectGetMidY(_changeRepeatedPasswordTextField.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
+                         _changeRepeatedPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Повторите новый пароль"
+                                                                                                              attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0f]}];
+                         
+                     }
+                     completion:^(BOOL finished) {
+                         _joinButton.titleLabel.text = @"Изменить";
+                         _joinButton.tag = LGAuthViewControllerButtonTypeChangePass;
+                     }];
+    
+}
 
 - (void)presentNavigationController {
     
@@ -186,12 +308,40 @@
     return YES;
 }
 
+- (BOOL)verificationFillingOfFieldsForChangePassword {
+    
+    if ([_changePasswordTextField.text isEqualToString:_changeRepeatedPasswordTextField.text]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 #pragma mark - Actions
 
-- (IBAction)actionJoin:(id)sender {
+- (IBAction)actionJoin:(UIButton *)sender {
     
     if ([self verificationFillingOfFields]) {
-        [self requestAuth];
+        
+        switch (sender.tag) {
+            case LGAuthViewControllerButtonTypeJoin:
+                [self requestAuth];
+                break;
+            case LGAuthViewControllerButtonTypeChangePass: {
+                
+                if (_changePasswordTextField.text.length == 0 || _changeRepeatedPasswordTextField.text.length == 0) {
+                    _responseLabel.text = @"Заполните все поля";
+                }  else if ([self verificationFillingOfFieldsForChangePassword]) {
+                    [self requestChangePassword];
+                } else {
+                    _responseLabel.text = @"Пароли не совпадают";
+                }
+            }
+                break;
+            default:
+                break;
+        }
+        
     }
 }
 
