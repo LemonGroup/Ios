@@ -20,6 +20,7 @@
 		44F0F2B41DE0BD6000A25E03 /* lines.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B31DE0BD6000A25E03 /* lines.png */; };
 		58A149FD1DE26EEB00439EAC /* NSString+Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A149FC1DE26EEB00439EAC /* NSString+Request.m */; };
 		58A14A011DE350DE00439EAC /* LGSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A14A001DE350DE00439EAC /* LGSite.m */; };
+		58A14A071DE9B4CF00439EAC /* UIImage+UISegmentIconAndText.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A14A061DE9B4CF00439EAC /* UIImage+UISegmentIconAndText.m */; };
 		58F7D89D1DDD382500EA542E /* LGPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */; };
 		9F5AE4BB1DDE0B3700EAC350 /* LGPersonListSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4BA1DDE0B3700EAC350 /* LGPersonListSingleton.m */; };
 		9F5AE4BE1DDE0B6300EAC350 /* LGSiteListSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5AE4BD1DDE0B6300EAC350 /* LGSiteListSingleton.m */; };
@@ -50,6 +51,8 @@
 		58A149FC1DE26EEB00439EAC /* NSString+Request.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Request.m"; sourceTree = "<group>"; };
 		58A149FF1DE350DE00439EAC /* LGSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSite.h; sourceTree = "<group>"; };
 		58A14A001DE350DE00439EAC /* LGSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSite.m; sourceTree = "<group>"; };
+		58A14A051DE9B4CF00439EAC /* UIImage+UISegmentIconAndText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+UISegmentIconAndText.h"; sourceTree = "<group>"; };
+		58A14A061DE9B4CF00439EAC /* UIImage+UISegmentIconAndText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+UISegmentIconAndText.m"; sourceTree = "<group>"; };
 		58F7D89B1DDD382500EA542E /* LGPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPopoverViewController.h; sourceTree = "<group>"; };
 		58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPopoverViewController.m; sourceTree = "<group>"; };
 		75046E052D82B8C004385DA2 /* Pods-Lemon Stat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemon Stat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Lemon Stat/Pods-Lemon Stat.debug.xcconfig"; sourceTree = "<group>"; };
@@ -146,6 +149,8 @@
 			children = (
 				58A149FB1DE26EEB00439EAC /* NSString+Request.h */,
 				58A149FC1DE26EEB00439EAC /* NSString+Request.m */,
+				58A14A051DE9B4CF00439EAC /* UIImage+UISegmentIconAndText.h */,
+				58A14A061DE9B4CF00439EAC /* UIImage+UISegmentIconAndText.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -374,6 +379,7 @@
 				9FD179391DE0E10F00AD9809 /* LGTabBarController.m in Sources */,
 				44D396461DD38F4B008D9F27 /* LGDailyStatsController.m in Sources */,
 				9F5AE4BE1DDE0B6300EAC350 /* LGSiteListSingleton.m in Sources */,
+				58A14A071DE9B4CF00439EAC /* UIImage+UISegmentIconAndText.m in Sources */,
 				9F5AE4BB1DDE0B3700EAC350 /* LGPersonListSingleton.m in Sources */,
 				44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */,
 				44F0F2AD1DE0B5E800A25E03 /* LGAuthViewController.m in Sources */,
@@ -503,7 +509,6 @@
 			baseConfigurationReference = 75046E052D82B8C004385DA2 /* Pods-Lemon Stat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = CAV9SBW57D;
 				INFOPLIST_FILE = "Lemon Stat/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -518,7 +523,6 @@
 			baseConfigurationReference = 8364878FE0831A8E8CBD2E86 /* Pods-Lemon Stat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = CAV9SBW57D;
 				INFOPLIST_FILE = "Lemon Stat/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

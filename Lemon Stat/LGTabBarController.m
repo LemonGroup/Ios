@@ -8,6 +8,8 @@
 
 #import "LGTabBarController.h"
 
+#import "UIImage+UISegmentIconAndText.h"
+
 NSString *gToken;           // Токен (присваевается при входе в систему)
 NSInteger gGroupID;         // ID группы (присваевается при входе в систему)
 NSInteger gPrivilege;       // Привелегия (присваевается при входе в систему)
@@ -18,17 +20,38 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
 
 @implementation LGTabBarController
 
-@synthesize multipleOptions;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading
+    
+    [self createSegmentedControl];
     
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Methods
+
+- (void)createSegmentedControl {
+    
+    UIImage *tableImage = [UIImage imageFromImage:[UIImage imageNamed:@"tableSegment_32"] size:CGSizeMake(32, 32) string:@"Таблица" color:[UIColor yellowColor]];
+    UIImage *graphImage = [UIImage imageFromImage:[UIImage imageNamed:@"graphSegment_32"] size:CGSizeMake(32, 32) string:@"График" color:[UIColor yellowColor]];
+    
+    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[tableImage, graphImage]];
+    
+    segmentedControl.selectedSegmentIndex = 0;
+    
+    [segmentedControl addTarget:self
+                         action:@selector(changeSegment:)
+               forControlEvents:UIControlEventValueChanged];
+    
+    _multipleOptions = segmentedControl;
+    
+    self.navigationItem.titleView = segmentedControl;
+    
 }
 
 /*
@@ -41,9 +64,11 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
 }
 */
 
-- (IBAction)changeSegment:(id)sender {
+#pragma mark - Actions
+
+- (void)changeSegment:(id)sender {
     
-    switch (multipleOptions.selectedSegmentIndex) {
+    switch (_multipleOptions.selectedSegmentIndex) {
         case 0: {
             NSLog(@"Segment 0");
         }

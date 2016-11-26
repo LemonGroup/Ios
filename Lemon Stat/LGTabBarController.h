@@ -10,8 +10,6 @@
 
 @interface LGTabBarController : UITabBarController
 
-@property (weak, nonatomic) IBOutlet UISegmentedControl *multipleOptions;
-
-- (IBAction)changeSegment:(id)sender;
+@property (weak, nonatomic) UISegmentedControl *multipleOptions;
 
 @end
