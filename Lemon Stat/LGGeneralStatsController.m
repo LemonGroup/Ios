@@ -97,7 +97,8 @@
         
     }
     
-    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?siteId=%ld", siteID];
+    //NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?siteId=%ld", siteID];
+    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?siteId=323"];
     
     return [string encodeURLString];
 }

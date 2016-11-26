@@ -10,7 +10,7 @@
 
 @implementation UIImage (UISegmentIconAndText)
 
-+ (instancetype) imageFromImage:(UIImage*)image size:(CGSize)imageSize string:(NSString*)string color:(UIColor*)color {
++ (instancetype) imageFromImage:(UIImage*)image size:(CGSize)imageSize string:(NSString*)string {
     
     UIFont *font = [UIFont systemFontOfSize:16.0];
     CGSize expectedTextSize = [string sizeWithAttributes:@{NSFontAttributeName: font}];
@@ -23,7 +23,7 @@
     
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, color.CGColor);
+    //CGContextSetFillColorWithColor(context, color.CGColor);
     int fontTopPosition = (height - expectedTextSize.height) / 2;
     CGPoint textPoint = CGPointMake(newImage.size.width + 5, fontTopPosition);
     
@@ -31,7 +31,15 @@
     // Images upside down so flip them
     CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, size.height);
     CGContextConcatCTM(context, flipVertical);
-    CGContextDrawImage(context, (CGRect){ {0, (height - newImage.size.height) / 2}, {newImage.size.width, newImage.size.height} }, [newImage CGImage]);
+    
+    NSInteger space = 10;
+    CGRect rect = CGRectMake(space / 2,
+                             (height - newImage.size.height) / 2 + space / 2,
+                             newImage.size.width - space,
+                             newImage.size.height - space);
+    
+    CGContextDrawImage(context, rect, newImage.CGImage);
+    
     UIImage *resultImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return resultImage;

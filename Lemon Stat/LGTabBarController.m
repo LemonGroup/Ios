@@ -24,6 +24,14 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
     [super viewDidLoad];
     // Do any additional setup after loading
     
+    // change rendering mode for UITabBar images
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+        for (UITabBarItem *tbi in self.tabBar.items) {
+            tbi.image = [tbi.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            tbi.selectedImage = [tbi.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        }
+    }
+    
     [self createSegmentedControl];
     
 }
@@ -37,10 +45,11 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
 
 - (void)createSegmentedControl {
     
-    UIImage *tableImage = [UIImage imageFromImage:[UIImage imageNamed:@"tableSegment_32"] size:CGSizeMake(32, 32) string:@"Таблица" color:[UIColor yellowColor]];
-    UIImage *graphImage = [UIImage imageFromImage:[UIImage imageNamed:@"graphSegment_32"] size:CGSizeMake(32, 32) string:@"График" color:[UIColor yellowColor]];
+    UIImage *tableImage = [UIImage imageFromImage:[UIImage imageNamed:@"tableSegment_32"] size:CGSizeMake(32, 32) string:@"Таблица"];// color:[UIColor redColor]];
+    UIImage *graphImage = [UIImage imageFromImage:[UIImage imageNamed:@"graphSegment_32"] size:CGSizeMake(32, 32) string:@"График"];// color:[UIColor yellowColor]];
     
-    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[tableImage, graphImage]];
+    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[tableImage,graphImage]];
+//    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[[tableImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal], [graphImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]]];
     
     segmentedControl.selectedSegmentIndex = 0;
     

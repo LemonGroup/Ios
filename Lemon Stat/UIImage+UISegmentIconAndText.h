@@ -10,7 +10,6 @@
 
 @interface UIImage (UISegmentIconAndText)
 
-+ (id) imageFromImage:(UIImage*)image size:(CGSize)size string:(NSString*)string color:(UIColor*)color;
-//+ (instancetype) imageFromImage:(UIImage*)image string:(NSString*)string color:(UIColor*)color position:(NSString*)position;
++ (instancetype) imageFromImage:(UIImage*)image size:(CGSize)size string:(NSString*)string;
 
 @end

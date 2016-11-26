@@ -76,7 +76,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Общая статистика" image="first" id="acW-dT-cKf"/>
+                    <tabBarItem key="tabBarItem" title="Общая статистика" image="generalStat" id="acW-dT-cKf"/>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -234,7 +234,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Ежедневная статистика" image="second" id="cPa-gy-q4n"/>
+                    <tabBarItem key="tabBarItem" title="Ежедневная статистика" image="dailyStat" id="cPa-gy-q4n"/>
                     <connections>
                         <outlet property="endDateField" destination="Yh9-aW-VCP" id="ovj-My-XUP"/>
                         <outlet property="personField" destination="jWH-M2-tRg" id="UjA-JS-FpP"/>
@@ -258,7 +258,6 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="vFP-ZG-5Io"/>
@@ -408,9 +407,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="first" width="30" height="30"/>
+        <image name="dailyStat" width="24" height="24"/>
+        <image name="generalStat" width="24" height="24"/>
         <image name="lines.png" width="1485" height="866"/>
         <image name="logo.png" width="321" height="264"/>
-        <image name="second" width="30" height="30"/>
     </resources>
 </document>
