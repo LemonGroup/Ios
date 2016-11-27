@@ -253,7 +253,13 @@
         <scene sceneID="yl2-sM-qoP">
             <objects>
                 <tabBarController storyboardIdentifier="TabBarController" id="49e-Tb-3d3" customClass="LGTabBarController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="tW8-z1-AQs"/>
+                    <navigationItem key="navigationItem" id="tW8-z1-AQs">
+                        <barButtonItem key="rightBarButtonItem" image="settings" id="7G5-LG-w5N">
+                            <connections>
+                                <segue destination="Oyl-7i-xZs" kind="show" id="feb-tZ-NZm"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
@@ -267,6 +273,38 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-12" y="181"/>
+        </scene>
+        <!--Setting View Controller-->
+        <scene sceneID="AXK-4B-wcG">
+            <objects>
+                <viewController id="Oyl-7i-xZs" customClass="LGSettingViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Esa-Ru-NvR"/>
+                        <viewControllerLayoutGuide type="bottom" id="c5f-kf-3HA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Nvb-ge-JFA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ArD-T0-pVa">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Oyl-7i-xZs" id="3rT-Yx-inT"/>
+                                    <outlet property="delegate" destination="Oyl-7i-xZs" id="74u-v1-hpS"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="ArD-T0-pVa" id="cTT-f4-LT4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w9W-wv-HDR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="900" y="180.35982008995504"/>
         </scene>
         <!--Auth View Controller-->
         <scene sceneID="R0G-rR-kcr">
@@ -415,5 +453,6 @@
         <image name="generalStat" width="24" height="24"/>
         <image name="lines.png" width="1485" height="866"/>
         <image name="logo.png" width="321" height="264"/>
+        <image name="settings" width="22" height="22"/>
     </resources>
 </document>

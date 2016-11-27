@@ -18,6 +18,7 @@
 		44F0F2B11DE0B71E00A25E03 /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2AF1DE0B71E00A25E03 /* bg.png */; };
 		44F0F2B21DE0B71E00A25E03 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B01DE0B71E00A25E03 /* logo.png */; };
 		44F0F2B41DE0BD6000A25E03 /* lines.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B31DE0BD6000A25E03 /* lines.png */; };
+		5849AA991DEB091600B61199 /* LGSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5849AA981DEB091600B61199 /* LGSettingViewController.m */; };
 		58A149FD1DE26EEB00439EAC /* NSString+Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A149FC1DE26EEB00439EAC /* NSString+Request.m */; };
 		58A14A011DE350DE00439EAC /* LGSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A14A001DE350DE00439EAC /* LGSite.m */; };
 		58A14A071DE9B4CF00439EAC /* UIImage+UISegmentIconAndText.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A14A061DE9B4CF00439EAC /* UIImage+UISegmentIconAndText.m */; };
@@ -47,6 +48,8 @@
 		44F0F2AF1DE0B71E00A25E03 /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bg.png; path = images/bg.png; sourceTree = "<group>"; };
 		44F0F2B01DE0B71E00A25E03 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		44F0F2B31DE0BD6000A25E03 /* lines.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lines.png; path = images/lines.png; sourceTree = "<group>"; };
+		5849AA971DEB091600B61199 /* LGSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSettingViewController.h; sourceTree = "<group>"; };
+		5849AA981DEB091600B61199 /* LGSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSettingViewController.m; sourceTree = "<group>"; };
 		58A149FB1DE26EEB00439EAC /* NSString+Request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Request.h"; sourceTree = "<group>"; };
 		58A149FC1DE26EEB00439EAC /* NSString+Request.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Request.m"; sourceTree = "<group>"; };
 		58A149FF1DE350DE00439EAC /* LGSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSite.h; sourceTree = "<group>"; };
@@ -166,6 +169,8 @@
 				44D396421DD38F4B008D9F27 /* LGGeneralStatsController.m */,
 				44D396441DD38F4B008D9F27 /* LGDailyStatsController.h */,
 				44D396451DD38F4B008D9F27 /* LGDailyStatsController.m */,
+				5849AA971DEB091600B61199 /* LGSettingViewController.h */,
+				5849AA981DEB091600B61199 /* LGSettingViewController.m */,
 				58F7D89B1DDD382500EA542E /* LGPopoverViewController.h */,
 				58F7D89C1DDD382500EA542E /* LGPopoverViewController.m */,
 			);
@@ -388,6 +393,7 @@
 				44D3963D1DD38F4B008D9F27 /* main.m in Sources */,
 				9F5AE4C11DDE1B2C00EAC350 /* LGPerson.m in Sources */,
 				58A149FD1DE26EEB00439EAC /* NSString+Request.m in Sources */,
+				5849AA991DEB091600B61199 /* LGSettingViewController.m in Sources */,
 				58A14A011DE350DE00439EAC /* LGSite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
