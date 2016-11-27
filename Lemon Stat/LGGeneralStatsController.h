@@ -8,7 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+#import "LGTabBarController.h"
+
 @interface LGGeneralStatsController : UIViewController
+
+@property (assign, nonatomic) MultipleType multipleType;
+
+- (void)changeInfoView;
 
 @end
 

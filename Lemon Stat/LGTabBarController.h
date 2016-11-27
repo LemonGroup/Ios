@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LGTabBarController : UITabBarController
+typedef enum {
+    MultipleTypeTable = 1,
+    MultipleTypeChart = 2
+} MultipleType;
 
-@property (weak, nonatomic) UISegmentedControl *multipleOptions;
+@interface LGTabBarController : UITabBarController
 
 @end

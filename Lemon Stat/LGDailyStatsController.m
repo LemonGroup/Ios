@@ -11,6 +11,7 @@
 #import "LGPopoverViewController.h"
 
 #import <AFNetworking/AFNetworking.h>
+#import <PNChart/PNChart.h>
 
 #import "LGSiteListSingleton.h"
 #import "LGSite.h"
@@ -18,6 +19,8 @@
 #import "LGPerson.h"
 
 #import "NSString+Request.h"
+
+//#import "LGTabBarController.h"
 
 typedef enum {
     TextFieldTypeSites = 1,
@@ -31,6 +34,7 @@ typedef enum {
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) PNLineChart *lineChart;
 
 @property (weak, nonatomic) IBOutlet UITextField *siteField;
 @property (weak, nonatomic) IBOutlet UITextField *personField;
@@ -65,6 +69,10 @@ typedef enum {
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [self changeInfoView];
+}
+
 #pragma mark - Requests Methods
 
 - (void)requestStat {
@@ -84,8 +92,19 @@ typedef enum {
              
              _responseJSON = responseObject;
              
-             [self.tableView reloadData];
+             switch (_multipleType) {
+                 case MultipleTypeTable:
+                     [self.tableView reloadData];
+                     break;
+                 case MultipleTypeChart:
+                     [self loadChart];
+                     break;
+                 default:
+                     break;
+             }
+             
              [self setTotalNumber];
+             
              NSLog(@"JSON: %@", _responseJSON);
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -124,14 +143,46 @@ typedef enum {
     NSString *startDate = [formatter stringFromDate:_selectedStartDate];
     NSString *endDate = [formatter stringFromDate:_selectedEndDate];
     
-    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/daily_stat?siteId=%ld&personId=%ld&start_date=%@&end_date=%@", siteID, personID, startDate, endDate];
+    NSString *string = [NSString stringWithFormat:@"stat/daily_stat?siteId=%ld&personId=%ld&start_date=%@&end_date=%@", siteID, personID, startDate, endDate];
     
     return [string encodeURLString];
 }
 
+#pragma mark - Chart Methods
+
+- (void)loadChart {
+    
+    NSMutableArray *dates = [NSMutableArray array];
+    NSMutableArray *numberOfNewPages = [NSMutableArray array];
+    
+    for (id obj in _responseJSON) {
+        [dates addObject:[obj valueForKey:@"date"]];
+    }
+    
+    for (id obj in _responseJSON) {
+        [numberOfNewPages addObject:[obj valueForKey:@"numberOfNewPages"]];
+    }
+    
+    [self.lineChart setXLabels:dates];
+    
+    // Line Chart No.1
+    NSArray * data01Array = numberOfNewPages;
+    PNLineChartData *data01 = [PNLineChartData new];
+    data01.color = PNFreshGreen;
+    data01.itemCount = self.lineChart.xLabels.count;
+    data01.getData = ^(NSUInteger index) {
+        CGFloat yValue = [data01Array[index] floatValue];
+        return [PNLineChartDataItem dataItemWithY:yValue];
+    };
+    
+    self.lineChart.chartMarginLeft = 55;
+    
+    self.lineChart.chartData = @[data01];
+    [self.lineChart strokeChart];
+    
+}
+
 #pragma mark - UITableViewDelegate
-
-
 
 #pragma mark - UITableViewDataSource
 
@@ -160,6 +211,43 @@ typedef enum {
 }
 
 #pragma mark - Methods
+
+- (void)changeInfoView {
+    
+    NSLog(@"LGDailyViewController %d", _multipleType);
+    
+    switch (_multipleType) {
+        case MultipleTypeTable: {
+            [self createTableView];
+        }
+            break;
+        case MultipleTypeChart: {
+            [self createChart];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)createTableView {
+    [self.lineChart removeFromSuperview];
+    
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 245.0, SCREEN_WIDTH, 328)];
+    self.tableView = tableView;
+    
+    [self.view addSubview:tableView];
+}
+
+- (void) createChart {
+    [self.tableView removeFromSuperview];
+    
+    PNLineChart *lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 245.0, SCREEN_WIDTH, 328)];
+    self.lineChart = lineChart;
+    
+    [self.view addSubview:lineChart];
+    [self loadChart];
+}
 
 - (void)setTotalNumber {
     

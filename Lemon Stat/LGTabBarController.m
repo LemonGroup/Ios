@@ -10,12 +10,21 @@
 
 #import "UIImage+UISegmentIconAndText.h"
 
+#import "LGGeneralStatsController.h"
+#import "LGDailyStatsController.h"
+
 NSMutableArray *gTokens;
 NSString *gToken;           // Токен (присваевается при входе в систему)
 NSInteger gGroupID;         // ID группы (присваевается при входе в систему)
 NSInteger gPrivilege;       // Привелегия (присваевается при входе в систему)
 
 @interface LGTabBarController ()
+
+@property (strong, nonatomic) LGGeneralStatsController *generalStatController;
+@property (strong, nonatomic) LGDailyStatsController *dailyStatsController;
+
+@property (weak, nonatomic) UISegmentedControl *multipleOptions;
+@property (assign, nonatomic) MultipleType multipleType;
 
 @end
 
@@ -24,6 +33,9 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading
+    
+    _generalStatController = self.viewControllers[0];
+    _dailyStatsController = self.viewControllers[1];
     
     // change rendering mode for UITabBar images
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
@@ -35,11 +47,42 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
     
     [self createSegmentedControl];
     
+    [self addObserver:self
+           forKeyPath:@"_multipleOptions.selectedSegmentIndex"
+              options:NSKeyValueObservingOptionNew
+              context:NULL];
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+    [self removeObserver:self forKeyPath:@"_multipleOptions.selectedSegmentIndex"];
+}
+
+#pragma mark - Observer
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    NSLog(@"\nobserveValueForKeyPath: %@\nofObject: %@\nchange: %@", keyPath, object, change);
+    
+    LGGeneralStatsController *generalStatsController = self.viewControllers[0];
+    LGDailyStatsController *dailyStatsController = self.viewControllers[1];
+    
+    generalStatsController.multipleType = _multipleType;
+    dailyStatsController.multipleType = _multipleType;
+    
+    if ([self.selectedViewController isKindOfClass:[LGGeneralStatsController class]]) {
+        
+        [generalStatsController changeInfoView];
+        
+    } else if ([self.selectedViewController isKindOfClass:[LGDailyStatsController class]]) {
+        
+        [dailyStatsController changeInfoView];
+        
+    }
 }
 
 #pragma mark - Methods
@@ -84,10 +127,12 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
     
     switch (_multipleOptions.selectedSegmentIndex) {
         case 0: {
+            _multipleType = MultipleTypeTable;
             NSLog(@"Segment 0");
         }
             break;
         case 1: {
+            _multipleType = MultipleTypeChart;
             NSLog(@"Segment1");
         }
         default:
@@ -98,7 +143,7 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
 
 - (IBAction)actionLogOut:(id)sender {
     
-    gToken = nil;
+    gToken = @"notToken";
     
     [self dismissViewControllerAnimated:YES completion:^{
         

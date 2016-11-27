@@ -63,6 +63,9 @@ typedef enum {
             
         }
     }
+    
+    [self archiveCurrentSetting];
+    
 }
 
 - (void)onKeyboardHide:(NSNotification *)notification {
@@ -133,22 +136,25 @@ typedef enum {
                  // Проверка на первый запуск приложения
                  static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
                  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-                 //[defaults setBool:NO forKey:hasRunAppOnceKey];
+                 
+                 [defaults setBool:NO forKey:hasRunAppOnceKey];
+                 
                  if ([defaults boolForKey:hasRunAppOnceKey] == NO) {
+                     
                      // Some code you want to run on first use...
                      [defaults setBool:YES forKey:hasRunAppOnceKey];
                      NSLog(@"Первый запуск приложения");
                      [self setNewPassword];
+                 
                  } else {
+                     
                      [_passwordTextField resignFirstResponder];
+                     
+                     [self requestGetSites];
+                     [self requestGetPersons];
+                     
+                     [self presentNavigationController];
                  }
-                 
-                 
-                 
-                 [self requestGetSites];
-                 [self requestGetPersons];
-                 
-                 [self presentNavigationController];
              }
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -159,7 +165,7 @@ typedef enum {
 
 - (NSString *)stringForRequestAuth {
     
-    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/user/auth?user=%@&pass=%@",self.loginTextField.text,self.passwordTextField.text];
+    NSString *string = [NSString stringWithFormat:@"user/auth?user=%@&pass=%@",self.loginTextField.text,self.passwordTextField.text];
     
     return [string encodeURLString];
 }
@@ -171,7 +177,8 @@ typedef enum {
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+//    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+    [manager.requestSerializer setValue:@"this-is-fake-token" forHTTPHeaderField:@"Auth-Token"];
     
     NSString *string = @"catalog/sites";
     
@@ -190,18 +197,6 @@ typedef enum {
          }];
 }
 
-- (void)createSiteListWithJSONArray:(NSArray *)responseJSON {
-    
-    LGSiteListSingleton *siteList = [LGSiteListSingleton sharedSiteList];
-    
-    for (id obj in responseJSON) {
-        
-        LGSite *site = [LGSite siteWithID:[obj valueForKey:@"id"] andURL:[obj valueForKey:@"site"]];
-        
-        [siteList.sites addObject:site];
-    }
-}
-
 - (void)requestGetPersons {
     
     extern NSString *gToken;
@@ -210,8 +205,9 @@ typedef enum {
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+//    [manager.requestSerializer setValue:@"this-is-fake-token" forHTTPHeaderField:@"Auth-Token"];
     
-    NSString *string = @"http://yrsoft.cu.cc:8080/catalog/persons";
+    NSString *string = @"catalog/persons";
     
     [manager GET:[string encodeURLString]
       parameters:nil
@@ -228,18 +224,6 @@ typedef enum {
          }];
 }
 
-- (void)createPersonListWithJSONArray:(NSArray *)responseJSON {
-    
-    LGPersonListSingleton *personList = [LGPersonListSingleton sharedPersonList];
-    
-    for (id obj in responseJSON) {
-        
-        LGPerson *person = [LGPerson personWithID:[obj valueForKey:@"id"] andName:[obj valueForKey:@"personName"]];
-        
-        [personList.persons addObject:person];
-    }
-}
-
 - (void)requestChangePassword {
     
     extern NSString *gToken;
@@ -249,7 +233,7 @@ typedef enum {
     [manager.requestSerializer setValue:@"application/json; charset: UTF-8" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
-    NSString *string = @"http://yrsoft.cu.cc:8080/catalog/accounts/password";
+    NSString *string = @"catalog/accounts/password";
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setObject:@10 forKey:@"id"];
@@ -267,6 +251,30 @@ typedef enum {
 }
 
 #pragma mark - Methods
+
+- (void)createSiteListWithJSONArray:(NSArray *)responseJSON {
+    
+    LGSiteListSingleton *siteList = [LGSiteListSingleton sharedSiteList];
+    
+    for (id obj in responseJSON) {
+        
+        LGSite *site = [LGSite siteWithID:[obj valueForKey:@"id"] andURL:[obj valueForKey:@"site"]];
+        
+        [siteList.sites addObject:site];
+    }
+}
+
+- (void)createPersonListWithJSONArray:(NSArray *)responseJSON {
+    
+    LGPersonListSingleton *personList = [LGPersonListSingleton sharedPersonList];
+    
+    for (id obj in responseJSON) {
+        
+        LGPerson *person = [LGPerson personWithID:[obj valueForKey:@"id"] andName:[obj valueForKey:@"personName"]];
+        
+        [personList.persons addObject:person];
+    }
+}
 
 - (UITextField *)createTextField {
     

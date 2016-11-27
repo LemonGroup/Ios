@@ -18,11 +18,15 @@
 
 #import "NSString+Request.h"
 
+//#import "LGTabBarController.h"
+
 @interface LGGeneralStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate> {
     NSArray *_responseJSON;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) UITableView *tableView;
+@property (weak, nonatomic) PNBarChart *barChart;
+
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
 @property (weak, nonatomic) IBOutlet UITextField *siteLabel;
@@ -35,17 +39,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    //[self loadData];
-    //For BarC hart
-    //PNBarChart * barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 135.0, SCREEN_WIDTH, 480)];
-    //[barChart setXLabels:_personsFake];
-    //[barChart setYValues:@[@1,  @10, @2]];
-    //[barChart setXLabels:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5"]];
-    //[barChart setYValues:@[@1,  @10, @2, @6, @3]];
-    //[barChart strokeChart];
-    //[self.view addSubview:barChart];
-    //barChart.alpha = 0;
+    _multipleType = MultipleTypeTable;
+}
 
+- (void)viewDidAppear:(BOOL)animated {
+    [self changeInfoView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,7 +53,7 @@
 
 #pragma mark - Requests Methods
 
-- (void)loadData {
+- (void)requestStat {
     
     extern NSString *gToken;
     extern NSURL *baseURL;
@@ -75,7 +73,17 @@
              success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
                  _responseJSON = responseObject;
                  
-                 [self.tableView reloadData];
+                 switch (_multipleType) {
+                     case MultipleTypeTable:
+                         [self.tableView reloadData];
+                         break;
+                     case MultipleTypeChart:
+                         [self loadChart];
+                         break;
+                     default:
+                         break;
+                 }
+                 
                  NSLog(@"JSON: %@", _responseJSON);
              }
              failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -97,15 +105,36 @@
         
     }
     
-    //NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?siteId=%ld", siteID];
-    NSString *string = [NSString stringWithFormat:@"http://yrsoft.cu.cc:8080/stat/over_stat?siteId=1"];
+    //NSString *string = [NSString stringWithFormat:@"stat/over_stat?siteId=%ld", siteID];
+    NSString *string = [NSString stringWithFormat:@"stat/over_stat?siteId=1"];
     
     return [string encodeURLString];
 }
 
+#pragma mark - Chart Methods
+
+- (void)loadChart {
+    
+    NSMutableArray *persons = [NSMutableArray array];
+    NSMutableArray *numberOfMentions = [NSMutableArray array];
+    
+    for (id obj in _responseJSON) {
+        [persons addObject:[obj valueForKey:@"person"]];
+    }
+    
+    for (id obj in _responseJSON) {
+        [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
+    }
+    
+    self.barChart.labelMarginTop = 30.0;
+    self.barChart.barWidth = 40;
+    [self.barChart setXLabels:persons];
+    [self.barChart setYValues:numberOfMentions];
+    [self.barChart strokeChart];
+    
+}
+
 #pragma mark - UITableViewDelegate
-
-
 
 #pragma mark - UITableViewDataSource
 
@@ -147,6 +176,43 @@
 }
 
 #pragma mark - Methods
+
+- (void)changeInfoView {
+    
+    NSLog(@"LGGeneralViewController %d", _multipleType);
+    
+    switch (_multipleType) {
+        case MultipleTypeTable: {
+            [self createTableView];
+        }
+            break;
+        case MultipleTypeChart: {
+            [self createChart];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)createTableView {
+    [self.barChart removeFromSuperview];
+    
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 135.0, SCREEN_WIDTH, 480)];
+    self.tableView = tableView;
+    
+    [self.view addSubview:tableView];
+}
+
+- (void) createChart {
+    [self.tableView removeFromSuperview];
+    
+    PNBarChart *barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 135.0, SCREEN_WIDTH, 480)];
+    self.barChart = barChart;
+    
+    [self.view addSubview:barChart];
+    [self loadChart];
+}
 
 - (void)createPopover:(UIView *)sender {
     
@@ -224,7 +290,7 @@
     // Метод заполнения таблицы или графика
     NSLog(@"Вывод информации");
     
-    [self loadData];
+    [self requestStat];
     
 }
 
