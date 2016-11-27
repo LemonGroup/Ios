@@ -254,6 +254,11 @@
             <objects>
                 <tabBarController storyboardIdentifier="TabBarController" id="49e-Tb-3d3" customClass="LGTabBarController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="tW8-z1-AQs">
+                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="vwV-bg-Z4P">
+                            <connections>
+                                <action selector="actionLogOut:" destination="49e-Tb-3d3" id="p6B-jI-L3Z"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="settings" id="7G5-LG-w5N">
                             <connections>
                                 <segue destination="Zxf-Ja-HIM" kind="show" identifier="ShowSettings" id="bhy-UH-dQe"/>

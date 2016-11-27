@@ -19,8 +19,35 @@ NSURL *baseURL;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
     extern NSURL *baseURL;
+    extern NSMutableArray *gTokens;
+    extern NSString *gToken;
+    
     baseURL = [NSURL URLWithString:@"http://yrsoft.cu.cc:8080"];
+    
+    
+    // разархивируем массив токенов и текущий токен
+    NSString *path = [NSString stringWithFormat:@"%@/tokens.arch", NSTemporaryDirectory()];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path] == YES) {      // если массив существует
+        
+        NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+        
+        NSLog(@"%@", dict);
+        
+        gTokens = [dict objectForKey:@"tokens"];
+        gToken = [dict objectForKey:@"currentToken"];
+        
+    } else {
+        
+        gTokens = [NSMutableArray array];
+        
+//        // fake
+//        gToken = @"token";
+//        [gTokens addObject:@"token"];
+        
+    }
     
     return YES;
 }

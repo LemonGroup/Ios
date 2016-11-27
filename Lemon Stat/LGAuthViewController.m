@@ -42,7 +42,27 @@ typedef enum {
     // Do any additional setup after loading the view.
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
+    // если пользователь заходил в приложение, он минует окно входа
+    extern NSMutableArray *gTokens;
+    extern NSString *gToken;
+    
+    NSLog(@"gTokens %@", gTokens);
+    
+    for (NSString *token in gTokens) {
+        
+        if ([gToken isEqualToString:token]) {
+            
+            [self requestGetSites];
+            [self requestGetPersons];
+            [self presentNavigationController];
+            
+        }
+    }
 }
 
 - (void)onKeyboardHide:(NSNotification *)notification {
@@ -94,6 +114,7 @@ typedef enum {
              if (responseObject) {
                  
                  NSLog(@"-------------------TOKEN-JSON: %@", responseObject);
+                 extern NSMutableArray *gTokens;
                  extern NSString *gToken;
                  extern NSInteger gGroupID;
                  extern NSInteger gPrivilege;
@@ -101,6 +122,13 @@ typedef enum {
                  gToken = [responseObject valueForKey:@"token"];
                  gGroupID = [[responseObject valueForKey:@"groupId"] integerValue];
                  gPrivilege = [[responseObject valueForKey:@"privilege"] integerValue];
+                 
+                 if (![gTokens containsObject:gToken]) {
+                     [gTokens addObject:gToken];
+                 }
+                 
+                 // Архивируем токены
+                 [self archiveCurrentSetting];
                  
                  // Проверка на первый запуск приложения
                  static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
@@ -114,6 +142,8 @@ typedef enum {
                  } else {
                      [_passwordTextField resignFirstResponder];
                  }
+                 
+                 
                  
                  [self requestGetSites];
                  [self requestGetPersons];
@@ -348,6 +378,24 @@ typedef enum {
     }
     
     return YES;
+}
+
+#pragma mark - Archiving
+
+- (void)archiveCurrentSetting {
+    
+    extern NSMutableArray *gTokens;
+    extern NSString *gToken;
+    
+    NSDictionary *dict = @{@"tokens" : gTokens,
+                           @"currentToken" : gToken};
+    
+    NSLog(@"dict %@", dict);
+    NSLog(@"gTokens %@", gTokens);
+    
+    NSString *path = [NSString stringWithFormat:@"%@/tokens.arch", NSTemporaryDirectory()];
+    [NSKeyedArchiver archiveRootObject:dict toFile:path];
+    
 }
 
 #pragma mark - Actions

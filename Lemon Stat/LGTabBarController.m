@@ -10,6 +10,7 @@
 
 #import "UIImage+UISegmentIconAndText.h"
 
+NSMutableArray *gTokens;
 NSString *gToken;           // Токен (присваевается при входе в систему)
 NSInteger gGroupID;         // ID группы (присваевается при входе в систему)
 NSInteger gPrivilege;       // Привелегия (присваевается при входе в систему)
@@ -93,6 +94,15 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
             break;
     }
     
+}
+
+- (IBAction)actionLogOut:(id)sender {
+    
+    gToken = nil;
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
 
 @end
