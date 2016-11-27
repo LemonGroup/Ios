@@ -69,13 +69,34 @@
              NSLog(@"%@", responseObject);
              NSLog(@"Пароль изменен");
              
+             [self alertAction];
+             
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
+             
+             [self alertAction];
          }];
 }
 
 #pragma mark - Methods
+
+- (void)alertAction {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Внимание"
+                                                                   message:@"Пароль успешно изменен"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"Ок"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              [self.navigationController popViewControllerAnimated:YES];
+                                                          }];
+    
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
 
 - (BOOL)verificationFillingOfFieldsForChangePassword {
     
@@ -95,6 +116,7 @@
 - (IBAction)actionChangeAndBack:(id)sender {
     
     if ([self verificationFillingOfFieldsForChangePassword]) {
+        [self.view endEditing:YES];
         [self requestChangePassword];
     }
 }
@@ -114,7 +136,6 @@
         
     } else {
         
-        [_changeRepeatedPasswordTextField resignFirstResponder];
         [self actionChangeAndBack:nil];
         
     }

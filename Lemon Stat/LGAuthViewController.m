@@ -53,19 +53,17 @@ typedef enum {
     
     NSLog(@"gTokens %@", gTokens);
     
-    for (NSString *token in gTokens) {
+    if ([gTokens containsObject:gToken]) {
         
-        if ([gToken isEqualToString:token]) {
-            
-            [self requestGetSites];
-            [self requestGetPersons];
-            [self presentNavigationController];
-            
-        }
+        [self requestGetSites];
+        [self requestGetPersons];
+        [self presentNavigationController];
+        
+    } else {
+        
+        [self archiveCurrentSetting];
+        
     }
-    
-    [self archiveCurrentSetting];
-    
 }
 
 - (void)onKeyboardHide:(NSNotification *)notification {
@@ -137,7 +135,7 @@ typedef enum {
                  static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
                  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
                  
-                 [defaults setBool:NO forKey:hasRunAppOnceKey];
+                 //[defaults setBool:NO forKey:hasRunAppOnceKey];
                  
                  if ([defaults boolForKey:hasRunAppOnceKey] == NO) {
                      
