@@ -33,7 +33,7 @@ typedef enum {
     NSArray *_responseJSON;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) UITableView *tableView;
 @property (weak, nonatomic) PNLineChart *lineChart;
 
 @property (weak, nonatomic) IBOutlet UITextField *siteField;
@@ -61,6 +61,8 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    _multipleType = MultipleTypeTable;
     
 }
 
@@ -234,6 +236,9 @@ typedef enum {
     [self.lineChart removeFromSuperview];
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 245.0, SCREEN_WIDTH, 328)];
+    tableView.dataSource = self;
+    tableView.delegate = self;
+    
     self.tableView = tableView;
     
     [self.view addSubview:tableView];

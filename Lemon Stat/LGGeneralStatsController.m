@@ -199,6 +199,9 @@
     [self.barChart removeFromSuperview];
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 135.0, SCREEN_WIDTH, 480)];
+    tableView.dataSource = self;
+    tableView.delegate = self;
+    
     self.tableView = tableView;
     
     [self.view addSubview:tableView];
