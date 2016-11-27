@@ -70,8 +70,9 @@ typedef enum {
 - (void)requestStat {
     
     extern NSString *gToken;
+    extern NSURL *baseURL;
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
     NSString *urlString = [self stringForRequest];

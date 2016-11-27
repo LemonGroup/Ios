@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+NSURL *baseURL;
+
 @interface AppDelegate ()
 
 @end
@@ -16,7 +18,10 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.    
+    // Override point for customization after application launch.
+    extern NSURL *baseURL;
+    baseURL = [NSURL URLWithString:@"http://yrsoft.cu.cc:8080"];
+    
     return YES;
 }
 

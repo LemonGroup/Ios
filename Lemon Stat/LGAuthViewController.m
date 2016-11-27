@@ -81,7 +81,9 @@ typedef enum {
 
 - (void)requestAuth {
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    extern NSURL *baseURL;
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
     
     NSString *urlString = [self stringForRequestAuth];
     
@@ -135,12 +137,13 @@ typedef enum {
 - (void)requestGetSites {
     
     extern NSString *gToken;
+    extern NSURL *baseURL;
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
-    NSString *string = @"http://yrsoft.cu.cc:8080/catalog/sites";
+    NSString *string = @"catalog/sites";
     
     [manager GET:[string encodeURLString]
       parameters:nil
@@ -172,8 +175,9 @@ typedef enum {
 - (void)requestGetPersons {
     
     extern NSString *gToken;
+    extern NSURL *baseURL;
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
@@ -209,8 +213,9 @@ typedef enum {
 - (void)requestChangePassword {
     
     extern NSString *gToken;
+    extern NSURL *baseURL;
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
     [manager.requestSerializer setValue:@"application/json; charset: UTF-8" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
@@ -256,7 +261,6 @@ typedef enum {
     newPasswordTextField.returnKeyType = UIReturnKeyNext;
     [_yellowLayer addSubview:newPasswordTextField];
     _changePasswordTextField = newPasswordTextField;
-    
     
     UITextField *newRepeatedPasswordTextField = [self createTextField];
     newRepeatedPasswordTextField.returnKeyType = UIReturnKeyJoin;
@@ -367,7 +371,6 @@ typedef enum {
             default:
                 break;
         }
-        
     }
 }
 
