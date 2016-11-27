@@ -118,7 +118,7 @@ typedef enum {
                  [self requestGetSites];
                  [self requestGetPersons];
                  
-                 //[self presentNavigationController];
+                 [self presentNavigationController];
              }
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
