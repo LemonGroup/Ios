@@ -1,5 +1,5 @@
 //
-//  LGSettingViewController.h
+//  LGSettingsTableViewController.h
 //  Lemon Stat
 //
 //  Created by Arkadiy Grigoryanc on 27.11.16.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LGSettingViewController : UIViewController
+@interface LGSettingsTableViewController : UITableViewController
 
 @end
