@@ -40,12 +40,35 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+}
 
+- (void)onKeyboardHide:(NSNotification *)notification {
+    //keyboard will hide
+    NSLog(@"keyboard will hide");
+    
+    if (_changePasswordTextField) {     // если поле существует
+        [UIView animateWithDuration:0.3
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             _yellowLayer.transform = CGAffineTransformMakeTranslation(0, 0);
+                         }
+                         completion:^(BOOL finished) {
+                             
+                         }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UIResponderStandardEditActions
@@ -80,13 +103,14 @@ typedef enum {
                  // Проверка на первый запуск приложения
                  static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
                  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-//                 if ([defaults boolForKey:hasRunAppOnceKey] == NO)
-                 {
+                 [defaults setBool:NO forKey:hasRunAppOnceKey];
+                 if ([defaults boolForKey:hasRunAppOnceKey] == NO) {
                      // Some code you want to run on first use...
                      [defaults setBool:YES forKey:hasRunAppOnceKey];
                      NSLog(@"Первый запуск приложения");
                      [self setNewPassword];
-                     
+                 } else {
+                     [_passwordTextField resignFirstResponder];
                  }
                  
                  [self requestGetSites];
@@ -205,7 +229,6 @@ typedef enum {
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
          }];
-    
 }
 
 #pragma mark - Methods
@@ -215,28 +238,32 @@ typedef enum {
     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0,
                                                                            CGRectGetWidth(_passwordTextField.frame),
                                                                            CGRectGetHeight(_passwordTextField.frame))];
+    
+    textField.borderStyle = UITextBorderStyleRoundedRect;
     textField.center = _passwordTextField.center;
-    
-    textField.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.0f];
-    textField.layer.cornerRadius = 5;
-    
-    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
-    textField.leftView = paddingView;
-    textField.leftViewMode = UITextFieldViewModeAlways;
+    textField.secureTextEntry = YES;
+    textField.delegate = self;
     
     return textField;
 }
 
 - (void)setNewPassword {
     
+    _loginTextField.enabled = NO;
+    _passwordTextField.enabled = NO;
+    
     UITextField *newPasswordTextField = [self createTextField];
+    newPasswordTextField.returnKeyType = UIReturnKeyNext;
     [_yellowLayer addSubview:newPasswordTextField];
     _changePasswordTextField = newPasswordTextField;
     
     
     UITextField *newRepeatedPasswordTextField = [self createTextField];
+    newRepeatedPasswordTextField.returnKeyType = UIReturnKeyJoin;
     [_yellowLayer addSubview:newRepeatedPasswordTextField];
     _changeRepeatedPasswordTextField = newRepeatedPasswordTextField;
+    
+    [_changePasswordTextField becomeFirstResponder];
     
     [self animationYellowLayout];
     
@@ -263,14 +290,12 @@ typedef enum {
                          _responseLabel.center = CGPointMake(CGRectGetMidX(_responseLabel.frame),
                                                              CGRectGetMidY(_responseLabel.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
                          
-                         _changePasswordTextField.backgroundColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
                          _changePasswordTextField.center = CGPointMake(CGRectGetMidX(_changePasswordTextField.frame),
                                                                        CGRectGetMidY(_changePasswordTextField.frame) + CGRectGetHeight(_passwordTextField.frame) + space);
                          _changePasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Введите новый пароль"
                                                                                                       attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0f]}];
                          
                          
-                         _changeRepeatedPasswordTextField.backgroundColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
                          _changeRepeatedPasswordTextField.center = CGPointMake(CGRectGetMidX(_changeRepeatedPasswordTextField.frame),
                                                                                CGRectGetMidY(_changeRepeatedPasswordTextField.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
                          _changeRepeatedPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Повторите новый пароль"
@@ -310,11 +335,15 @@ typedef enum {
 
 - (BOOL)verificationFillingOfFieldsForChangePassword {
     
-    if ([_changePasswordTextField.text isEqualToString:_changeRepeatedPasswordTextField.text]) {
-        return YES;
-    } else {
+    if (_changePasswordTextField.text.length == 0 || _changeRepeatedPasswordTextField.text.length == 0) {
+        _responseLabel.text = @"Заполните все поля";
+        return NO;
+    } else if (![_changePasswordTextField.text isEqualToString:_changeRepeatedPasswordTextField.text]) {
+        _responseLabel.text = @"Пароли не совпадают";
         return NO;
     }
+    
+    return YES;
 }
 
 #pragma mark - Actions
@@ -324,17 +353,14 @@ typedef enum {
     if ([self verificationFillingOfFields]) {
         
         switch (sender.tag) {
-            case LGAuthViewControllerButtonTypeJoin:
+            case LGAuthViewControllerButtonTypeJoin: {
                 [self requestAuth];
+            }
                 break;
             case LGAuthViewControllerButtonTypeChangePass: {
-                
-                if (_changePasswordTextField.text.length == 0 || _changeRepeatedPasswordTextField.text.length == 0) {
-                    _responseLabel.text = @"Заполните все поля";
-                }  else if ([self verificationFillingOfFieldsForChangePassword]) {
+                if ([self verificationFillingOfFieldsForChangePassword]) {
+                    [_changeRepeatedPasswordTextField resignFirstResponder];
                     [self requestChangePassword];
-                } else {
-                    _responseLabel.text = @"Пароли не совпадают";
                 }
             }
                 break;
@@ -349,6 +375,18 @@ typedef enum {
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     _responseLabel.text = @"";
+    
+    if (_changePasswordTextField) {     // если поле существует
+        [UIView animateWithDuration:0.3
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             _yellowLayer.transform = CGAffineTransformMakeTranslation(0, -155);
+                         }
+                         completion:^(BOOL finished) {
+                             
+                         }];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -359,9 +397,15 @@ typedef enum {
         
     } else if ([textField isEqual:_passwordTextField]) {
         
-        [_passwordTextField resignFirstResponder];
+        [self actionJoin:_joinButton];
         
-        [self actionJoin:nil];
+    } else if ([textField isEqual:_changePasswordTextField]) {
+        
+        [_changeRepeatedPasswordTextField becomeFirstResponder];
+        
+    } else if ([textField isEqual:_changeRepeatedPasswordTextField]) {
+        
+        [self actionJoin:_joinButton];
         
     }
     return YES;
