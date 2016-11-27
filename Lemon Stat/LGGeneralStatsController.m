@@ -105,8 +105,8 @@
         
     }
     
-    //NSString *string = [NSString stringWithFormat:@"stat/over_stat?siteId=%ld", siteID];
-    NSString *string = [NSString stringWithFormat:@"stat/over_stat?siteId=1"];
+    NSString *string = [NSString stringWithFormat:@"stat/over_stat?siteId=%ld", siteID];
+//    NSString *string = [NSString stringWithFormat:@"stat/over_stat?siteId=323"];
     
     return [string encodeURLString];
 }
@@ -115,23 +115,25 @@
 
 - (void)loadChart {
     
-    NSMutableArray *persons = [NSMutableArray array];
-    NSMutableArray *numberOfMentions = [NSMutableArray array];
-    
-    for (id obj in _responseJSON) {
-        [persons addObject:[obj valueForKey:@"person"]];
+    if (_responseJSON) {
+        
+        NSMutableArray *persons = [NSMutableArray array];
+        NSMutableArray *numberOfMentions = [NSMutableArray array];
+        
+        for (id obj in _responseJSON) {
+            [persons addObject:[obj valueForKey:@"person"]];
+        }
+        
+        for (id obj in _responseJSON) {
+            [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
+        }
+        
+        self.barChart.labelMarginTop = 30.0;
+        self.barChart.barWidth = 40;
+        [self.barChart setXLabels:persons];
+        [self.barChart setYValues:numberOfMentions];
+        [self.barChart strokeChart];
     }
-    
-    for (id obj in _responseJSON) {
-        [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
-    }
-    
-    self.barChart.labelMarginTop = 30.0;
-    self.barChart.barWidth = 40;
-    [self.barChart setXLabels:persons];
-    [self.barChart setYValues:numberOfMentions];
-    [self.barChart strokeChart];
-    
 }
 
 #pragma mark - UITableViewDelegate
@@ -150,10 +152,12 @@
     
     static NSString *identifier = @"PersonCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     
+    // set textLabel
     cell.textLabel.text = [_responseJSON[indexPath.row] valueForKey:@"person"];
     
+    // set detailTextLabel
     NSString *numberOfMentions = [_responseJSON[indexPath.row] valueForKey:@"numberOfMentions"];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", numberOfMentions];
     

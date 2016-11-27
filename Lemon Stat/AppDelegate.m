@@ -8,6 +8,13 @@
 
 #import "AppDelegate.h"
 
+
+#import "LGSiteListSingleton.h"
+#import "LGSite.h"
+#import "LGPersonListSingleton.h"
+#import "LGPerson.h"
+
+
 NSURL *baseURL;
 
 @interface AppDelegate ()
@@ -46,6 +53,27 @@ NSURL *baseURL;
 //        // fake
 //        gToken = @"token";
 //        [gTokens addObject:@"token"];
+        
+    }
+    
+    
+    LGSiteListSingleton *siteList = [LGSiteListSingleton sharedSiteList];
+    
+    for (int i = 0; i < 4; i++) {
+        
+        LGSite *site = [LGSite siteWithID:@1 andURL:@"www.site.ru"];
+        
+        [siteList.sites addObject:site];
+        
+    }
+    
+    LGPersonListSingleton *personList = [LGPersonListSingleton sharedPersonList];
+    
+    for (int i = 0; i < 4; i++) {
+        
+        LGPerson *person = [LGPerson personWithID:@2 andName:@"Персонаж"];
+        
+        [personList.persons addObject:person];
         
     }
     

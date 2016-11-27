@@ -61,9 +61,6 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    _multipleType = MultipleTypeTable;
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -154,34 +151,36 @@ typedef enum {
 
 - (void)loadChart {
     
-    NSMutableArray *dates = [NSMutableArray array];
-    NSMutableArray *numberOfNewPages = [NSMutableArray array];
-    
-    for (id obj in _responseJSON) {
-        [dates addObject:[obj valueForKey:@"date"]];
+    if (_responseJSON) {
+        
+        NSMutableArray *dates = [NSMutableArray array];
+        NSMutableArray *numberOfNewPages = [NSMutableArray array];
+        
+        for (id obj in _responseJSON) {
+            [dates addObject:[obj valueForKey:@"date"]];
+        }
+        
+        for (id obj in _responseJSON) {
+            [numberOfNewPages addObject:[obj valueForKey:@"numberOfNewPages"]];
+        }
+        
+        [self.lineChart setXLabels:dates];
+        
+        // Line Chart No.1
+        NSArray * data01Array = numberOfNewPages;
+        PNLineChartData *data01 = [PNLineChartData new];
+        data01.color = PNFreshGreen;
+        data01.itemCount = self.lineChart.xLabels.count;
+        data01.getData = ^(NSUInteger index) {
+            CGFloat yValue = [data01Array[index] floatValue];
+            return [PNLineChartDataItem dataItemWithY:yValue];
+        };
+        
+        //self.lineChart.chartMarginLeft = 55;
+        
+        self.lineChart.chartData = @[data01];
+        [self.lineChart strokeChart];
     }
-    
-    for (id obj in _responseJSON) {
-        [numberOfNewPages addObject:[obj valueForKey:@"numberOfNewPages"]];
-    }
-    
-    [self.lineChart setXLabels:dates];
-    
-    // Line Chart No.1
-    NSArray * data01Array = numberOfNewPages;
-    PNLineChartData *data01 = [PNLineChartData new];
-    data01.color = PNFreshGreen;
-    data01.itemCount = self.lineChart.xLabels.count;
-    data01.getData = ^(NSUInteger index) {
-        CGFloat yValue = [data01Array[index] floatValue];
-        return [PNLineChartDataItem dataItemWithY:yValue];
-    };
-    
-    self.lineChart.chartMarginLeft = 55;
-    
-    self.lineChart.chartData = @[data01];
-    [self.lineChart strokeChart];
-    
 }
 
 #pragma mark - UITableViewDelegate
@@ -200,7 +199,7 @@ typedef enum {
     
     static NSString *identifier = @"DateCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     
     // set textLabel
     cell.textLabel.text = [_responseJSON[indexPath.row] valueForKey:@"date"];
