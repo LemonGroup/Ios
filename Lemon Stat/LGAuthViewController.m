@@ -105,7 +105,7 @@ typedef enum {
                  // Проверка на первый запуск приложения
                  static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
                  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-                 [defaults setBool:NO forKey:hasRunAppOnceKey];
+                 //[defaults setBool:NO forKey:hasRunAppOnceKey];
                  if ([defaults boolForKey:hasRunAppOnceKey] == NO) {
                      // Some code you want to run on first use...
                      [defaults setBool:YES forKey:hasRunAppOnceKey];
