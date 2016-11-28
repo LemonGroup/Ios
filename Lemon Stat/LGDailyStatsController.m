@@ -174,23 +174,14 @@ typedef enum {
         // Line Chart No.1
         NSArray * data01Array = numberOfNewPages;
         PNLineChartData *data01 = [PNLineChartData new];
-        data01.color = PNFreshGreen;
+        data01.color = [UIColor blueColor];
         data01.itemCount = self.lineChart.xLabels.count;
         data01.getData = ^(NSUInteger index) {
             CGFloat yValue = [data01Array[index] floatValue];
             return [PNLineChartDataItem dataItemWithY:yValue];
         };
         
-//        self.lineChart.xLabelWidth = 40;
-//        self.lineChart.yLabelHeight = 30;
-        
-//        self.lineChart.chartMarginLeft = 100;
-//        self.lineChart.chartMarginRight = 30;
-//        self.lineChart.chartMarginTop = 30;
-//        self.lineChart.chartMarginBottom = 30;
-        
         self.lineChart.showCoordinateAxis = YES;
-//        self.lineChart.showSmoothLines = YES;
         
         self.lineChart.chartData = @[data01];
         [self.lineChart strokeChart];

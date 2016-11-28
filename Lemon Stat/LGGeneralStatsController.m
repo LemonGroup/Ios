@@ -73,6 +73,14 @@
              success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
                  _responseJSON = responseObject;
                  
+                 _responseJSON = @[@{@"numberOfMentions" : @"10",
+                                     @"person" : @"Путин"},
+                                   @{@"numberOfMentions" : @"232",
+                                     @"person" : @"Навальный"},
+                                   @{@"numberOfMentions" : @"66",
+                                     @"person" : @"Медведев"}
+                                   ];
+                 
                  switch (_multipleType) {
                      case MultipleTypeTable:
                          [self.tableView reloadData];
@@ -88,6 +96,8 @@
              }
              failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                  NSLog(@"Error: %@", error);
+                 
+                 
              }];
     }
 }
@@ -115,29 +125,31 @@
 
 - (void)loadChart {
     
-    if (!_responseJSON) {
+    if (_responseJSON) {
         
         NSMutableArray *persons = [NSMutableArray array];
         NSMutableArray *numberOfMentions = [NSMutableArray array];
         
-//        for (id obj in _responseJSON) {
-//            [persons addObject:[obj valueForKey:@"person"]];
-//        }
+        for (id obj in _responseJSON) {
+            [persons addObject:[obj valueForKey:@"person"]];
+        }
+        
+        for (id obj in _responseJSON) {
+            [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
+        }
+        
+//        [persons addObject:@"Путин"];
+//        [persons addObject:@"Навальный"];
+//        [persons addObject:@"Медведев"];
 //        
-//        for (id obj in _responseJSON) {
-//            [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
-//        }
-        
-        [persons addObject:@"Путин"];
-        [persons addObject:@"Навальный"];
-        [persons addObject:@"Медведев"];
-        
-        [numberOfMentions addObject:@"10"];
-        [numberOfMentions addObject:@"232"];
-        [numberOfMentions addObject:@"66"];
+//        [numberOfMentions addObject:@"10"];
+//        [numberOfMentions addObject:@"232"];
+//        [numberOfMentions addObject:@"66"];
         
         self.barChart.labelMarginTop = 30.0;
         self.barChart.barWidth = 40;
+        self.barChart.isGradientShow = NO;
+        self.barChart.strokeColor = [UIColor blueColor];
         [self.barChart setXLabels:persons];
         [self.barChart setYValues:numberOfMentions];
         [self.barChart strokeChart];
@@ -210,7 +222,7 @@
 - (void)createTableView {
     [self.barChart removeFromSuperview];
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 135.0, SCREEN_WIDTH, 480)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 102, SCREEN_WIDTH, 513)];
     tableView.dataSource = self;
     tableView.delegate = self;
     
@@ -222,7 +234,7 @@
 - (void) createChart {
     [self.tableView removeFromSuperview];
     
-    PNBarChart *barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 135.0, SCREEN_WIDTH, 480)];
+    PNBarChart *barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 102, SCREEN_WIDTH, 513)];
     self.barChart = barChart;
     
     [self.view addSubview:barChart];
