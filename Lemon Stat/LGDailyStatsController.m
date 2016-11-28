@@ -20,8 +20,6 @@
 
 #import "NSString+Request.h"
 
-//#import "LGTabBarController.h"
-
 typedef enum {
     TextFieldTypeSites = 1,
     TextFieldTypePersons = 2,
@@ -31,6 +29,9 @@ typedef enum {
 
 @interface LGDailyStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate> {
     NSArray *_responseJSON;
+    UITextField *_currentTextField;
+    NSDate *_selectedStartDate;
+    NSDate *_selectedEndDate;
 }
 
 @property (weak, nonatomic) UITableView *tableView;
@@ -41,18 +42,13 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UITextField *startDateField;
 @property (weak, nonatomic) IBOutlet UITextField *endDateField;
 
-@property (weak, nonatomic) IBOutlet UILabel *totalNumberLabel;
-
 @property (weak, nonatomic) IBOutlet UILabel *responseLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *totalNumberLabel;
 
 @property (weak, nonatomic) UIButton *applyButton;
 
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
-
-@property (weak, nonatomic) UITextField *currentTextField;
-
-@property (strong, nonatomic) NSDate *selectedStartDate;
-@property (strong, nonatomic) NSDate *selectedEndDate;
 
 @end
 
@@ -299,7 +295,7 @@ typedef enum {
     }
     
     self.popoverViewController = vc;
-    self.currentTextField = sender;
+    _currentTextField = sender;
     
     UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController:vc];
     destNav.modalPresentationStyle = UIModalPresentationPopover;
@@ -351,7 +347,7 @@ typedef enum {
 
 - (NSString *)titleForPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
-    switch (self.currentTextField.tag) {
+    switch (_currentTextField.tag) {
         case TextFieldTypeSites:
             return @"Выберите сайт";
             break;
@@ -375,7 +371,7 @@ typedef enum {
     
     NSMutableArray *array = [NSMutableArray array];
     
-    switch (self.currentTextField.tag) {
+    switch (_currentTextField.tag) {
         case TextFieldTypeSites: {
             
             for (LGSite *site in [[LGSiteListSingleton sharedSiteList] sites]) {
@@ -400,7 +396,7 @@ typedef enum {
 
 - (NSString *)labelCurrentRowForPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
-    switch (self.currentTextField.tag) {
+    switch (_currentTextField.tag) {
         case TextFieldTypeSites:
             return _siteField.text;
             break;
@@ -416,7 +412,7 @@ typedef enum {
 
 - (void)stringChange:(NSString *)string {
     
-    switch (self.currentTextField.tag) {
+    switch (_currentTextField.tag) {
         case TextFieldTypeSites: {
             self.siteField.text = string;
         }
@@ -435,14 +431,14 @@ typedef enum {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd MMMM YYYY"];
     
-    switch (self.currentTextField.tag) {
+    switch (_currentTextField.tag) {
         case TextFieldTypeStartDate: {
-            self.selectedStartDate = datePicker.date;
+            _selectedStartDate = datePicker.date;
             self.startDateField.text = [dateFormatter stringFromDate:datePicker.date];
         }
             break;
         case TextFieldTypeEndDate: {
-            self.selectedEndDate = datePicker.date;
+            _selectedEndDate = datePicker.date;
             self.endDateField.text = [dateFormatter stringFromDate:datePicker.date];
         }
             break;
@@ -453,12 +449,12 @@ typedef enum {
 
 - (void)dateRangeForDatePicker:(UIDatePicker *)datePicker forPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
-    switch (self.currentTextField.tag) {
+    switch (_currentTextField.tag) {
         case TextFieldTypeStartDate: {
             
             datePicker.minimumDate = [[NSDate alloc] initWithTimeIntervalSince1970:0];
             
-            if (self.selectedEndDate) {         // если установлена конечная дата
+            if (_selectedEndDate) {         // если установлена конечная дата
                 datePicker.maximumDate = _selectedEndDate;
             } else {
                 datePicker.maximumDate = [NSDate date];
@@ -467,7 +463,7 @@ typedef enum {
             break;
         case TextFieldTypeEndDate: {
             
-            if (self.selectedStartDate) {         // если установлена начальная дата
+            if (_selectedStartDate) {         // если установлена начальная дата
                 datePicker.minimumDate = _selectedStartDate;
             } else {
                 datePicker.minimumDate = [[NSDate alloc] initWithTimeIntervalSince1970:0];
@@ -501,8 +497,6 @@ typedef enum {
     } else {
         [self createRefreshButton];
         [_responseLabel removeFromSuperview];
-//        _responseLabel.hidden = YES;
-//        _applyButton.hidden = NO;
         return @"Применить";
     }
 }

@@ -13,7 +13,7 @@
 #import "LGGeneralStatsController.h"
 #import "LGDailyStatsController.h"
 
-NSMutableArray *gTokens;
+NSMutableArray *gTokens;    // Все токены
 NSString *gToken;           // Токен (присваевается при входе в систему)
 NSInteger gGroupID;         // ID группы (присваевается при входе в систему)
 NSInteger gPrivilege;       // Привелегия (присваевается при входе в систему)
@@ -23,8 +23,8 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
 @property (strong, nonatomic) LGGeneralStatsController *generalStatController;
 @property (strong, nonatomic) LGDailyStatsController *dailyStatsController;
 
-@property (weak, nonatomic) UISegmentedControl *multipleOptions;
 @property (assign, nonatomic) MultipleType multipleType;
+@property (weak, nonatomic) UISegmentedControl *multipleOptions;
 
 @end
 
@@ -47,6 +47,7 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
     
     [self createSegmentedControl];
     
+    // отслеживаем контрол таблица/график
     [self addObserver:self
            forKeyPath:@"_multipleOptions.selectedSegmentIndex"
               options:NSKeyValueObservingOptionNew
@@ -89,22 +90,20 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
 
 - (void)createSegmentedControl {
     
-    UIImage *tableImage = [UIImage imageFromImage:[UIImage imageNamed:@"tableSegment_32"] size:CGSizeMake(32, 32) string:@"Таблица"];// color:[UIColor redColor]];
-    UIImage *graphImage = [UIImage imageFromImage:[UIImage imageNamed:@"graphSegment_32"] size:CGSizeMake(32, 32) string:@"График"];// color:[UIColor yellowColor]];
+    UIImage *tableImage = [UIImage imageFromImage:[UIImage imageNamed:@"tableSegment_32"] size:CGSizeMake(32, 32) string:@"Таблица"];
+    UIImage *graphImage = [UIImage imageFromImage:[UIImage imageNamed:@"graphSegment_32"] size:CGSizeMake(32, 32) string:@"График"];
     
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[tableImage,graphImage]];
-//    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[[tableImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal], [graphImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]]];
     
     segmentedControl.selectedSegmentIndex = 0;
     
     [segmentedControl addTarget:self
-                         action:@selector(changeSegment:)
+                         action:@selector(changeMultipleOptions:)
                forControlEvents:UIControlEventValueChanged];
     
     _multipleOptions = segmentedControl;
     
     self.navigationItem.titleView = segmentedControl;
-    
 }
 
 #pragma mark - Navigation
@@ -123,7 +122,7 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
 
 #pragma mark - Actions
 
-- (void)changeSegment:(id)sender {
+- (void)changeMultipleOptions:(id)sender {
     
     switch (_multipleOptions.selectedSegmentIndex) {
         case 0: {
@@ -135,19 +134,14 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
             _multipleType = MultipleTypeChart;
             NSLog(@"Segment1");
         }
-        default:
-            break;
     }
-    
 }
 
 - (IBAction)actionLogOut:(id)sender {
     
     gToken = @"notToken";
     
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -28,7 +28,7 @@ NSURL *baseURL;
     // Override point for customization after application launch.
     
     extern NSURL *baseURL;
-    extern NSMutableArray *gTokens;
+//    extern NSMutableArray *gTokens;
     extern NSString *gToken;
     
     baseURL = [NSURL URLWithString:@"http://yrsoft.cu.cc:8080"];
@@ -43,12 +43,12 @@ NSURL *baseURL;
         
         NSLog(@"%@", dict);
         
-        gTokens = [dict objectForKey:@"tokens"];
+//        gTokens = [dict objectForKey:@"tokens"];
         gToken = [dict objectForKey:@"currentToken"];
         
     } else {
         
-        gTokens = [NSMutableArray array];
+//        gTokens = [NSMutableArray array];
         
 //        // fake
 //        gToken = @"token";

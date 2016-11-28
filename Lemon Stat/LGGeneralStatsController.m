@@ -18,8 +18,6 @@
 
 #import "NSString+Request.h"
 
-//#import "LGTabBarController.h"
-
 @interface LGGeneralStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate> {
     NSArray *_responseJSON;
 }
@@ -71,15 +69,21 @@
                 
             }
              success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
-                 _responseJSON = responseObject;
                  
-                 _responseJSON = @[@{@"numberOfMentions" : @"10",
-                                     @"person" : @"Путин"},
-                                   @{@"numberOfMentions" : @"232",
-                                     @"person" : @"Навальный"},
-                                   @{@"numberOfMentions" : @"66",
-                                     @"person" : @"Медведев"}
-                                   ];
+                 /************* Изменить этот кусок кода *************/
+                 if (responseObject) {
+                     _responseJSON = responseObject;
+                 } else {
+                     // фейковые данные
+                     _responseJSON = @[@{@"numberOfMentions" : @"10",
+                                         @"person" : @"Путин"},
+                                       @{@"numberOfMentions" : @"232",
+                                         @"person" : @"Навальный"},
+                                       @{@"numberOfMentions" : @"66",
+                                         @"person" : @"Медведев"}
+                                       ];
+                 }
+                 /****************************************************/
                  
                  switch (_multipleType) {
                      case MultipleTypeTable:
@@ -96,8 +100,6 @@
              }
              failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                  NSLog(@"Error: %@", error);
-                 
-                 
              }];
     }
 }
@@ -112,7 +114,6 @@
             siteID = [site.siteID integerValue];
             continue;
         }
-        
     }
     
     NSString *string = [NSString stringWithFormat:@"stat/over_stat?siteId=%ld", siteID];
@@ -137,14 +138,6 @@
         for (id obj in _responseJSON) {
             [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
         }
-        
-//        [persons addObject:@"Путин"];
-//        [persons addObject:@"Навальный"];
-//        [persons addObject:@"Медведев"];
-//        
-//        [numberOfMentions addObject:@"10"];
-//        [numberOfMentions addObject:@"232"];
-//        [numberOfMentions addObject:@"66"];
         
         self.barChart.labelMarginTop = 30.0;
         self.barChart.barWidth = 40;
@@ -180,6 +173,7 @@
     // set detailTextLabel
     NSString *numberOfMentions = [_responseJSON[indexPath.row] valueForKey:@"numberOfMentions"];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", numberOfMentions];
+    cell.detailTextLabel.textColor = [UIColor blueColor];
     
     return cell;
 }
@@ -249,9 +243,7 @@
     vc.preferredContentSize = contentSize;
     vc.delegate = self;
     
-    [self willChangeValueForKey:@"popoverViewController"];
     self.popoverViewController = vc;
-    [self didChangeValueForKey:@"popoverViewController"];
     
     UINavigationController *destNav = [[UINavigationController alloc] initWithRootViewController:vc];
     destNav.modalPresentationStyle = UIModalPresentationPopover;
@@ -263,7 +255,6 @@
     presentationController.sourceRect = sender.bounds;
     
     [self presentViewController:destNav animated:YES completion:nil];
-    
 }
 
 #pragma mark - LGPopoverViewControllerDelegate
@@ -299,16 +290,10 @@
 
 - (void)actionReturn:(UIButton *)button {
     
-    [_popoverViewController dismissViewControllerAnimated:YES completion:nil];
+    [_popoverViewController dismissViewControllerAnimated:YES completion:^{
+        [self actionApply:nil];
+    }];
      
-}
-
-- (BOOL)recognizeDisappearForPopoverViewController:(LGPopoverViewController *)popoverViewController {
-    return YES;
-}
-
-- (void)disappearedPopoverViewController:(LGPopoverViewController *)popoverViewController {
-    [self actionApply:nil];
 }
 
 #pragma mark - Actions

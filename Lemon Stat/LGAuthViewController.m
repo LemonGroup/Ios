@@ -48,27 +48,34 @@ typedef enum {
     [super viewDidAppear:animated];
     
     // если пользователь заходил в приложение, он минует окно входа
-    extern NSMutableArray *gTokens;
+//    extern NSMutableArray *gTokens;
     extern NSString *gToken;
     
-    NSLog(@"gTokens %@", gTokens);
-    
-    if ([gTokens containsObject:gToken]) {
-        
+    if (![gToken isEqualToString:@"notToken"]) {
         [self requestGetSites];
         [self requestGetPersons];
         [self presentNavigationController];
-        
     } else {
-        
         [self archiveCurrentSetting];
-        
     }
+    
+//    NSLog(@"gTokens %@", gTokens);
+    
+//    if ([gTokens containsObject:gToken]) {
+//        
+//        [self requestGetSites];
+//        [self requestGetPersons];
+//        [self presentNavigationController];
+//        
+//    } else {
+//        
+//        [self archiveCurrentSetting];
+//        
+//    }
 }
 
 - (void)onKeyboardHide:(NSNotification *)notification {
     //keyboard will hide
-    NSLog(@"keyboard will hide");
     
     if (_changePasswordTextField) {     // если поле существует
         [UIView animateWithDuration:0.3
@@ -115,7 +122,7 @@ typedef enum {
              if (responseObject) {
                  
                  NSLog(@"-------------------TOKEN-JSON: %@", responseObject);
-                 extern NSMutableArray *gTokens;
+//                 extern NSMutableArray *gTokens;
                  extern NSString *gToken;
                  extern NSInteger gGroupID;
                  extern NSInteger gPrivilege;
@@ -124,35 +131,26 @@ typedef enum {
                  gGroupID = [[responseObject valueForKey:@"groupId"] integerValue];
                  gPrivilege = [[responseObject valueForKey:@"privilege"] integerValue];
                  
-                 if (![gTokens containsObject:gToken]) {
-                     [gTokens addObject:gToken];
-                 }
+//                 if (![gTokens containsObject:gToken]) {
+//                     [gTokens addObject:gToken];
+//                 }
                  
                  // Архивируем токены
                  [self archiveCurrentSetting];
                  
-                 // Проверка на первый запуск приложения
-                 static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
-                 NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+//                 // Проверка на первый запуск приложения
+//                 static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
+//                 NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+//                 if ([defaults boolForKey:hasRunAppOnceKey] == NO) {
+//                     // Some code you want to run on first use...
+//                     [self setNewPassword];
+//                     [_passwordTextField resignFirstResponder];
+//                 }
                  
-                 //[defaults setBool:NO forKey:hasRunAppOnceKey];
+                 [self requestGetSites];
+                 [self requestGetPersons];
                  
-                 if ([defaults boolForKey:hasRunAppOnceKey] == NO) {
-                     
-                     // Some code you want to run on first use...
-                     [defaults setBool:YES forKey:hasRunAppOnceKey];
-                     NSLog(@"Первый запуск приложения");
-                     [self setNewPassword];
-                 
-                 } else {
-                     
-                     [_passwordTextField resignFirstResponder];
-                     
-                     [self requestGetSites];
-                     [self requestGetPersons];
-                     
-                     [self presentNavigationController];
-                 }
+                 [self presentNavigationController];
              }
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -390,14 +388,15 @@ typedef enum {
 
 - (void)archiveCurrentSetting {
     
-    extern NSMutableArray *gTokens;
+//    extern NSMutableArray *gTokens;
     extern NSString *gToken;
     
-    NSDictionary *dict = @{@"tokens" : gTokens,
-                           @"currentToken" : gToken};
+    NSDictionary *dict = @{@"currentToken" : gToken};
+    
+//    NSDictionary *dict = @{@"tokens" : gTokens,
+//                           @"currentToken" : gToken};
     
     NSLog(@"dict %@", dict);
-    NSLog(@"gTokens %@", gTokens);
     
     NSString *path = [NSString stringWithFormat:@"%@/tokens.arch", NSTemporaryDirectory()];
     [NSKeyedArchiver archiveRootObject:dict toFile:path];

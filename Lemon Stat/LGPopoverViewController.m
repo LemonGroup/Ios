@@ -8,9 +8,6 @@
 
 #import "LGPopoverViewController.h"
 
-#import "LGGeneralStatsController.h"
-#import "LGDailyStatsController.h"
-
 @interface LGPopoverViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property (strong, nonatomic) NSArray *dataArray;
@@ -21,22 +18,9 @@
 
 @implementation LGPopoverViewController
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        _isRecognizeDisappear = NO;
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    if ([self.delegate respondsToSelector:@selector(recognizeDisappearForPopoverViewController:)]) {
-        _isRecognizeDisappear = [self.delegate recognizeDisappearForPopoverViewController:self];
-    }
     
     // create button
     [self createButton];
@@ -82,7 +66,7 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    if (_isRecognizeDisappear) {
+    if ([self.delegate respondsToSelector:@selector(disappearedPopoverViewController:)]) {
         [self.delegate disappearedPopoverViewController:self];
     }
 }

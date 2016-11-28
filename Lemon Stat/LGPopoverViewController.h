@@ -21,8 +21,6 @@
 
 @property (strong, nonatomic) NSString *currentString;
 
-@property (assign, nonatomic, readonly) BOOL isRecognizeDisappear; // If know disappeared popover. Default is NO
-
 @end
 
 @protocol LGPopoverViewControllerDelegate <NSObject>
@@ -44,8 +42,6 @@
 - (void)dateRangeForDatePicker:(UIDatePicker *)datePicker forPopoverViewController:(LGPopoverViewController *)popoverViewController;
 - (void)dateChange:(UIDatePicker *)datePicker;  // вызываеся каждый раз, когда меняется дата;
 
-// отслеживание исчезновение контроллера
-- (BOOL)recognizeDisappearForPopoverViewController:(LGPopoverViewController *)popoverViewController;
 // вызывается когда контроллер исчезнет
 - (void)disappearedPopoverViewController:(LGPopoverViewController *)popoverViewController;
 
