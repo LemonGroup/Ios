@@ -14,7 +14,6 @@
 
 @interface LGChangePassViewController () <UITextFieldDelegate, UIResponderStandardEditActions>
 
-@property (weak, nonatomic) IBOutlet UITextField *currentPasswordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *changePasswordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *changeRepeatedPasswordTextField;
 
@@ -27,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _currentPasswordTextField.text = _currentPassword;
+    //_currentPasswordTextField.text = _currentPassword;
     
 }
 
@@ -99,8 +98,8 @@
 
 - (void)alertAction {
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Внимание"
-                                                                   message:@"Пароль успешно изменен"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Пароль успешно изменен"
+                                                                   message:nil
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"Ок"

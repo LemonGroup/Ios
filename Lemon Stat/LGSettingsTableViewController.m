@@ -14,7 +14,9 @@
 
 #import "NSString+Request.h"
 
-@interface LGSettingsTableViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface LGSettingsTableViewController () <UITableViewDataSource, UITableViewDelegate> {
+    NSDictionary *_responseJSON;
+}
 
 @property (strong, nonatomic) NSString *login;
 @property (strong, nonatomic) NSString *eMail;
@@ -33,18 +35,71 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    //fake data
-    _login = @"fakeLogin";
-    _eMail = @"fakeEMail";
-    _password = @"fakePassword";
-    
-    
     [self requestGetAccount];
+    
+    /*********** Удалить этот кусок кода ************/
+    //fake data
+    _responseJSON = @{@"id" : @9,
+                      @"username" : @"fakeLogin",
+                      @"email" : @"fakeEMail",
+                      @"privilege" : @2};
+    /************************************************/
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Request Methods
+
+- (void)requestGetAccount {
+    
+    extern NSString *gToken;
+    extern NSURL *baseURL;
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+    
+    NSString *string = @"catalog/accounts/myaccount";
+    
+    [manager GET:[string encodeURLString]
+      parameters:nil
+        progress:nil
+         success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
+             
+             NSLog(@"JSON: %@", responseObject);
+             
+             if (responseObject) {
+                 _responseJSON = responseObject;
+                 [self.tableView reloadData];
+             } else {
+                 [self alertActionWithTitle:@"Ошибка" andMessage:@"Попробуйте позже"];
+             }
+             
+         }
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+             NSLog(@"Error: %@", error);
+             
+             [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
+         }];
+}
+
+#pragma mark - Alert Methods
+
+- (void)alertActionWithTitle:(NSString *)title andMessage:(NSString *)message {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"ОК"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil];
+    
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -78,13 +133,13 @@
                 case 0: {
                     cell = [tableView dequeueReusableCellWithIdentifier:@"LoginCell" forIndexPath:indexPath];
                     cell.textLabel.text = @"Логин";
-                    cell.detailTextLabel.text = _login;
+                    cell.detailTextLabel.text = [_responseJSON objectForKey:@"username"];
                 }
                     break;
                 case 1: {
                     cell = [tableView dequeueReusableCellWithIdentifier:@"EmailCell" forIndexPath:indexPath];
                     cell.textLabel.text = @"e-Mail";
-                    cell.detailTextLabel.text = _eMail;
+                    cell.detailTextLabel.text = [_responseJSON objectForKey:@"email"];
                 }
                     break;
                 default:
@@ -143,38 +198,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark - Request Methods
-
-- (void)requestGetAccount {
-    
-    extern NSString *gToken;
-    extern NSURL *baseURL;
-    
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
-    
-    NSString *string = @"catalog/accounts/myaccount";
-    
-    [manager GET:[string encodeURLString]
-      parameters:nil
-        progress:nil
-         success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
-             
-             NSLog(@"JSON: %@", responseObject);
-             
-             _login = @"fakeLogin";
-             _eMail = @"fakeEMail";
-             _password = @"fakePassword";
-             
-             [self.tableView reloadData];
-             
-         }
-         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-             NSLog(@"Error: %@", error);
-         }];
-}
-
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -187,7 +210,7 @@
         LGChangePassViewController *changePassViewController = segue.destinationViewController;
         
         changePassViewController.navigationItem.title = @"Смена пароля";
-        changePassViewController.currentPassword = _password;
+        //changePassViewController.currentPassword = _password;
         
     }
     

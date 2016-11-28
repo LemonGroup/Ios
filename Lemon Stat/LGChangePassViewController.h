@@ -10,6 +10,6 @@
 
 @interface LGChangePassViewController : UIViewController
 
-@property (strong, nonatomic) NSString *currentPassword;
+//@property (strong, nonatomic) NSString *currentPassword;
 
 @end
