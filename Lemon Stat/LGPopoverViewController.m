@@ -153,28 +153,44 @@
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     
+    // set frame
     NSInteger heightButton = 50;
-    
-    CGFloat heightNavBar = CGRectGetHeight(self.navigationController.navigationBar.frame);// valueForKey:@"view"] frame]);
-    
+    CGFloat heightNavBar = CGRectGetHeight(self.navigationController.navigationBar.frame);
     button.frame = CGRectMake(0,
                               self.preferredContentSize.height + heightNavBar - heightButton,
                               self.preferredContentSize.width,
                               heightButton);
     
-    [button setBackgroundColor:[UIColor yellowColor]];
+    // set background title
+    if ([self.delegate respondsToSelector:@selector(colorBackgroundForReturnButton)]) {
+        [button setBackgroundColor:[self.delegate colorBackgroundForReturnButton]];
+    }
     
-    NSString *title = [self.delegate titleButtonForPopoverViewController:self];
+    // set title
+    NSString *title;
+    if ([self.delegate respondsToSelector:@selector(titleButtonForPopoverViewController:)]) {
+        title = [self.delegate titleButtonForPopoverViewController:self];
+    } else {
+        title = @"ОК";
+    }
     [button setTitle:title forState:UIControlStateNormal];
     
-    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    // set text color
+    UIColor *color;
+    if ([self.delegate respondsToSelector:@selector(colorTextForReturnButton)]) {
+        color = [self.delegate colorTextForReturnButton];
+    } else {
+        color = [UIColor blackColor];
+    }
+    [button setTitleColor:color forState:UIControlStateNormal];
     
+    // set action
     [button addTarget:self.delegate
                action:@selector(actionReturn:)
      forControlEvents:UIControlEventTouchUpInside];
     
-    [self.view addSubview:button];
     
+    [self.view addSubview:button];
     self.returnButton = button;
 }
 

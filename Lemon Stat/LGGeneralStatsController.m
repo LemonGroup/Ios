@@ -319,11 +319,22 @@
     return @"Применить";
 }
 
+- (UIColor *)colorBackgroundForReturnButton {
+    return [UIColor blueColor];
+}
+
+- (UIColor *)colorTextForReturnButton{
+    return [UIColor whiteColor];
+}
+
+- (void)disappearedPopoverViewController:(LGPopoverViewController *)popoverViewController {
+    [self actionApply:nil];
+}
+
 - (void)actionReturn:(UIButton *)button {
     
-    [_popoverViewController dismissViewControllerAnimated:YES completion:^{
-        [self actionApply:nil];
-    }];
+    [_popoverViewController dismissViewControllerAnimated:YES
+                                               completion:nil];
      
 }
 

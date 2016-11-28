@@ -58,8 +58,23 @@ typedef enum {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    if (_multipleType != 1 && _multipleType != 2) {
-        _multipleType = 1;
+    _siteField.layer.masksToBounds = YES;
+    _siteField.layer.cornerRadius = 5;
+    _siteField.layer.borderWidth = 1;
+    _siteField.layer.borderColor = [UIColor redColor].CGColor;
+    
+    _personField.layer.masksToBounds = YES;
+    _personField.layer.cornerRadius = 5;
+    _personField.layer.borderWidth = 1;
+    _personField.layer.borderColor = [UIColor yellowColor].CGColor;
+    
+    _startDateField.layer.masksToBounds = YES;
+    _startDateField.layer.cornerRadius = 5;
+    _startDateField.layer.borderWidth = 1;
+    _startDateField.layer.borderColor = [UIColor blueColor].CGColor;
+    
+    if (_multipleType != MultipleTypeTable && _multipleType != MultipleTypeChart) {
+        _multipleType = MultipleTypeTable;
     }
     
 }
@@ -340,6 +355,23 @@ typedef enum {
     }
 }
 
+- (void)nextField {
+    
+    NSArray *fields = @[_siteField, _personField, _startDateField, _endDateField];
+    
+    NSInteger currentIndex = [fields indexOfObject:_currentTextField];
+    
+    for (NSInteger i = 0, j = currentIndex + 1; i < fields.count; i++, j++) {
+        
+        j == fields.count ? j = 0 : j;
+        
+        if ([fields[j] text].length == 0) {
+            [fields[j] becomeFirstResponder];
+            break;
+        }
+    }
+}
+
 #pragma mark - Alert Methods
 
 - (void)alertActionWithTitle:(NSString *)title andMessage:(NSString *)message {
@@ -529,28 +561,33 @@ typedef enum {
     }
 }
 
+- (UIColor *)colorBackgroundForReturnButton {
+    return [UIColor blueColor];
+}
+
+- (UIColor *)colorTextForReturnButton{
+    return [UIColor whiteColor];
+}
+
+- (void)disappearedPopoverViewController:(LGPopoverViewController *)popoverViewController {
+    
+    
+    if (_siteField.text.length > 0 &&
+        _personField.text.length > 0 &&
+        _startDateField.text.length > 0 &&
+        _endDateField.text.length > 0 ) {
+        
+        [self actionRefresh:nil];
+        
+    }
+}
+
 - (void)actionReturn:(UIButton *)button {
     
-    [_popoverViewController dismissViewControllerAnimated:YES completion:^{
-        
-        NSArray *fields = @[_siteField, _personField, _startDateField, _endDateField];
-        
-        NSInteger currentIndex = [fields indexOfObject:_currentTextField];
-        
-        for (NSInteger i = 0, j = currentIndex + 1; i < fields.count; i++, j++) {
-            
-            j == fields.count ? j = 0 : j;
-            
-            if ([fields[j] text].length == 0) {
-                [fields[j] becomeFirstResponder];
-                break;
-            }
-            
-            if (i == fields.count - 1) {
-                [self actionRefresh:nil];
-            }
-        }
-    }];
+    [_popoverViewController dismissViewControllerAnimated:YES
+                                               completion:^{
+                                                   [self nextField];
+                                               }];
 }
 
 #pragma mark - Actions

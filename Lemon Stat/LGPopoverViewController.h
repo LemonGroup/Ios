@@ -31,6 +31,9 @@
 - (NSString *)titleButtonForPopoverViewController:(LGPopoverViewController *)popoverViewController;
 
 @optional
+- (UIColor *)colorBackgroundForReturnButton;
+- (UIColor *)colorTextForReturnButton;
+
 // header
 - (NSString *)titleForPopoverViewController:(LGPopoverViewController *)popoverViewController;
 
