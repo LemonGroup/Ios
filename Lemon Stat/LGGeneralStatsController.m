@@ -76,17 +76,6 @@
                      
                      _responseJSON = responseObject;
                      
-                     switch (_multipleType) {
-                         case MultipleTypeTable:
-                             [self.tableView reloadData];
-                             break;
-                         case MultipleTypeChart:
-                             [self loadChart];
-                             break;
-                         default:
-                             break;
-                     }
-                     
                  } else {
                      
                      [self alertActionWithTitle:@"Нет данных" andMessage:nil];
@@ -101,20 +90,21 @@
                                          @"person" : @"Медведев"}
                                        ];
                      
-                     switch (_multipleType) {
-                         case MultipleTypeTable:
-                             [self.tableView reloadData];
-                             break;
-                         case MultipleTypeChart:
-                             [self loadChart];
-                             break;
-                         default:
-                             break;
-                     }
-                     
-                     NSLog(@"JSON: %@", _responseJSON);
                      /**************************************************/
                  }
+                 
+                 switch (_multipleType) {
+                     case MultipleTypeTable:
+                         [self.tableView reloadData];
+                         break;
+                     case MultipleTypeChart:
+                         [self reloadChart];
+                         break;
+                     default:
+                         break;
+                 }
+                 
+                 NSLog(@"JSON: %@", _responseJSON);
              }
              failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                  NSLog(@"Error: %@", error);
@@ -144,7 +134,18 @@
 
 #pragma mark - Chart Methods
 
-- (void)loadChart {
+- (void)reloadChart {
+    
+    PNBarChart *barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 102, SCREEN_WIDTH, 513)];
+    barChart.labelMarginTop = 30.0;
+    barChart.barWidth = 40;
+    barChart.isGradientShow = NO;
+    barChart.strokeColor = [UIColor blueColor];
+    barChart.showChartBorder = YES;
+    
+    [self.view addSubview:barChart];
+    
+    self.barChart = barChart;
     
     if (_responseJSON) {
         
@@ -159,14 +160,12 @@
             [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
         }
         
-        self.barChart.labelMarginTop = 30.0;
-        self.barChart.barWidth = 40;
-        self.barChart.isGradientShow = NO;
-        self.barChart.strokeColor = [UIColor blueColor];
-        [self.barChart setXLabels:persons];
-        [self.barChart setYValues:numberOfMentions];
-        [self.barChart strokeChart];
+        
+        [barChart setXLabels:persons];
+        [barChart setYValues:numberOfMentions];
     }
+    
+    [barChart strokeChart];
 }
 
 #pragma mark - UITableViewDelegate
@@ -247,12 +246,8 @@
 
 - (void) createChart {
     [self.tableView removeFromSuperview];
-    
-    PNBarChart *barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 102, SCREEN_WIDTH, 513)];
-    self.barChart = barChart;
-    
-    [self.view addSubview:barChart];
-    [self loadChart];
+    [self.barChart removeFromSuperview];
+    [self reloadChart];
 }
 
 - (void)createPopover:(UIView *)sender {

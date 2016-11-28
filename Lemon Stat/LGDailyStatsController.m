@@ -90,29 +90,29 @@ typedef enum {
         progress:nil
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
              
-             NSLog(@"JSON: %@", responseObject);
+             NSLog(@"responseObject JSON: %@", responseObject);
              
              if (responseObject) {
                  
                  _responseJSON = responseObject;
                  
-                 switch (_multipleType) {
-                     case MultipleTypeTable:
-                         [self.tableView reloadData];
-                         break;
-                     case MultipleTypeChart:
-                         [self loadChart];
-                         break;
-                     default:
-                         break;
-                 }
-                 
                  [self setTotalNumber];
                  
              } else {
                  
+                 _responseJSON = nil;
+                 
                  [self alertActionWithTitle:@"Нет данных" andMessage:nil];
                  
+             }
+             
+             switch (_multipleType) {
+                 case MultipleTypeTable:
+                     [self.tableView reloadData];
+                     break;
+                 case MultipleTypeChart:
+                     [self reloadChart];
+                     break;
              }
              
              NSLog(@"JSON: %@", _responseJSON);
@@ -161,7 +161,14 @@ typedef enum {
 
 #pragma mark - Chart Methods
 
-- (void)loadChart {
+- (void)reloadChart {
+    
+    PNLineChart *lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 245.0, SCREEN_WIDTH, 328)];
+    lineChart.showCoordinateAxis = YES;
+    
+    [self.view addSubview:lineChart];
+    
+    self.lineChart = lineChart;
     
     if (_responseJSON) {
         
@@ -176,7 +183,7 @@ typedef enum {
             [numberOfNewPages addObject:[obj valueForKey:@"numberOfNewPages"]];
         }
         
-        [self.lineChart setXLabels:dates];
+        [lineChart setXLabels:dates];
         
         // Line Chart No.1
         NSArray * data01Array = numberOfNewPages;
@@ -188,11 +195,10 @@ typedef enum {
             return [PNLineChartDataItem dataItemWithY:yValue];
         };
         
-        self.lineChart.showCoordinateAxis = YES;
-        
-        self.lineChart.chartData = @[data01];
-        [self.lineChart strokeChart];
+        lineChart.chartData = @[data01];
     }
+    
+    [lineChart strokeChart];
 }
 
 #pragma mark - UITableViewDelegate
@@ -257,12 +263,9 @@ typedef enum {
 
 - (void) createChart {
     [self.tableView removeFromSuperview];
+    [self.lineChart removeFromSuperview];
     
-    PNLineChart *lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 245.0, SCREEN_WIDTH, 328)];
-    self.lineChart = lineChart;
-    
-    [self.view addSubview:lineChart];
-    [self loadChart];
+    [self reloadChart];
 }
 
 - (void)setTotalNumber {
