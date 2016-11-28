@@ -173,8 +173,8 @@ typedef enum {
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-//    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
-    [manager.requestSerializer setValue:@"this-is-fake-token" forHTTPHeaderField:@"Auth-Token"];
+    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+//    [manager.requestSerializer setValue:@"this-is-fake-token" forHTTPHeaderField:@"Auth-Token"];
     
     NSString *string = @"catalog/sites";
     

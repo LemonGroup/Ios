@@ -139,9 +139,34 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
 
 - (IBAction)actionLogOut:(id)sender {
     
-    gToken = @"notToken";
+    [self alertAction];
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+//    gToken = @"notToken";
+//    
+//    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)alertAction {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Подтвердите выход из приложения"
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"Отмена"
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:nil];
+    
+    UIAlertAction *agreeAction = [UIAlertAction actionWithTitle:@"Подтвердить"
+                                                          style:UIAlertActionStyleDestructive
+                                                        handler:^(UIAlertAction *action) {
+                                                            gToken = @"notToken";
+                                                            [self dismissViewControllerAnimated:YES completion:nil];
+                                                        }];
+    
+    [alert addAction:agreeAction];
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
 }
 
 @end
