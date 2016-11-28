@@ -126,7 +126,6 @@
     label.font = _labelFont;
     label.textColor = _labelTextColor;
     [label setTextAlignment:NSTextAlignmentRight];
-      label.backgroundColor = [UIColor yellowColor];
     label.text = [NSString stringWithFormat:@"%@%@%@", _yLabelPrefix, labelText, _yLabelSuffix];
       
     [self addSubview:label];
