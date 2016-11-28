@@ -106,6 +106,28 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
     self.navigationItem.titleView = segmentedControl;
 }
 
+- (void)alertAction {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Подтвердите выход из приложения"
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Отмена"
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:nil];
+    
+    UIAlertAction *agreeAction = [UIAlertAction actionWithTitle:@"Подтвердить"
+                                                          style:UIAlertActionStyleDestructive
+                                                        handler:^(UIAlertAction *action) {
+                                                            gToken = @"notToken";
+                                                            [self dismissViewControllerAnimated:YES completion:nil];
+                                                        }];
+    
+    [alert addAction:cancelAction];
+    [alert addAction:agreeAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -140,32 +162,6 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
 - (IBAction)actionLogOut:(id)sender {
     
     [self alertAction];
-    
-//    gToken = @"notToken";
-//    
-//    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)alertAction {
-    
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Подтвердите выход из приложения"
-                                                                   message:nil
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"Отмена"
-                                                            style:UIAlertActionStyleCancel
-                                                          handler:nil];
-    
-    UIAlertAction *agreeAction = [UIAlertAction actionWithTitle:@"Подтвердить"
-                                                          style:UIAlertActionStyleDestructive
-                                                        handler:^(UIAlertAction *action) {
-                                                            gToken = @"notToken";
-                                                            [self dismissViewControllerAnimated:YES completion:nil];
-                                                        }];
-    
-    [alert addAction:agreeAction];
-    [alert addAction:defaultAction];
-    [self presentViewController:alert animated:YES completion:nil];
     
 }
 

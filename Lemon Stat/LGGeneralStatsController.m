@@ -70,10 +70,28 @@
             }
              success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
                  
-                 /************* Изменить этот кусок кода *************/
+                 NSLog(@"responseObject JSON: %@", responseObject);
+                 
                  if (responseObject) {
+                     
                      _responseJSON = responseObject;
+                     
+                     switch (_multipleType) {
+                         case MultipleTypeTable:
+                             [self.tableView reloadData];
+                             break;
+                         case MultipleTypeChart:
+                             [self loadChart];
+                             break;
+                         default:
+                             break;
+                     }
+                     
                  } else {
+                     
+                     [self alertActionWithTitle:@"Нет данных" andMessage:nil];
+                     
+                     /************* Убрать этот кусок кода *************/
                      // фейковые данные
                      _responseJSON = @[@{@"numberOfMentions" : @"10",
                                          @"person" : @"Путин"},
@@ -82,26 +100,42 @@
                                        @{@"numberOfMentions" : @"66",
                                          @"person" : @"Медведев"}
                                        ];
+                     
+                     switch (_multipleType) {
+                         case MultipleTypeTable:
+                             [self.tableView reloadData];
+                             break;
+                         case MultipleTypeChart:
+                             [self loadChart];
+                             break;
+                         default:
+                             break;
+                     }
+                     
+                     NSLog(@"JSON: %@", _responseJSON);
+                     /**************************************************/
                  }
-                 /****************************************************/
-                 
-                 switch (_multipleType) {
-                     case MultipleTypeTable:
-                         [self.tableView reloadData];
-                         break;
-                     case MultipleTypeChart:
-                         [self loadChart];
-                         break;
-                     default:
-                         break;
-                 }
-                 
-                 NSLog(@"JSON: %@", _responseJSON);
              }
              failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                  NSLog(@"Error: %@", error);
+                 
+                 [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
              }];
     }
+}
+
+- (void)alertActionWithTitle:(NSString *)title andMessage:(NSString *)message {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"ОК"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil];
+    
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (NSString *)requestString {
