@@ -34,9 +34,9 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     //fake data
-    _login = @"login";
-    _eMail = @"eMail";
-    _password = @"password";
+    _login = @"fakeLogin";
+    _eMail = @"fakeEMail";
+    _password = @"fakePassword";
     
     
     [self requestGetAccount];
@@ -163,9 +163,11 @@
              
              NSLog(@"JSON: %@", responseObject);
              
-             _login = @"login";
-             _eMail = @"eMail";
-             _password = @"password";
+             _login = @"fakeLogin";
+             _eMail = @"fakeEMail";
+             _password = @"fakePassword";
+             
+             [self.tableView reloadData];
              
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

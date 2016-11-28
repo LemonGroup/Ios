@@ -182,7 +182,7 @@
             <objects>
                 <tabBarController storyboardIdentifier="TabBarController" id="49e-Tb-3d3" customClass="LGTabBarController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="tW8-z1-AQs">
-                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="vwV-bg-Z4P">
+                        <barButtonItem key="leftBarButtonItem" image="logout" id="vwV-bg-Z4P">
                             <connections>
                                 <action selector="actionLogOut:" destination="49e-Tb-3d3" id="p6B-jI-L3Z"/>
                             </connections>
@@ -527,6 +527,7 @@
         <image name="generalStat" width="24" height="24"/>
         <image name="lines.png" width="1485" height="866"/>
         <image name="logo.png" width="321" height="264"/>
+        <image name="logout" width="22" height="22"/>
         <image name="settings" width="22" height="22"/>
     </resources>
 </document>
