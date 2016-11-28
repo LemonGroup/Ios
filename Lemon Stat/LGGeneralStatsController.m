@@ -115,18 +115,26 @@
 
 - (void)loadChart {
     
-    if (_responseJSON) {
+    if (!_responseJSON) {
         
         NSMutableArray *persons = [NSMutableArray array];
         NSMutableArray *numberOfMentions = [NSMutableArray array];
         
-        for (id obj in _responseJSON) {
-            [persons addObject:[obj valueForKey:@"person"]];
-        }
+//        for (id obj in _responseJSON) {
+//            [persons addObject:[obj valueForKey:@"person"]];
+//        }
+//        
+//        for (id obj in _responseJSON) {
+//            [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
+//        }
         
-        for (id obj in _responseJSON) {
-            [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
-        }
+        [persons addObject:@"Путин"];
+        [persons addObject:@"Навальный"];
+        [persons addObject:@"Медведев"];
+        
+        [numberOfMentions addObject:@"10"];
+        [numberOfMentions addObject:@"232"];
+        [numberOfMentions addObject:@"66"];
         
         self.barChart.labelMarginTop = 30.0;
         self.barChart.barWidth = 40;
