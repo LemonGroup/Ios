@@ -82,6 +82,21 @@
 
 #pragma mark - Methods
 
+- (BOOL)verificationFillingOfFieldsForChangePassword {
+    
+    if (_changePasswordTextField.text.length == 0 || _changeRepeatedPasswordTextField.text.length == 0) {
+        _responseLabel.text = @"Заполните все поля";
+        return NO;
+    } else if (![_changePasswordTextField.text isEqualToString:_changeRepeatedPasswordTextField.text]) {
+        _responseLabel.text = @"Пароли не совпадают";
+        return NO;
+    }
+    
+    return YES;
+}
+
+#pragma mark - Alert Methods
+
 - (void)alertAction {
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Внимание"
@@ -97,19 +112,6 @@
     [alert addAction:defaultAction];
     [self presentViewController:alert animated:YES completion:nil];
     
-}
-
-- (BOOL)verificationFillingOfFieldsForChangePassword {
-    
-    if (_changePasswordTextField.text.length == 0 || _changeRepeatedPasswordTextField.text.length == 0) {
-        _responseLabel.text = @"Заполните все поля";
-        return NO;
-    } else if (![_changePasswordTextField.text isEqualToString:_changeRepeatedPasswordTextField.text]) {
-        _responseLabel.text = @"Пароли не совпадают";
-        return NO;
-    }
-    
-    return YES;
 }
 
 #pragma mark - Actions

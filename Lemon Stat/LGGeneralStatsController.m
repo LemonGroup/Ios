@@ -124,20 +124,6 @@
     }
 }
 
-- (void)alertActionWithTitle:(NSString *)title andMessage:(NSString *)message {
-    
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
-                                                                   message:message
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"ОК"
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:nil];
-    
-    [alert addAction:defaultAction];
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
 - (NSString *)requestString {
     
     NSInteger siteID = 0;
@@ -289,6 +275,22 @@
     presentationController.sourceRect = sender.bounds;
     
     [self presentViewController:destNav animated:YES completion:nil];
+}
+
+#pragma mark - Alert Methods
+
+- (void)alertActionWithTitle:(NSString *)title andMessage:(NSString *)message {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"ОК"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil];
+    
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - LGPopoverViewControllerDelegate

@@ -90,27 +90,38 @@ typedef enum {
         progress:nil
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
              
-             _responseJSON = responseObject;
+             NSLog(@"JSON: %@", responseObject);
              
-             switch (_multipleType) {
-                 case MultipleTypeTable:
-                     [self.tableView reloadData];
-                     break;
-                 case MultipleTypeChart:
-                     [self loadChart];
-                     break;
-                 default:
-                     break;
+             if (responseObject) {
+                 
+                 _responseJSON = responseObject;
+                 
+                 switch (_multipleType) {
+                     case MultipleTypeTable:
+                         [self.tableView reloadData];
+                         break;
+                     case MultipleTypeChart:
+                         [self loadChart];
+                         break;
+                     default:
+                         break;
+                 }
+                 
+                 [self setTotalNumber];
+                 
+             } else {
+                 
+                 [self alertActionWithTitle:@"Нет данных" andMessage:nil];
+                 
              }
-             
-             [self setTotalNumber];
              
              NSLog(@"JSON: %@", _responseJSON);
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
+             
+             [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
          }];
-    
 }
 
 - (NSString *)stringForRequest {
@@ -275,7 +286,6 @@ typedef enum {
     LGPopoverViewController *vc= [[LGPopoverViewController alloc] init];
     vc.preferredContentSize = contentSize;
     vc.delegate = self;
-    //vc.type = (LGPopoverType)sender.tag;
     
     switch (sender.tag) {
         case TextFieldTypeSites:
@@ -307,7 +317,6 @@ typedef enum {
     presentationController.sourceRect = sender.bounds;
     
     [self presentViewController:destNav animated:YES completion:nil];
-    
 }
 
 - (void)createRefreshButton {
@@ -326,6 +335,22 @@ typedef enum {
         
         [self.view addSubview:button];
     }
+}
+
+#pragma mark - Alert Methods
+
+- (void)alertActionWithTitle:(NSString *)title andMessage:(NSString *)message {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"ОК"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil];
+    
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate

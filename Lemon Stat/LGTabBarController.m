@@ -106,6 +106,8 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
     self.navigationItem.titleView = segmentedControl;
 }
 
+#pragma mark - Alert Methods
+
 - (void)alertAction {
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Подтвердите выход из приложения"
