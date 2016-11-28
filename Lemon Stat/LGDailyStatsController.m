@@ -61,6 +61,11 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    if (_multipleType != 1 && _multipleType != 2) {
+        _multipleType = 1;
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -176,7 +181,16 @@ typedef enum {
             return [PNLineChartDataItem dataItemWithY:yValue];
         };
         
-        //self.lineChart.chartMarginLeft = 55;
+//        self.lineChart.xLabelWidth = 40;
+//        self.lineChart.yLabelHeight = 30;
+        
+//        self.lineChart.chartMarginLeft = 100;
+//        self.lineChart.chartMarginRight = 30;
+//        self.lineChart.chartMarginTop = 30;
+//        self.lineChart.chartMarginBottom = 30;
+        
+        self.lineChart.showCoordinateAxis = YES;
+//        self.lineChart.showSmoothLines = YES;
         
         self.lineChart.chartData = @[data01];
         [self.lineChart strokeChart];
