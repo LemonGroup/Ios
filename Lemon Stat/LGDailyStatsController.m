@@ -58,20 +58,25 @@ typedef enum {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    _siteField.layer.masksToBounds = YES;
-    _siteField.layer.cornerRadius = 5;
-    _siteField.layer.borderWidth = 1;
-    _siteField.layer.borderColor = [UIColor redColor].CGColor;
-    
-    _personField.layer.masksToBounds = YES;
-    _personField.layer.cornerRadius = 5;
-    _personField.layer.borderWidth = 1;
-    _personField.layer.borderColor = [UIColor yellowColor].CGColor;
-    
-    _startDateField.layer.masksToBounds = YES;
-    _startDateField.layer.cornerRadius = 5;
-    _startDateField.layer.borderWidth = 1;
-    _startDateField.layer.borderColor = [UIColor blueColor].CGColor;
+//    _siteField.layer.masksToBounds = YES;
+//    _siteField.layer.cornerRadius = 5;
+//    _siteField.layer.borderWidth = 1;
+//    _siteField.layer.borderColor = [UIColor blueColor].CGColor;
+//    
+//    _personField.layer.masksToBounds = YES;
+//    _personField.layer.cornerRadius = 5;
+//    _personField.layer.borderWidth = 1;
+//    _personField.layer.borderColor = [UIColor blueColor].CGColor;
+//    
+//    _startDateField.layer.masksToBounds = YES;
+//    _startDateField.layer.cornerRadius = 5;
+//    _startDateField.layer.borderWidth = 1;
+//    _startDateField.layer.borderColor = [UIColor blueColor].CGColor;
+//    
+//    _endDateField.layer.masksToBounds = YES;
+//    _endDateField.layer.cornerRadius = 5;
+//    _endDateField.layer.borderWidth = 1;
+//    _endDateField.layer.borderColor = [UIColor blueColor].CGColor;
     
     if (_multipleType != MultipleTypeTable && _multipleType != MultipleTypeChart) {
         _multipleType = MultipleTypeTable;
@@ -240,6 +245,7 @@ typedef enum {
     // set detailTextLabel
     NSString *numberOfNewPages = [_responseJSON[indexPath.row] valueForKey:@"numberOfNewPages"];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", numberOfNewPages];
+    cell.detailTextLabel.textColor = [UIColor blueColor];
     
     return cell;
 }
@@ -295,6 +301,7 @@ typedef enum {
     }
     
     _totalNumberLabel.text = [NSString stringWithFormat:@"%ld", totalNumber];
+    
 }
 
 - (void)createPopover:(UITextField *)sender {
@@ -597,7 +604,5 @@ typedef enum {
     
     [self requestStat];
 }
-
-#pragma mark - Segment Control
 
 @end
