@@ -15,4 +15,6 @@
 
 + (LGPersonListSingleton *)sharedPersonList;
 
+- (void)sortList;
+
 @end

@@ -16,4 +16,6 @@
 
 + (LGSiteListSingleton *)sharedSiteList;
 
+- (void)sortList;
+
 @end

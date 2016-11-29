@@ -291,6 +291,8 @@ typedef enum {
         
         [siteList.sites addObject:site];
     }
+    
+    [siteList sortList];
 }
 
 - (void)createPersonListWithJSONArray:(NSArray *)responseJSON {
@@ -303,6 +305,8 @@ typedef enum {
         
         [personList.persons addObject:person];
     }
+    
+    [personList sortList];
 }
 
 - (UITextField *)createTextField {

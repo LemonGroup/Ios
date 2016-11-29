@@ -21,4 +21,8 @@
     
 }
 
+- (NSComparisonResult)compare:(LGPerson *)element {
+    return [_personName compare:[element personName]];
+}
+
 @end

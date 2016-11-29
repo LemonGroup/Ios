@@ -21,4 +21,8 @@
     
 }
 
+- (NSComparisonResult)compare:(LGSite *)element {
+    return [_siteURL compare:[element siteURL]];
+}
+
 @end

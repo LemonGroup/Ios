@@ -24,4 +24,8 @@
     
 }
 
+- (void)sortList {
+    [_sites sortUsingSelector:@selector(compare:)];
+}
+
 @end

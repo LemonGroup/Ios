@@ -24,5 +24,8 @@
     
 }
 
+- (void)sortList {
+    [_persons sortUsingSelector:@selector(compare:)];
+}
 
 @end
