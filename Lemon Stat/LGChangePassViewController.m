@@ -61,7 +61,7 @@
     NSString *string = @"catalog/accounts/password";
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setObject:@30 forKey:@"id"];
+    [parameters setObject:_loginID forKey:@"id"];
     [parameters setObject:_changeRepeatedPasswordTextField.text forKey:@"password"];
     
     [manager PUT:string

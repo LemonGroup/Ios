@@ -22,7 +22,9 @@ typedef enum {
     LGAuthViewControllerButtonTypeChangePass = 2
 } LGAuthViewControllerButtonType;
 
-@interface LGAuthViewController () <UITextFieldDelegate, UIResponderStandardEditActions>
+@interface LGAuthViewController () <UITextFieldDelegate, UIResponderStandardEditActions> {
+    NSNumber *_loginID;
+}
 
 @property (weak, nonatomic) IBOutlet UITextField *loginTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
@@ -48,7 +50,6 @@ typedef enum {
     [super viewDidAppear:animated];
     
     // если пользователь заходил в приложение, он минует окно входа
-//    extern NSMutableArray *gTokens;
     extern NSString *gToken;
     
     if (![gToken isEqualToString:@"notToken"]) {
@@ -59,19 +60,22 @@ typedef enum {
         [self archiveCurrentSetting];
     }
     
-//    NSLog(@"gTokens %@", gTokens);
+    /*
+    extern NSMutableArray *gTokens;
+    NSLog(@"gTokens %@", gTokens);
     
-//    if ([gTokens containsObject:gToken]) {
-//        
-//        [self requestGetSites];
-//        [self requestGetPersons];
-//        [self presentNavigationController];
-//        
-//    } else {
-//        
-//        [self archiveCurrentSetting];
-//        
-//    }
+    if ([gTokens containsObject:gToken]) {
+        
+        [self requestGetSites];
+        [self requestGetPersons];
+        [self presentNavigationController];
+        
+    } else {
+        
+        [self archiveCurrentSetting];
+        
+    }
+     */
 }
 
 - (void)onKeyboardHide:(NSNotification *)notification {
@@ -122,35 +126,39 @@ typedef enum {
              if (responseObject) {
                  
                  NSLog(@"-------------------TOKEN-JSON: %@", responseObject);
-//                 extern NSMutableArray *gTokens;
+                 
                  extern NSString *gToken;
+                 gToken = [responseObject valueForKey:@"token"];
+                 
+                 [self archiveCurrentSetting];
+                 [self requestGetSites];
+                 [self requestGetPersons];
+                 [self presentNavigationController];
+                 
+                 /*
+                 extern NSMutableArray *gTokens;
                  extern NSInteger gGroupID;
                  extern NSInteger gPrivilege;
                  
-                 gToken = [responseObject valueForKey:@"token"];
                  gGroupID = [[responseObject valueForKey:@"groupId"] integerValue];
                  gPrivilege = [[responseObject valueForKey:@"privilege"] integerValue];
                  
-//                 if (![gTokens containsObject:gToken]) {
-//                     [gTokens addObject:gToken];
-//                 }
+                 if (![gTokens containsObject:gToken]) {
+                     [gTokens addObject:gToken];
+                 }
                  
                  // Архивируем токены
-                 [self archiveCurrentSetting];
                  
-//                 // Проверка на первый запуск приложения
-//                 static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
-//                 NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-//                 if ([defaults boolForKey:hasRunAppOnceKey] == NO) {
-//                     // Some code you want to run on first use...
-//                     [self setNewPassword];
-//                     [_passwordTextField resignFirstResponder];
-//                 }
+                 // Проверка на первый запуск приложения
+                 static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
+                 NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+                 if ([defaults boolForKey:hasRunAppOnceKey] == NO) {
+                     // Some code you want to run on first use...
+                     [self setNewPassword];
+                     [_passwordTextField resignFirstResponder];
+                 }
+                 */
                  
-                 [self requestGetSites];
-                 [self requestGetPersons];
-                 
-                 [self presentNavigationController];
              }
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -174,7 +182,6 @@ typedef enum {
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
-//    [manager.requestSerializer setValue:@"this-is-fake-token" forHTTPHeaderField:@"Auth-Token"];
     
     NSString *string = @"catalog/sites";
     
@@ -201,7 +208,6 @@ typedef enum {
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
-//    [manager.requestSerializer setValue:@"this-is-fake-token" forHTTPHeaderField:@"Auth-Token"];
     
     NSString *string = @"catalog/persons";
     
@@ -226,24 +232,51 @@ typedef enum {
     extern NSURL *baseURL;
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
-    [manager.requestSerializer setValue:@"application/json; charset: UTF-8" forHTTPHeaderField:@"Content-Type"];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
     NSString *string = @"catalog/accounts/password";
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setObject:@10 forKey:@"id"];
+    [parameters setObject:_loginID forKey:@"id"];
     [parameters setObject:_changeRepeatedPasswordTextField.text forKey:@"password"];
     
     [manager PUT:string
       parameters:parameters
          success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+             
+             [self alertActionWithTitle:@"Пароль изменен" andMessage:nil];
+             
              [self presentNavigationController];
              NSLog(@"%@", responseObject);
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
+             
+             [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
+             
          }];
+}
+
+#pragma mark - Alert Methods
+
+- (void)alertActionWithTitle:(NSString *)title andMessage:(NSString *)message {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"Ок"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              [self.navigationController popViewControllerAnimated:YES];
+                                                          }];
+    
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
 }
 
 #pragma mark - Methods
@@ -388,19 +421,19 @@ typedef enum {
 
 - (void)archiveCurrentSetting {
     
-//    extern NSMutableArray *gTokens;
     extern NSString *gToken;
-    
     NSDictionary *dict = @{@"currentToken" : gToken};
-    
-//    NSDictionary *dict = @{@"tokens" : gTokens,
-//                           @"currentToken" : gToken};
     
     NSLog(@"dict %@", dict);
     
     NSString *path = [NSString stringWithFormat:@"%@/tokens.arch", NSTemporaryDirectory()];
     [NSKeyedArchiver archiveRootObject:dict toFile:path];
     
+    /*
+    extern NSMutableArray *gTokens;
+    NSDictionary *dict = @{@"tokens" : gTokens,
+                           @"currentToken" : gToken};
+    */
 }
 
 #pragma mark - Actions
@@ -410,18 +443,23 @@ typedef enum {
     if ([self verificationFillingOfFields]) {
         
         switch (sender.tag) {
+            
             case LGAuthViewControllerButtonTypeJoin: {
+                
                 [self requestAuth];
             }
                 break;
+            
             case LGAuthViewControllerButtonTypeChangePass: {
+                
                 if ([self verificationFillingOfFieldsForChangePassword]) {
+                    
                     [_changeRepeatedPasswordTextField resignFirstResponder];
                     [self requestChangePassword];
+                    
                 }
+                
             }
-                break;
-            default:
                 break;
         }
     }

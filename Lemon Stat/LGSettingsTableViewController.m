@@ -18,10 +18,6 @@
     NSDictionary *_responseJSON;
 }
 
-@property (strong, nonatomic) NSString *login;
-@property (strong, nonatomic) NSString *eMail;
-@property (strong, nonatomic) NSString *password;
-
 @end
 
 @implementation LGSettingsTableViewController
@@ -39,7 +35,7 @@
     
     /*********** Удалить этот кусок кода ************/
     //fake data
-    _responseJSON = @{@"id" : @9,
+    _responseJSON = @{@"id" : @30,
                       @"username" : @"fakeLogin",
                       @"email" : @"fakeEMail",
                       @"privilege" : @2};
@@ -210,7 +206,7 @@
         LGChangePassViewController *changePassViewController = segue.destinationViewController;
         
         changePassViewController.navigationItem.title = @"Смена пароля";
-        //changePassViewController.currentPassword = _password;
+        changePassViewController.loginID = [_responseJSON objectForKey:@"id"];
         
     }
     

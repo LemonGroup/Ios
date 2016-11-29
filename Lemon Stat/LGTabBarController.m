@@ -15,8 +15,8 @@
 
 NSMutableArray *gTokens;    // Все токены
 NSString *gToken;           // Токен (присваевается при входе в систему)
-NSInteger gGroupID;         // ID группы (присваевается при входе в систему)
-NSInteger gPrivilege;       // Привелегия (присваевается при входе в систему)
+//NSInteger gGroupID;         // ID группы (присваевается при входе в систему)
+//NSInteger gPrivilege;       // Привелегия (присваевается при входе в систему)
 
 @interface LGTabBarController ()
 
