@@ -53,13 +53,15 @@
     extern NSURL *baseURL;
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
-    [manager.requestSerializer setValue:@"application/json; charset: UTF-8" forHTTPHeaderField:@"Content-Type"];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
-    NSString *string = @"http://yrsoft.cu.cc:8080/catalog/accounts/password";
+    NSString *string = @"catalog/accounts/password";
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setObject:@10 forKey:@"id"];
+    [parameters setObject:@30 forKey:@"id"];
     [parameters setObject:_changeRepeatedPasswordTextField.text forKey:@"password"];
     
     [manager PUT:string
@@ -68,13 +70,13 @@
              NSLog(@"%@", responseObject);
              NSLog(@"Пароль изменен");
              
-             [self alertAction];
+             [self alertActionWithTitle:@"Пароль успешно изменен" andMessage:nil];
              
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
              
-             [self alertAction];
+             [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
              
          }];
 }
@@ -96,10 +98,10 @@
 
 #pragma mark - Alert Methods
 
-- (void)alertAction {
+- (void)alertActionWithTitle:(NSString *)title andMessage:(NSString *)message {
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Пароль успешно изменен"
-                                                                   message:nil
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"Ок"
