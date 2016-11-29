@@ -90,6 +90,7 @@
                                          @"person" : @"Медведев"}
                                        ];
                      
+                     NSLog(@"JSON: %@", _responseJSON);
                      /**************************************************/
                  }
                  
@@ -100,11 +101,7 @@
                      case MultipleTypeChart:
                          [self reloadChart];
                          break;
-                     default:
-                         break;
                  }
-                 
-                 NSLog(@"JSON: %@", _responseJSON);
              }
              failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                  NSLog(@"Error: %@", error);
@@ -168,8 +165,6 @@
     [barChart strokeChart];
 }
 
-#pragma mark - UITableViewDelegate
-
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -226,8 +221,6 @@
         case MultipleTypeChart: {
             [self createChart];
         }
-            break;
-        default:
             break;
     }
 }

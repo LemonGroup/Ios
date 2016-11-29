@@ -396,16 +396,15 @@ typedef enum {
     
     if ([_loginTextField.text length] == 0 && [_passwordTextField.text length] == 0) {
         _responseLabel.text = @"Введите логин и пароль";
-        return NO;
     } else if ([_loginTextField.text length] == 0) {
         _responseLabel.text = @"Введите логин";
-        return NO;
     } else if ([_passwordTextField.text length] == 0) {
         _responseLabel.text = @"Введите пароль";
-        return NO;
+    } else {
+        return YES;
     }
     
-    return YES;
+    return NO;
 }
 
 - (BOOL)verificationFillingOfFieldsForChangePassword {

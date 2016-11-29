@@ -26,8 +26,6 @@
 @protocol LGPopoverViewControllerDelegate <NSObject>
 
 - (void)actionReturn:(UIButton *)button;
-
-- (void)stringChange:(NSString *)string;
 - (NSString *)titleButtonForPopoverViewController:(LGPopoverViewController *)popoverViewController;
 
 @optional
@@ -41,6 +39,7 @@
 // for picker with own array
 - (NSArray<NSString *> *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController;
 - (NSString *)labelCurrentRowForPopoverViewController:(LGPopoverViewController *)popoverViewController;
+- (void)stringChange:(NSString *)string;        // вызываеся каждый раз, когда меняется строка в списке;
 // for date picker
 - (void)dateRangeForDatePicker:(UIDatePicker *)datePicker forPopoverViewController:(LGPopoverViewController *)popoverViewController;
 - (void)dateChange:(UIDatePicker *)datePicker;  // вызываеся каждый раз, когда меняется дата;

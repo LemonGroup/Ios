@@ -102,20 +102,10 @@
                 [pickerView selectRow:row inComponent:0 animated:NO];
                 
             }
-            
         }
-        
-        if ([self.delegate respondsToSelector:@selector(stringChange:)]) {
-            
-            [self.delegate stringChange:array[row]];
-        }
-        
-    } else {
-        
-        row = [pickerView selectedRowInComponent:0];
-        [self.delegate stringChange:array[row]];
-        
     }
+    
+    [self stringChange:array[row]];
     
     [self.view addSubview:pickerView];
 }
@@ -209,6 +199,14 @@
     self.returnButton = button;
 }
 
+- (void)stringChange:(NSString *)string {
+    
+    if ([self.delegate respondsToSelector:@selector(stringChange:)]) {
+        
+        [self.delegate stringChange:string];
+    }
+}
+
 #pragma mark - UIPickerViewDelegate
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
@@ -216,7 +214,7 @@
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    [self.delegate stringChange:_dataArray[row]];
+    [self stringChange:_dataArray[row]];
 }
 
 #pragma mark - UIPickerViewDataSource

@@ -146,26 +146,21 @@ typedef enum {
 
 - (NSString *)stringForRequest {
     
-    NSInteger siteID = 0;
     
+    NSInteger siteID = 0;
     for (LGSite *site in [[LGSiteListSingleton sharedSiteList] sites]) {
-        
         if ([site.siteURL isEqualToString:_siteField.text]) {
             siteID = [site.siteID integerValue];
             continue;
         }
-        
     }
     
     NSInteger personID = 0;
-    
     for (LGPerson *person in [[LGPersonListSingleton sharedPersonList] persons]) {
-        
         if ([person.personName isEqualToString:_personField.text]) {
             personID = [person.personID integerValue];
             continue;
         }
-        
     }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -221,8 +216,6 @@ typedef enum {
     [lineChart strokeChart];
 }
 
-#pragma mark - UITableViewDelegate
-
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -264,8 +257,6 @@ typedef enum {
         case MultipleTypeChart: {
             [self createChart];
         }
-            break;
-        default:
             break;
     }
 }
@@ -455,7 +446,6 @@ typedef enum {
         default:
             return nil;
             break;
-            
     }
     
     return array;
@@ -487,8 +477,6 @@ typedef enum {
             self.personField.text = string;
         }
             break;
-        default:
-            break;
     }
 }
 
@@ -507,8 +495,6 @@ typedef enum {
             _selectedEndDate = datePicker.date;
             self.endDateField.text = [dateFormatter stringFromDate:datePicker.date];
         }
-            break;
-        default:
             break;
     }
 }
@@ -538,8 +524,6 @@ typedef enum {
             datePicker.maximumDate = [NSDate date];
             
         }
-            break;
-        default:
             break;
     }
 }
