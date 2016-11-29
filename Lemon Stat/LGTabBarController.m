@@ -37,13 +37,13 @@ NSInteger gPrivilege;       // Привелегия (присваевается 
     _generalStatController = self.viewControllers[0];
     _dailyStatsController = self.viewControllers[1];
     
-    // change rendering mode for UITabBar images
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
-        for (UITabBarItem *tbi in self.tabBar.items) {
-            tbi.image = [tbi.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-            tbi.selectedImage = [tbi.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        }
-    }
+//    // change rendering mode for UITabBar images
+//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+//        for (UITabBarItem *tbi in self.tabBar.items) {
+//            tbi.image = [tbi.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//            tbi.selectedImage = [tbi.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//        }
+//    }
     
     [self createSegmentedControl];
     
