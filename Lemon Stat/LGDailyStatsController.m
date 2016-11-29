@@ -434,7 +434,7 @@ typedef enum {
     }
 }
 
-- (NSArray *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController {
+- (NSArray<NSString *> *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController {
     
     NSMutableArray *array = [NSMutableArray array];
     

@@ -48,7 +48,9 @@
         NSArray *arrayData = [self.delegate arrayForPopoverViewController:self];
         
         if (arrayData) {
-            [self createPickerWithArray:arrayData];
+            if (arrayData.count > 0) {
+                [self createPickerWithArray:arrayData];
+            }
         } else {
             [self createDatePicker];
         }
@@ -116,6 +118,7 @@
 
 - (void)createDatePicker {
     
+    // set frame
     CGFloat heightNavBar = CGRectGetHeight(self.navigationController.navigationBar.frame);
     
     CGRect rect;
@@ -128,8 +131,10 @@
     
     UIDatePicker *datePicker = [[UIDatePicker alloc] initWithFrame:rect];
     
+    // set mode
     datePicker.datePickerMode = UIDatePickerModeDate;
     
+    // set range dates
     if([self.delegate respondsToSelector:@selector(dateRangeForDatePicker:forPopoverViewController:)]) {
         [self.delegate dateRangeForDatePicker:datePicker forPopoverViewController:self];
     } else {
@@ -137,15 +142,21 @@
         datePicker.maximumDate = [NSDate date];
     }
     
+    // set current date
     if (_currentDate) {
         datePicker.date = _currentDate;
     }
     
-    [datePicker addTarget:self.delegate
-                   action:@selector(dateChange:)
-         forControlEvents:UIControlEventValueChanged];
+    if ([self.delegate respondsToSelector:@selector(dateChange:)]) {
+        
+        // set action
+        [datePicker addTarget:self.delegate
+                       action:@selector(dateChange:)
+             forControlEvents:UIControlEventValueChanged];
+        
+        [self.delegate dateChange:datePicker];
+    }
     
-    [self.delegate dateChange:datePicker];
     [self.view addSubview:datePicker];
 }
 

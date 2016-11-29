@@ -39,7 +39,7 @@
 
 // Если метод arrayForPopoverViewController: не реализован или возвращает nil, то будет создан datePicker
 // for picker with own array
-- (NSArray *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController;
+- (NSArray<NSString *> *)arrayForPopoverViewController:(LGPopoverViewController *)popoverViewController;
 - (NSString *)labelCurrentRowForPopoverViewController:(LGPopoverViewController *)popoverViewController;
 // for date picker
 - (void)dateRangeForDatePicker:(UIDatePicker *)datePicker forPopoverViewController:(LGPopoverViewController *)popoverViewController;
