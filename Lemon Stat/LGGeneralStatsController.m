@@ -78,6 +78,8 @@
                      
                  } else {
                      
+                     _responseJSON = nil;
+                     
                      [self alertActionWithTitle:@"Нет данных" andMessage:nil];
                      
                      /************* Убрать этот кусок кода *************/

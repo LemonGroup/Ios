@@ -35,7 +35,7 @@ typedef enum {
 }
 
 @property (weak, nonatomic) UITableView *tableView;
-@property (weak, nonatomic) PNLineChart *lineChart;
+@property (weak, nonatomic) UIScrollView *lineChart;
 
 @property (weak, nonatomic) IBOutlet UITextField *siteField;
 @property (weak, nonatomic) IBOutlet UITextField *personField;
@@ -124,6 +124,36 @@ typedef enum {
                  
                  [self alertActionWithTitle:@"Нет данных" andMessage:nil];
                  
+                 /************* Убрать этот кусок кода *************/
+                 // фейковые данные
+                 _responseJSON = @[@{@"date" : @"2016-11-29", @"numberOfNewPages" : @57},
+                                   @{@"date" : @"2016-11-30", @"numberOfNewPages" : @94},
+                                   @{@"date" : @"2016-12-1", @"numberOfNewPages" : @23},
+                                   @{@"date" : @"2016-12-2", @"numberOfNewPages" : @94},
+                                   @{@"date" : @"2016-12-3", @"numberOfNewPages" : @121},
+                                   @{@"date" : @"2016-12-4", @"numberOfNewPages" : @34},
+                                   @{@"date" : @"2016-12-5", @"numberOfNewPages" : @65},
+                                   @{@"date" : @"2016-12-6", @"numberOfNewPages" : @69},
+                                   @{@"date" : @"2016-12-7", @"numberOfNewPages" : @11},
+                                   @{@"date" : @"2016-12-8", @"numberOfNewPages" : @26},
+                                   @{@"date" : @"2016-12-9", @"numberOfNewPages" : @30},
+                                   @{@"date" : @"2016-12-10", @"numberOfNewPages" : @30},
+                                   @{@"date" : @"2016-11-11", @"numberOfNewPages" : @57},
+                                   @{@"date" : @"2016-11-12", @"numberOfNewPages" : @94},
+                                   @{@"date" : @"2016-12-13", @"numberOfNewPages" : @23},
+                                   @{@"date" : @"2016-12-14", @"numberOfNewPages" : @94},
+                                   @{@"date" : @"2016-12-15", @"numberOfNewPages" : @121},
+                                   @{@"date" : @"2016-12-16", @"numberOfNewPages" : @34},
+                                   @{@"date" : @"2016-12-17", @"numberOfNewPages" : @65},
+                                   @{@"date" : @"2016-12-18", @"numberOfNewPages" : @69},
+                                   @{@"date" : @"2016-12-19", @"numberOfNewPages" : @11},
+                                   @{@"date" : @"2016-12-20", @"numberOfNewPages" : @26},
+                                   @{@"date" : @"2016-12-21", @"numberOfNewPages" : @30},
+                                   @{@"date" : @"2016-12-22", @"numberOfNewPages" : @30}];
+                 
+                 NSLog(@"JSON: %@", _responseJSON);
+                 /**************************************************/
+                 
              }
              
              switch (_multipleType) {
@@ -135,7 +165,6 @@ typedef enum {
                      break;
              }
              
-             NSLog(@"JSON: %@", _responseJSON);
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
@@ -178,12 +207,7 @@ typedef enum {
 
 - (void)reloadChart {
     
-    PNLineChart *lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 245.0, SCREEN_WIDTH, 328)];
-    lineChart.showCoordinateAxis = YES;
-    
-    [self.view addSubview:lineChart];
-    
-    self.lineChart = lineChart;
+    [self.lineChart removeFromSuperview];
     
     if (_responseJSON) {
         
@@ -198,22 +222,57 @@ typedef enum {
             [numberOfNewPages addObject:[obj valueForKey:@"numberOfNewPages"]];
         }
         
-        [lineChart setXLabels:dates];
+        
+        NSInteger valueWidth = 60;
+        NSInteger maxValuesOnScreen = 6;
+        NSInteger contentWidth;
+        
+        if (dates.count > maxValuesOnScreen) {
+            contentWidth = valueWidth * (dates.count + 1);
+        } else {
+            contentWidth = SCREEN_WIDTH;
+        }
+        
+        // create ScrollView
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 245.0, SCREEN_WIDTH, 328)];
+        scrollView.contentSize = CGSizeMake(contentWidth, 328);
+        
+        // create Chart
+        PNLineChart *lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, 328)];
+        lineChart.showCoordinateAxis = YES;
+        
+        
+        if (dates.count > maxValuesOnScreen) {
+            [lineChart setXLabels:dates withWidth:valueWidth];
+        } else {
+            [lineChart setXLabels:dates];
+        }
         
         // Line Chart No.1
         NSArray * data01Array = numberOfNewPages;
         PNLineChartData *data01 = [PNLineChartData new];
+        data01.showPointLabel = YES;
+        data01.inflexionPointStyle = PNLineChartPointStyleCircle;
+        data01.pointLabelFont = [UIFont systemFontOfSize:12];
         data01.color = [UIColor blueColor];
-        data01.itemCount = self.lineChart.xLabels.count;
+        data01.itemCount = lineChart.xLabels.count;
         data01.getData = ^(NSUInteger index) {
             CGFloat yValue = [data01Array[index] floatValue];
             return [PNLineChartDataItem dataItemWithY:yValue];
         };
         
         lineChart.chartData = @[data01];
+        
+        [lineChart strokeChart];
+        
+        
+        [self.view addSubview:scrollView];
+        [scrollView addSubview:lineChart];
+        
+        self.lineChart = scrollView;
+        
     }
     
-    [lineChart strokeChart];
 }
 
 #pragma mark - UITableViewDataSource
