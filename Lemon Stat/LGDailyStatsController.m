@@ -427,7 +427,6 @@ typedef enum {
         case TextFieldTypeEndDate:
             return @"Выберите конечную дату";
             break;
-            
         default:
             return nil;
             break;
@@ -456,6 +455,7 @@ typedef enum {
         default:
             return nil;
             break;
+            
     }
     
     return array;
@@ -474,7 +474,6 @@ typedef enum {
             return nil;
             break;
     }
-    
 }
 
 - (void)stringChange:(NSString *)string {

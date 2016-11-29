@@ -88,22 +88,26 @@
     pickerView.delegate = self;
     pickerView.dataSource = self;
     
-    NSInteger row;
+    NSInteger row = 0;
     
     if ([self.delegate respondsToSelector:@selector(labelCurrentRowForPopoverViewController:)]) {
         
         NSString *labelCurrentRow = [self.delegate labelCurrentRowForPopoverViewController:self];
         
-        if (![labelCurrentRow isEqualToString:@""]) {
+        if (labelCurrentRow) {
             
-            row = [array indexOfObject:labelCurrentRow];
-            [pickerView selectRow:row inComponent:0 animated:NO];
+            if ([array containsObject:labelCurrentRow]) {
+                
+                row = [array indexOfObject:labelCurrentRow];
+                [pickerView selectRow:row inComponent:0 animated:NO];
+                
+            }
             
-        } else {
+        }
+        
+        if ([self.delegate respondsToSelector:@selector(stringChange:)]) {
             
-            row = [pickerView selectedRowInComponent:0];
             [self.delegate stringChange:array[row]];
-            
         }
         
     } else {
