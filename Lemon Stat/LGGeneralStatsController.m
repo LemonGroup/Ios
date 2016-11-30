@@ -16,10 +16,11 @@
 #import "LGSiteListSingleton.h"
 #import "LGSite.h"
 
+#import "LGGeneralRow.h"
+
 #import "NSString+Request.h"
 
 @interface LGGeneralStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate> {
-    //NSArray *_responseJSON;
 }
 
 @property (weak, nonatomic) UITableView *tableView;
@@ -29,8 +30,10 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *siteLabel;
 
-@property (strong, nonatomic) NSArray *persons;
-@property (strong, nonatomic) NSArray *numberOfMentions;
+//@property (strong, nonatomic) NSArray *persons;
+//@property (strong, nonatomic) NSArray *numberOfMentions;
+
+@property (strong, nonatomic) NSArray<LGGeneralRow *> *generalRows;
 
 @end
 
@@ -61,6 +64,7 @@
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
     NSString *requestString = [self requestString];
     
@@ -77,79 +81,67 @@
                  
                  if (responseObject) {
                      
-                     //_responseJSON = responseObject;
-                     
-                     NSMutableArray *persons = [NSMutableArray array];
-                     NSMutableArray *numberOfMentions = [NSMutableArray array];
+                     NSMutableArray *generalRows = [NSMutableArray array];
                      
                      for (id obj in responseObject) {
-                         [persons addObject:[obj valueForKey:@"person"]];
+                         LGGeneralRow *generalRow = [[LGGeneralRow alloc] init];
+                         generalRow.person = [obj valueForKey:@"person"];
+                         generalRow.numberOfMentions = [[obj valueForKey:@"numberOfMentions"] stringValue];
+                         [generalRows addObject:generalRow];
                      }
-                     
-                     for (id obj in responseObject) {
-                         [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
-                     }
+                     self.generalRows = generalRows;
                      
                      // сортировка persons
-                     [persons sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                         return [obj1 compare:obj2];
+                     [generalRows sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                         return [[obj1 person] compare:[obj2 person]];
                      }];
-                     
-                     _persons = persons;
-                     _numberOfMentions = numberOfMentions;
                      
                  } else {
                      
-                     //_responseJSON = nil;
-                     
-                     _persons = nil;
-                     _numberOfMentions = nil;
+                     _generalRows = nil;
                      
                      [self alertActionWithTitle:@"Нет данных" andMessage:nil];
-                     
+                     {
                      /************* Убрать этот кусок кода *************/
                      // фейковые данные
-                     NSArray *responseJSON = @[@{@"numberOfMentions" : @"10", @"person" : @"Путин"},
-                                               @{@"numberOfMentions" : @"232", @"person" : @"Навальный"},
-                                               @{@"numberOfMentions" : @"66", @"person" : @"Медведев"},
-                                               @{@"numberOfMentions" : @"1", @"person" : @"Путин"},
-                                               @{@"numberOfMentions" : @"23", @"person" : @"Навальный"},
-                                               @{@"numberOfMentions" : @"112", @"person" : @"Медведев"},
-                                               @{@"numberOfMentions" : @"34", @"person" : @"Путин"},
-                                               @{@"numberOfMentions" : @"54", @"person" : @"Навальный"},
-                                               @{@"numberOfMentions" : @"99", @"person" : @"Медведев"},
-                                               @{@"numberOfMentions" : @"150", @"person" : @"Путин"},
-                                               @{@"numberOfMentions" : @"34", @"person" : @"Навальный"},
-                                               @{@"numberOfMentions" : @"123", @"person" : @"Медведев"},
-                                               @{@"numberOfMentions" : @"12", @"person" : @"Путин"},
-                                               @{@"numberOfMentions" : @"199", @"person" : @"Навальный"},
-                                               @{@"numberOfMentions" : @"54", @"person" : @"Медведев"},
-                                               @{@"numberOfMentions" : @"74", @"person" : @"Путин"},
-                                               @{@"numberOfMentions" : @"74", @"person" : @"Навальный"},
-                                               @{@"numberOfMentions" : @"75", @"person" : @"Медведев"}
+                     NSArray *responseJSON = @[@{@"numberOfMentions" : @10, @"person" : @"Путин"},
+                                               @{@"numberOfMentions" : @232, @"person" : @"Навальный"},
+                                               @{@"numberOfMentions" : @66, @"person" : @"Медведев"},
+                                               @{@"numberOfMentions" : @1, @"person" : @"Путин"},
+                                               @{@"numberOfMentions" : @23, @"person" : @"Навальный"},
+                                               @{@"numberOfMentions" : @112, @"person" : @"Медведев"},
+                                               @{@"numberOfMentions" : @34, @"person" : @"Путин"},
+                                               @{@"numberOfMentions" : @54, @"person" : @"Навальный"},
+                                               @{@"numberOfMentions" : @99, @"person" : @"Медведев"},
+                                               @{@"numberOfMentions" : @150, @"person" : @"Путин"},
+                                               @{@"numberOfMentions" : @34, @"person" : @"Навальный"},
+                                               @{@"numberOfMentions" : @123, @"person" : @"Медведев"},
+                                               @{@"numberOfMentions" : @12, @"person" : @"Путин"},
+                                               @{@"numberOfMentions" : @199, @"person" : @"Навальный"},
+                                               @{@"numberOfMentions" : @54, @"person" : @"Медведев"},
+                                               @{@"numberOfMentions" : @74, @"person" : @"Путин"},
+                                               @{@"numberOfMentions" : @74, @"person" : @"Навальный"},
+                                               @{@"numberOfMentions" : @75, @"person" : @"Медведев"}
                                                ];
                      
-                     NSMutableArray *persons = [NSMutableArray array];
-                     NSMutableArray *numberOfMentions = [NSMutableArray array];
+                     NSMutableArray *generalRows = [NSMutableArray array];
                      
                      for (id obj in responseJSON) {
-                         [persons addObject:[obj valueForKey:@"person"]];
+                         LGGeneralRow *generalRow = [[LGGeneralRow alloc] init];
+                         generalRow.person = [obj valueForKey:@"person"];
+                         generalRow.numberOfMentions = [[obj valueForKey:@"numberOfMentions"] stringValue];
+                         [generalRows addObject:generalRow];
                      }
-                     
-                     for (id obj in responseJSON) {
-                         [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
-                     }
+                     self.generalRows = generalRows;
                      
                      // сортировка persons
-                     [persons sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                         return [obj1 compare:obj2];
+                     [generalRows sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                         return [[obj1 person] compare:[obj2 person]];
                      }];
-                     
-                     _persons = persons;
-                     _numberOfMentions = numberOfMentions;
                      
                      NSLog(@"JSON: %@", responseJSON);
                      /**************************************************/
+                     }
                  }
                  
                  switch (_multipleType) {
@@ -165,47 +157,43 @@
                  NSLog(@"Error: %@", error);
                  
                  [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
-                 
+                 {
                  /************* Убрать этот кусок кода *************/
                  // фейковые данные
-                 NSArray *responseJSON = @[@{@"numberOfMentions" : @"10", @"person" : @"Путин"},
-                                           @{@"numberOfMentions" : @"232", @"person" : @"Навальный"},
-                                           @{@"numberOfMentions" : @"66", @"person" : @"Медведев"},
-                                           @{@"numberOfMentions" : @"1", @"person" : @"Путин"},
-                                           @{@"numberOfMentions" : @"23", @"person" : @"Навальный"},
-                                           @{@"numberOfMentions" : @"112", @"person" : @"Медведев"},
-                                           @{@"numberOfMentions" : @"34", @"person" : @"Путин"},
-                                           @{@"numberOfMentions" : @"54", @"person" : @"Навальный"},
-                                           @{@"numberOfMentions" : @"99", @"person" : @"Медведев"},
-                                           @{@"numberOfMentions" : @"150", @"person" : @"Путин"},
-                                           @{@"numberOfMentions" : @"34", @"person" : @"Навальный"},
-                                           @{@"numberOfMentions" : @"123", @"person" : @"Медведев"},
-                                           @{@"numberOfMentions" : @"12", @"person" : @"Путин"},
-                                           @{@"numberOfMentions" : @"199", @"person" : @"Навальный"},
-                                           @{@"numberOfMentions" : @"54", @"person" : @"Медведев"},
-                                           @{@"numberOfMentions" : @"74", @"person" : @"Путин"},
-                                           @{@"numberOfMentions" : @"74", @"person" : @"Навальный"},
-                                           @{@"numberOfMentions" : @"75", @"person" : @"Медведев"}
+                 NSArray *responseJSON = @[@{@"numberOfMentions" : @10, @"person" : @"Путин"},
+                                           @{@"numberOfMentions" : @232, @"person" : @"Навальный"},
+                                           @{@"numberOfMentions" : @66, @"person" : @"Медведев"},
+                                           @{@"numberOfMentions" : @1, @"person" : @"Путин"},
+                                           @{@"numberOfMentions" : @23, @"person" : @"Навальный"},
+                                           @{@"numberOfMentions" : @112, @"person" : @"Медведев"},
+                                           @{@"numberOfMentions" : @34, @"person" : @"Путин"},
+                                           @{@"numberOfMentions" : @54, @"person" : @"Навальный"},
+                                           @{@"numberOfMentions" : @99, @"person" : @"Медведев"},
+                                           @{@"numberOfMentions" : @150, @"person" : @"Путин"},
+                                           @{@"numberOfMentions" : @34, @"person" : @"Навальный"},
+                                           @{@"numberOfMentions" : @123, @"person" : @"Медведев"},
+                                           @{@"numberOfMentions" : @12, @"person" : @"Путин"},
+                                           @{@"numberOfMentions" : @199, @"person" : @"Навальный"},
+                                           @{@"numberOfMentions" : @54, @"person" : @"Медведев"},
+                                           @{@"numberOfMentions" : @74, @"person" : @"Путин"},
+                                           @{@"numberOfMentions" : @74, @"person" : @"Навальный"},
+                                           @{@"numberOfMentions" : @75, @"person" : @"Медведев"}
                                            ];
-                 
-                 NSMutableArray *persons = [NSMutableArray array];
-                 NSMutableArray *numberOfMentions = [NSMutableArray array];
-                 
-                 for (id obj in responseJSON) {
-                     [persons addObject:[obj valueForKey:@"person"]];
-                 }
+                     
+                 NSMutableArray *generalRows = [NSMutableArray array];
                  
                  for (id obj in responseJSON) {
-                     [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
+                     LGGeneralRow *generalRow = [[LGGeneralRow alloc] init];
+                     generalRow.person = [obj valueForKey:@"person"];
+                     generalRow.numberOfMentions = [[obj valueForKey:@"numberOfMentions"] stringValue];
+                     [generalRows addObject:generalRow];
                  }
+                 self.generalRows = generalRows;
                  
                  // сортировка persons
-                 [persons sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                     return [obj1 compare:obj2];
+                 [generalRows sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                     return [[obj1 person] compare:[obj2 person]];
                  }];
-                 
-                 _persons = persons;
-                 _numberOfMentions = numberOfMentions;
                  
                  NSLog(@"JSON: %@", responseJSON);
          
@@ -218,6 +206,7 @@
                          break;
                  }
                  /**************************************************/
+                 }
              }];
     }
 }
@@ -246,98 +235,69 @@
     
     [self.barChart removeFromSuperview];
     
-    if (_persons) {
+    UIScrollView *scrollView;
+    PNBarChart *barChart;
+    
+    if (_generalRows) {
         
-//        NSMutableArray *persons = [NSMutableArray array];
-//        NSMutableArray *numberOfMentions = [NSMutableArray array];
-//        
-//        for (id obj in _responseJSON) {
-//            [persons addObject:[obj valueForKey:@"person"]];
-//        }
-//        
-//        for (id obj in _responseJSON) {
-//            [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
-//        }
-//        
-//        // сортировка persons
-//        [persons sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-//            return [obj1 compare:obj2];
-//        }];
+        NSMutableArray *persons = [NSMutableArray array];
+        NSMutableArray *numberOfMentions = [NSMutableArray array];
+        
+        for (LGGeneralRow *row in _generalRows) {
+            [persons addObject:row.person];
+            [numberOfMentions addObject:row.numberOfMentions];
+        }
         
         NSInteger valueWidth = 60;
         NSInteger maxValuesOnScreen = 6;
         NSInteger contentWidth;
         
-        if (_persons.count > maxValuesOnScreen) {
-            contentWidth = valueWidth * (_persons.count + 1);
+        if (persons.count > maxValuesOnScreen) {
+            contentWidth = valueWidth * (persons.count + 1);
         } else {
             contentWidth = SCREEN_WIDTH;
         }
         
         // create ScrollView
-        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 110, SCREEN_WIDTH, 513)];
+        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 110, SCREEN_WIDTH, 513)];
         scrollView.contentSize = CGSizeMake(contentWidth, 513);
         
         // create Chart
-        PNBarChart *barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, 513)];
+        barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, 513)];
         barChart.isGradientShow = NO;
         barChart.strokeColor = [UIColor blueColor];
         barChart.showChartBorder = YES;
         
-        if (_persons.count > 4) {
+        if (persons.count > 4) {
             barChart.rotateForXAxisText = YES;
             barChart.labelMarginTop = -20.0;
             barChart.chartMarginBottom = 70;
-        } else if (_persons.count > maxValuesOnScreen) {
+        } else if (persons.count > maxValuesOnScreen) {
             barChart.xLabelWidth = valueWidth;
         } else {
             barChart.chartMarginBottom = 50;
         }
         
-        [barChart setXLabels:_persons];
-        [barChart setYValues:_numberOfMentions];
+        [barChart setXLabels:persons];
+        [barChart setYValues:numberOfMentions];
         
+    } else {
         
+        // create ScrollView
+        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 110, SCREEN_WIDTH, 513)];
+        scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, 513);
         
-        [barChart strokeChart];
-        
-        [self.view addSubview:scrollView];
-        [scrollView addSubview:barChart];
-        self.barChart = scrollView;
+        // create Chart
+        barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 513)];
+        barChart.showChartBorder = YES;
         
     }
     
+    [barChart strokeChart];
     
-//    PNBarChart *barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 102, SCREEN_WIDTH, 513)];
-//    barChart.labelMarginTop = 30.0;
-//    barChart.barWidth = 40;
-//    barChart.isGradientShow = NO;
-//    barChart.strokeColor = [UIColor blueColor];
-//    barChart.showChartBorder = YES;
-//    
-//    [self.view addSubview:barChart];
-//    
-//    self.barChart = barChart;
-    
-//    if (_responseJSON) {
-    
-//        NSMutableArray *persons = [NSMutableArray array];
-//        NSMutableArray *numberOfMentions = [NSMutableArray array];
-//        
-//        for (id obj in _responseJSON) {
-//            [persons addObject:[obj valueForKey:@"person"]];
-//        }
-//        
-//        for (id obj in _responseJSON) {
-//            [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
-//        }
-        
-        
-//        [barChart setXLabels:persons];
-//        [barChart setYValues:numberOfMentions];
-//    }
-//    
-//    [barChart strokeChart];
+    [self.view addSubview:scrollView];
+    [scrollView addSubview:barChart];
+    self.barChart = scrollView;
 }
 
 #pragma mark - UITableViewDataSource
@@ -347,7 +307,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _persons.count;
+    return _generalRows.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -356,12 +316,15 @@
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     
+    // Configure the cell...
+    
+    LGGeneralRow *row = _generalRows[indexPath.row];
+    
     // set textLabel
-    cell.textLabel.text = _persons[indexPath.row];
+    cell.textLabel.text = row.person;
     
     // set detailTextLabel
-    NSString *numberOfMentions = _numberOfMentions[indexPath.row];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", numberOfMentions];
+    cell.detailTextLabel.text = row.numberOfMentions;
     cell.detailTextLabel.textColor = [UIColor blueColor];
     
     return cell;

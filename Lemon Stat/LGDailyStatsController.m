@@ -18,6 +18,9 @@
 #import "LGPersonListSingleton.h"
 #import "LGPerson.h"
 
+#import "LGDailyRow.h"
+#import "LGSection.h"
+
 #import "NSString+Request.h"
 
 typedef enum {
@@ -28,7 +31,6 @@ typedef enum {
 } TextFieldType;
 
 @interface LGDailyStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate> {
-    NSArray *_responseJSON;
     UITextField *_currentTextField;
     NSDate *_selectedStartDate;
     NSDate *_selectedEndDate;
@@ -50,6 +52,11 @@ typedef enum {
 
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
+@property (strong, nonatomic) NSArray *sections;
+@property (strong, nonatomic) NSArray<LGDailyRow *> *dailyRows;
+
+@property (strong, nonatomic) NSOperation *currentOperation;
+
 @end
 
 @implementation LGDailyStatsController
@@ -57,26 +64,6 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-//    _siteField.layer.masksToBounds = YES;
-//    _siteField.layer.cornerRadius = 5;
-//    _siteField.layer.borderWidth = 1;
-//    _siteField.layer.borderColor = [UIColor blueColor].CGColor;
-//    
-//    _personField.layer.masksToBounds = YES;
-//    _personField.layer.cornerRadius = 5;
-//    _personField.layer.borderWidth = 1;
-//    _personField.layer.borderColor = [UIColor blueColor].CGColor;
-//    
-//    _startDateField.layer.masksToBounds = YES;
-//    _startDateField.layer.cornerRadius = 5;
-//    _startDateField.layer.borderWidth = 1;
-//    _startDateField.layer.borderColor = [UIColor blueColor].CGColor;
-//    
-//    _endDateField.layer.masksToBounds = YES;
-//    _endDateField.layer.cornerRadius = 5;
-//    _endDateField.layer.borderWidth = 1;
-//    _endDateField.layer.borderColor = [UIColor blueColor].CGColor;
     
     if (_multipleType != MultipleTypeTable && _multipleType != MultipleTypeChart) {
         _multipleType = MultipleTypeTable;
@@ -102,6 +89,7 @@ typedef enum {
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
     NSString *urlString = [self stringForRequest];
     
@@ -112,55 +100,82 @@ typedef enum {
              
              NSLog(@"responseObject JSON: %@", responseObject);
              
+             NSMutableArray *dailyRows = [NSMutableArray array];
+             
              if (responseObject) {
                  
-                 _responseJSON = responseObject;
+                 for (id obj in responseObject) {
+                     LGDailyRow *dailyRow = [[LGDailyRow alloc] init];
+                     dailyRow.date = [obj valueForKey:@"date"];
+                     dailyRow.numberOfNewPages = [[obj valueForKey:@"numberOfNewPages"] stringValue];
+                     [dailyRows addObject:dailyRow];
+                 }
+                 self.dailyRows = dailyRows;
                  
                  [self setTotalNumber];
                  
              } else {
                  
-                 _responseJSON = nil;
+                 _dailyRows = nil;
                  
                  [self alertActionWithTitle:@"Нет данных" andMessage:nil];
-                 
+                 {
                  /************* Убрать этот кусок кода *************/
                  // фейковые данные
-                 _responseJSON = @[@{@"date" : @"2016-11-29", @"numberOfNewPages" : @57},
-                                   @{@"date" : @"2016-11-30", @"numberOfNewPages" : @94},
-                                   @{@"date" : @"2016-12-1", @"numberOfNewPages" : @23},
-                                   @{@"date" : @"2016-12-2", @"numberOfNewPages" : @94},
-                                   @{@"date" : @"2016-12-3", @"numberOfNewPages" : @121},
-                                   @{@"date" : @"2016-12-4", @"numberOfNewPages" : @34},
-                                   @{@"date" : @"2016-12-5", @"numberOfNewPages" : @65},
-                                   @{@"date" : @"2016-12-6", @"numberOfNewPages" : @69},
-                                   @{@"date" : @"2016-12-7", @"numberOfNewPages" : @11},
-                                   @{@"date" : @"2016-12-8", @"numberOfNewPages" : @26},
-                                   @{@"date" : @"2016-12-9", @"numberOfNewPages" : @30},
-                                   @{@"date" : @"2016-12-10", @"numberOfNewPages" : @30},
-                                   @{@"date" : @"2016-11-11", @"numberOfNewPages" : @57},
-                                   @{@"date" : @"2016-11-12", @"numberOfNewPages" : @94},
-                                   @{@"date" : @"2016-12-13", @"numberOfNewPages" : @23},
-                                   @{@"date" : @"2016-12-14", @"numberOfNewPages" : @94},
-                                   @{@"date" : @"2016-12-15", @"numberOfNewPages" : @121},
-                                   @{@"date" : @"2016-12-16", @"numberOfNewPages" : @34},
-                                   @{@"date" : @"2016-12-17", @"numberOfNewPages" : @65},
-                                   @{@"date" : @"2016-12-18", @"numberOfNewPages" : @69},
-                                   @{@"date" : @"2016-12-19", @"numberOfNewPages" : @11},
-                                   @{@"date" : @"2016-12-20", @"numberOfNewPages" : @26},
-                                   @{@"date" : @"2016-12-21", @"numberOfNewPages" : @30},
-                                   @{@"date" : @"2016-12-22", @"numberOfNewPages" : @30}];
+                 NSArray *responseJSON = @[@{@"date" : @"2016-11-29", @"numberOfNewPages" : @57},
+                                           @{@"date" : @"2016-11-30", @"numberOfNewPages" : @94},
+                                           @{@"date" : @"2016-12-1", @"numberOfNewPages" : @23},
+                                           @{@"date" : @"2016-12-2", @"numberOfNewPages" : @94},
+                                           @{@"date" : @"2016-12-3", @"numberOfNewPages" : @121},
+                                           @{@"date" : @"2016-12-4", @"numberOfNewPages" : @34},
+                                           @{@"date" : @"2016-12-5", @"numberOfNewPages" : @65},
+                                           @{@"date" : @"2016-12-6", @"numberOfNewPages" : @69},
+                                           @{@"date" : @"2016-12-7", @"numberOfNewPages" : @11},
+                                           @{@"date" : @"2016-12-8", @"numberOfNewPages" : @26},
+                                           @{@"date" : @"2016-12-9", @"numberOfNewPages" : @30},
+                                           @{@"date" : @"2016-12-10", @"numberOfNewPages" : @30},
+                                           @{@"date" : @"2016-12-11", @"numberOfNewPages" : @57},
+                                           @{@"date" : @"2016-12-12", @"numberOfNewPages" : @94},
+                                           @{@"date" : @"2016-12-13", @"numberOfNewPages" : @23},
+                                           @{@"date" : @"2016-12-14", @"numberOfNewPages" : @94},
+                                           @{@"date" : @"2016-12-15", @"numberOfNewPages" : @121},
+                                           @{@"date" : @"2016-12-16", @"numberOfNewPages" : @34},
+                                           @{@"date" : @"2016-12-17", @"numberOfNewPages" : @65},
+                                           @{@"date" : @"2016-12-18", @"numberOfNewPages" : @69},
+                                           @{@"date" : @"2016-12-19", @"numberOfNewPages" : @11},
+                                           @{@"date" : @"2016-12-20", @"numberOfNewPages" : @26},
+                                           @{@"date" : @"2016-12-21", @"numberOfNewPages" : @30},
+                                           @{@"date" : @"2016-12-22", @"numberOfNewPages" : @30},
+                                           @{@"date" : @"2016-12-23", @"numberOfNewPages" : @94},
+                                           @{@"date" : @"2016-12-24", @"numberOfNewPages" : @23},
+                                           @{@"date" : @"2016-12-25", @"numberOfNewPages" : @94},
+                                           @{@"date" : @"2016-12-26", @"numberOfNewPages" : @121},
+                                           @{@"date" : @"2016-12-27", @"numberOfNewPages" : @34},
+                                           @{@"date" : @"2016-12-28", @"numberOfNewPages" : @65},
+                                           @{@"date" : @"2016-12-29", @"numberOfNewPages" : @69},
+                                           @{@"date" : @"2016-12-30", @"numberOfNewPages" : @11},
+                                           @{@"date" : @"2017-01-1", @"numberOfNewPages" : @26},
+                                           @{@"date" : @"2017-01-2", @"numberOfNewPages" : @30},
+                                           @{@"date" : @"2017-01-23", @"numberOfNewPages" : @30}];
                  
+                 for (id obj in responseJSON) {    // заменить _responseJSON на responseObject
+                     LGDailyRow *dailyRow = [[LGDailyRow alloc] init];
+                     dailyRow.date = [obj valueForKey:@"date"];
+                     dailyRow.numberOfNewPages = [[obj valueForKey:@"numberOfNewPages"] stringValue];
+                     [dailyRows addObject:dailyRow];
+                 }
+                 self.dailyRows = dailyRows;
+                     
                  [self setTotalNumber];
                  
-                 NSLog(@"JSON: %@", _responseJSON);
+                 NSLog(@"JSON: %@", responseJSON);
                  /**************************************************/
-                 
+                 }
              }
              
              switch (_multipleType) {
                  case MultipleTypeTable:
-                     [self.tableView reloadData];
+                     [self generateSectionsInBackgroundFromArray:dailyRows];
                      break;
                  case MultipleTypeChart:
                      [self reloadChart];
@@ -207,23 +222,87 @@ typedef enum {
 
 #pragma mark - Chart Methods
 
+- (void)generateSectionsInBackgroundFromArray:(NSArray *)array {
+    
+    if (array.count > 0) {
+        
+        [self.currentOperation cancel];
+        
+        __weak LGDailyStatsController *weakSelf = self;
+        
+        self.currentOperation = [NSBlockOperation blockOperationWithBlock:^{
+            
+            NSArray *sectionsArray = [self generateSectionsFromArray:array];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                weakSelf.sections = sectionsArray;
+                [weakSelf.tableView reloadData];
+                
+                self.currentOperation = nil;
+            });
+        }];
+        
+        [self.currentOperation start];
+        
+    } else {
+        
+        [self.tableView reloadData];
+        
+    }
+}
+
+- (NSArray *)generateSectionsFromArray:(NSArray *)array {
+    
+    NSString *currentYear = 0;
+    
+    NSMutableArray *sectionsArray = [NSMutableArray array];
+    
+    for (LGDailyRow *row in array) {
+        
+        NSString *year = [row.date substringToIndex:7];
+        
+        LGSection *section = nil;
+        
+        if (![currentYear isEqualToString:year]) {
+            
+            section = [[LGSection alloc] init];
+            section.name = year;
+            section.rows = [NSMutableArray array];
+            
+            currentYear = year;
+            
+            [sectionsArray addObject:section];
+            
+        } else {
+            
+            section = [sectionsArray lastObject];
+            
+        }
+        
+        [section.rows addObject:row];
+    
+    }
+    
+    return sectionsArray;
+}
+
 - (void)reloadChart {
     
     [self.lineChart removeFromSuperview];
     
-    if (_responseJSON) {
+    UIScrollView *scrollView;
+    PNLineChart *lineChart;
+    
+    if (_dailyRows) {
         
         NSMutableArray *dates = [NSMutableArray array];
         NSMutableArray *numberOfNewPages = [NSMutableArray array];
         
-        for (id obj in _responseJSON) {
-            [dates addObject:[obj valueForKey:@"date"]];
+        for (LGDailyRow *row in _dailyRows) {
+            [dates addObject:row.date];
+            [numberOfNewPages addObject:row.numberOfNewPages];
         }
-        
-        for (id obj in _responseJSON) {
-            [numberOfNewPages addObject:[obj valueForKey:@"numberOfNewPages"]];
-        }
-        
         
         NSInteger valueWidth = 60;
         NSInteger maxValuesOnScreen = 6;
@@ -236,11 +315,11 @@ typedef enum {
         }
         
         // create ScrollView
-        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 253.0, SCREEN_WIDTH, 328)];
+        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 253.0, SCREEN_WIDTH, 328)];
         scrollView.contentSize = CGSizeMake(contentWidth, 328);
         
         // create Chart
-        PNLineChart *lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, 328)];
+        lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, 328)];
         lineChart.showCoordinateAxis = YES;
         
         
@@ -265,24 +344,37 @@ typedef enum {
         
         lineChart.chartData = @[data01];
         
-        [lineChart strokeChart];
+    } else {
         
+        // create ScrollView
+        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 253.0, SCREEN_WIDTH, 328)];
+        scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, 328);
         
-        [self.view addSubview:scrollView];
-        [scrollView addSubview:lineChart];
-        
-        self.lineChart = scrollView;
+        // create Chart
+        lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 328)];
+        lineChart.showCoordinateAxis = YES;
     }
+    
+    [lineChart strokeChart];
+    
+    [self.view addSubview:scrollView];
+    [scrollView addSubview:lineChart];
+    
+    self.lineChart = scrollView;
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return self.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _responseJSON.count;
+    return [self.sections[section] rows].count;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [self.sections[section] name];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -291,12 +383,15 @@ typedef enum {
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     
+    // Configure the cell...
+    
+    LGDailyRow *row = [self.sections[indexPath.section] rows][indexPath.row];
+    
     // set textLabel
-    cell.textLabel.text = [_responseJSON[indexPath.row] valueForKey:@"date"];
+    cell.textLabel.text = row.date;
     
     // set detailTextLabel
-    NSString *numberOfNewPages = [_responseJSON[indexPath.row] valueForKey:@"numberOfNewPages"];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", numberOfNewPages];
+    cell.detailTextLabel.text = row.numberOfNewPages;
     cell.detailTextLabel.textColor = [UIColor blueColor];
     
     return cell;
@@ -343,11 +438,8 @@ typedef enum {
     
     NSInteger totalNumber = 0;
     
-    for (id obj in _responseJSON) {
-        
-        NSNumber *number = [obj valueForKey:@"numberOfNewPages"];
-        
-        totalNumber += [number integerValue];
+    for (LGDailyRow *row in _dailyRows) {
+        totalNumber += [row.numberOfNewPages integerValue];
     }
     
     _totalNumberLabel.text = [NSString stringWithFormat:@"%ld", totalNumber];

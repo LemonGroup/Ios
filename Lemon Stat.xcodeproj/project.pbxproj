@@ -19,6 +19,9 @@
 		44F0F2B21DE0B71E00A25E03 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B01DE0B71E00A25E03 /* logo.png */; };
 		44F0F2B41DE0BD6000A25E03 /* lines.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B31DE0BD6000A25E03 /* lines.png */; };
 		58126AE91DEF25A300D1F895 /* LGForgotPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58126AE81DEF25A300D1F895 /* LGForgotPasswordView.m */; };
+		58126AEC1DEF6B4E00D1F895 /* LGSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 58126AEB1DEF6B4E00D1F895 /* LGSection.m */; };
+		58126AEF1DEF73CE00D1F895 /* LGDailyRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 58126AEE1DEF73CE00D1F895 /* LGDailyRow.m */; };
+		58126AF21DEF888E00D1F895 /* LGGeneralRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 58126AF11DEF888E00D1F895 /* LGGeneralRow.m */; };
 		5849AA9F1DEB17E500B61199 /* LGSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5849AA9E1DEB17E500B61199 /* LGSettingsTableViewController.m */; };
 		5849AAA21DEB254700B61199 /* LGChangePassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5849AAA11DEB254700B61199 /* LGChangePassViewController.m */; };
 		58A149FD1DE26EEB00439EAC /* NSString+Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A149FC1DE26EEB00439EAC /* NSString+Request.m */; };
@@ -52,6 +55,12 @@
 		44F0F2B31DE0BD6000A25E03 /* lines.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lines.png; path = images/lines.png; sourceTree = "<group>"; };
 		58126AE71DEF25A300D1F895 /* LGForgotPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGForgotPasswordView.h; sourceTree = "<group>"; };
 		58126AE81DEF25A300D1F895 /* LGForgotPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGForgotPasswordView.m; sourceTree = "<group>"; };
+		58126AEA1DEF6B4E00D1F895 /* LGSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSection.h; sourceTree = "<group>"; };
+		58126AEB1DEF6B4E00D1F895 /* LGSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSection.m; sourceTree = "<group>"; };
+		58126AED1DEF73CD00D1F895 /* LGDailyRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGDailyRow.h; sourceTree = "<group>"; };
+		58126AEE1DEF73CE00D1F895 /* LGDailyRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGDailyRow.m; sourceTree = "<group>"; };
+		58126AF01DEF888E00D1F895 /* LGGeneralRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGGeneralRow.h; sourceTree = "<group>"; };
+		58126AF11DEF888E00D1F895 /* LGGeneralRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGGeneralRow.m; sourceTree = "<group>"; };
 		5849AA9D1DEB17E500B61199 /* LGSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSettingsTableViewController.h; sourceTree = "<group>"; };
 		5849AA9E1DEB17E500B61199 /* LGSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSettingsTableViewController.m; sourceTree = "<group>"; };
 		5849AAA01DEB254700B61199 /* LGChangePassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGChangePassViewController.h; sourceTree = "<group>"; };
@@ -196,6 +205,12 @@
 				9F5AE4BD1DDE0B6300EAC350 /* LGSiteListSingleton.m */,
 				58A149FF1DE350DE00439EAC /* LGSite.h */,
 				58A14A001DE350DE00439EAC /* LGSite.m */,
+				58126AEA1DEF6B4E00D1F895 /* LGSection.h */,
+				58126AEB1DEF6B4E00D1F895 /* LGSection.m */,
+				58126AED1DEF73CD00D1F895 /* LGDailyRow.h */,
+				58126AEE1DEF73CE00D1F895 /* LGDailyRow.m */,
+				58126AF01DEF888E00D1F895 /* LGGeneralRow.h */,
+				58126AF11DEF888E00D1F895 /* LGGeneralRow.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -401,12 +416,15 @@
 				44D396401DD38F4B008D9F27 /* AppDelegate.m in Sources */,
 				44F0F2AD1DE0B5E800A25E03 /* LGAuthViewController.m in Sources */,
 				44D396431DD38F4B008D9F27 /* LGGeneralStatsController.m in Sources */,
+				58126AEC1DEF6B4E00D1F895 /* LGSection.m in Sources */,
 				58F7D89D1DDD382500EA542E /* LGPopoverViewController.m in Sources */,
 				5849AA9F1DEB17E500B61199 /* LGSettingsTableViewController.m in Sources */,
 				44D3963D1DD38F4B008D9F27 /* main.m in Sources */,
 				9F5AE4C11DDE1B2C00EAC350 /* LGPerson.m in Sources */,
+				58126AEF1DEF73CE00D1F895 /* LGDailyRow.m in Sources */,
 				58A149FD1DE26EEB00439EAC /* NSString+Request.m in Sources */,
 				58A14A011DE350DE00439EAC /* LGSite.m in Sources */,
+				58126AF21DEF888E00D1F895 /* LGGeneralRow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
