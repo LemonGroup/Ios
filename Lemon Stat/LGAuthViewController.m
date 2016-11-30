@@ -40,7 +40,6 @@ typedef enum {
 @property (weak, nonatomic) LGForgotPasswordView *yellowForgotPassLayer;
 
 @property (strong, nonatomic) IBOutlet UIButton *joinButton;
-@property (weak, nonatomic) IBOutlet UIButton *forgotPassButton;
 
 @end
 
@@ -471,11 +470,23 @@ typedef enum {
     
 }
 
+- (void)disablTouch {
+    /* Отключить тачи на время */
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if ([[UIApplication sharedApplication] isIgnoringInteractionEvents]) {
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+        }
+    });
+}
+
 #pragma mark - Animate Methods
 
 - (void)animateForgotPasswordOpen:(BOOL)flag {
     
-    [UIView animateWithDuration:2
+    [self disablTouch];
+    
+    [UIView animateWithDuration:0.3
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
@@ -494,11 +505,8 @@ typedef enum {
                          _yellowForgotPassLayer.transform = traslation;
                      }
                      completion:^(BOOL finished) {
-                         if (flag) {
-                             [_forgotPassButton setTitle:@"Назад" forState:UIControlStateNormal];
-                         } else {
+                         if (!flag) {
                              [_yellowForgotPassLayer removeFromSuperview];
-                             [_forgotPassButton setTitle:@"Забыл пароль?" forState:UIControlStateNormal];
                          }
                      }];
 }
@@ -551,7 +559,7 @@ typedef enum {
     }
 }
 
-- (IBAction)actionForgotPassword:(id)sender {
+- (IBAction)actionForgotPassword:(UIButton *)sender {
     
     if (!_yellowForgotPassLayer) {
         

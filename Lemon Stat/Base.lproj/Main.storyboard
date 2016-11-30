@@ -399,7 +399,7 @@
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r9m-A5-hkp">
                                         <rect key="frame" x="34" y="150" width="220" height="39"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.46274509803921571" green="0.45490196078431372" blue="0.36470588235294116" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="19"/>
                                         <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
@@ -426,17 +426,17 @@
                                         </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ВХОД" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tD2-fW-OAx">
-                                        <rect key="frame" x="0.0" y="8" width="289" height="21"/>
+                                        <rect key="frame" x="8" y="8" width="273" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="29"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="введите логин или адрес электронной почты для того, чтобы продолжить работу с сервисом" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dvR-kn-SVK">
-                                        <rect key="frame" x="0.0" y="37" width="289" height="29"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Введите логин или адрес электронной почты для того, чтобы продолжить работу с сервисом" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dvR-kn-SVK">
+                                        <rect key="frame" x="8" y="37" width="273" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                        <color key="textColor" red="0.46312886479999998" green="0.45631581539999999" blue="0.36435669659999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="testpass" borderStyle="roundedRect" placeholder="Введите пароль (testpass)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LL9-8b-EVJ">
@@ -450,12 +450,20 @@
                                         </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gg2-ju-E1F">
-                                        <rect key="frame" x="8" y="212" width="273" height="30"/>
+                                        <rect key="frame" x="8" y="197" width="273" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Gx-hZ-u0M">
+                                        <rect key="frame" x="86" y="223" width="118" height="19"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Забыли пароль?"/>
+                                        <connections>
+                                            <action selector="actionForgotPassword:" destination="r4E-9E-ZrX" eventType="touchUpInside" id="TGM-VO-Fyt"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.99099951980000001" green="0.92458015680000005" blue="0.018177540969999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -468,26 +476,16 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Gx-hZ-u0M">
-                                <rect key="frame" x="130" y="629" width="115" height="30"/>
-                                <state key="normal" title="забыли пароль?"/>
-                                <connections>
-                                    <action selector="actionForgotPassword:" destination="r4E-9E-ZrX" eventType="touchUpInside" id="TGM-VO-Fyt"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.96042054889999995" green="0.96842461820000003" blue="0.98492521050000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="JCB-iH-2Cd" firstAttribute="top" secondItem="8VU-5a-NZj" secondAttribute="bottom" constant="29" id="Gqj-1e-lra"/>
-                            <constraint firstItem="Sbe-w6-UTr" firstAttribute="top" secondItem="0Gx-hZ-u0M" secondAttribute="bottom" constant="8" id="Mt2-n1-j4V"/>
                             <constraint firstItem="His-TG-Ch6" firstAttribute="centerY" secondItem="1R4-fu-aLP" secondAttribute="centerY" constant="-8.5" id="PqI-UW-EnH"/>
                             <constraint firstItem="His-TG-Ch6" firstAttribute="centerX" secondItem="1R4-fu-aLP" secondAttribute="centerX" id="WbV-uE-WEz"/>
-                            <constraint firstItem="0Gx-hZ-u0M" firstAttribute="centerX" secondItem="1R4-fu-aLP" secondAttribute="centerX" id="qvM-RS-jt1"/>
                             <constraint firstItem="JCB-iH-2Cd" firstAttribute="centerX" secondItem="1R4-fu-aLP" secondAttribute="centerX" id="tvV-WS-g0k"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="forgotPassButton" destination="0Gx-hZ-u0M" id="bai-0a-Eta"/>
                         <outlet property="joinButton" destination="r9m-A5-hkp" id="Re3-qr-qsg"/>
                         <outlet property="loginTextField" destination="7B0-1e-MK9" id="3v2-LT-IPa"/>
                         <outlet property="passwordTextField" destination="LL9-8b-EVJ" id="3Wc-Ym-cj9"/>

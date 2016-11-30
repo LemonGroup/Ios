@@ -21,17 +21,17 @@
     
     NSInteger space = 8;
     
-    UILabel *header = [[UILabel alloc] initWithFrame:CGRectMake(0,
+    UILabel *header = [[UILabel alloc] initWithFrame:CGRectMake(space,
                                                                 space,
-                                                                CGRectGetWidth(rect),
+                                                                CGRectGetWidth(rect) - space * 2,
                                                                 21)];
     header.font = [UIFont boldSystemFontOfSize:21];
     header.textAlignment = NSTextAlignmentCenter;
     header.text = @"Всосстановление пароля";
     
-    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0,
+    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(space,
                                                                 CGRectGetMaxY(header.frame) + space,
-                                                                CGRectGetWidth(rect),
+                                                                CGRectGetWidth(rect) - space * 2,
                                                                 30)];
     label1.font = [UIFont systemFontOfSize:10];
     label1.numberOfLines = 2;
@@ -45,12 +45,13 @@
     eMailTextField.borderStyle = UITextBorderStyleRoundedRect;
     eMailTextField.keyboardType = UIKeyboardTypeEmailAddress;
     eMailTextField.returnKeyType = UIReturnKeySend;
+    eMailTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     eMailTextField.placeholder = @"Введите e-Mail";
     eMailTextField.delegate = self.delegate;
     
-    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(0,
+    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(space,
                                                                 CGRectGetMaxY(eMailTextField.frame) + space,
-                                                                CGRectGetWidth(rect),
+                                                                CGRectGetWidth(rect) - space * 2,
                                                                 30)];
     label2.font = [UIFont systemFontOfSize:10];
     label2.numberOfLines = 2;
@@ -61,7 +62,7 @@
                                                                       CGRectGetMaxY(label2.frame) + space,
                                                                       220,
                                                                       39)];
-    sendButton.backgroundColor = [UIColor colorWithRed:118/255 green:116/255 blue:93/255 alpha:1];
+    sendButton.backgroundColor = [UIColor blackColor];
     sendButton.titleLabel.textColor = [UIColor whiteColor];
     sendButton.layer.cornerRadius = 5;
     [sendButton setTitle:@"Отправить" forState:UIControlStateNormal];
@@ -74,9 +75,9 @@
         
     }
     
-    UILabel *responseLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
+    UILabel *responseLabel = [[UILabel alloc] initWithFrame:CGRectMake(space,
                                                                        CGRectGetMaxY(sendButton.frame) + space,
-                                                                       CGRectGetWidth(rect),
+                                                                       CGRectGetWidth(rect) - space * 2,
                                                                        15)];
     responseLabel.font = [UIFont systemFontOfSize:10];
     responseLabel.numberOfLines = 2;
