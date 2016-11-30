@@ -151,6 +151,8 @@ typedef enum {
                                    @{@"date" : @"2016-12-21", @"numberOfNewPages" : @30},
                                    @{@"date" : @"2016-12-22", @"numberOfNewPages" : @30}];
                  
+                 [self setTotalNumber];
+                 
                  NSLog(@"JSON: %@", _responseJSON);
                  /**************************************************/
                  
@@ -234,7 +236,7 @@ typedef enum {
         }
         
         // create ScrollView
-        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 245.0, SCREEN_WIDTH, 328)];
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 253.0, SCREEN_WIDTH, 328)];
         scrollView.contentSize = CGSizeMake(contentWidth, 328);
         
         // create Chart
@@ -321,7 +323,7 @@ typedef enum {
 - (void)createTableView {
     [self.lineChart removeFromSuperview];
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 245.0, SCREEN_WIDTH, 328)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 253.0, SCREEN_WIDTH, 328)];
     tableView.dataSource = self;
     tableView.delegate = self;
     

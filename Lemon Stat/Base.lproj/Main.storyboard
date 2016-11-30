@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.10000000149011612" contentMode="topRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lines.png" translatesAutoresizingMaskIntoConstraints="NO" id="Hgj-Hx-Vgk">
+                            <imageView userInteractionEnabled="NO" alpha="0.10000000000000001" contentMode="topRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lines.png" translatesAutoresizingMaskIntoConstraints="NO" id="Hgj-Hx-Vgk">
                                 <rect key="frame" x="0.0" y="-83" width="375" height="750"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -43,7 +43,7 @@
                                 </connections>
                             </textField>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.99215686274509807" green="1" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Общая статистика" image="newGeneralStat" id="acW-dT-cKf"/>
                     <toolbarItems/>
@@ -68,9 +68,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.10000000000000001" contentMode="topRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lines.png" translatesAutoresizingMaskIntoConstraints="NO" id="uAJ-Rq-evc">
+                            <imageView opaque="NO" userInteractionEnabled="NO" alpha="0.10000000000000001" contentMode="topRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lines.png" translatesAutoresizingMaskIntoConstraints="NO" id="uAJ-Rq-evc">
                                 <rect key="frame" x="0.0" y="-83" width="375" height="750"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.99215686274509807" green="1" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Всего за период:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rsi-fc-J7K">
                                 <rect key="frame" x="15" y="589" width="137" height="21"/>
@@ -169,7 +170,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.99277275800704956" green="1" blue="0.87076990989347303" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Ежедневная статистика" image="newDailyStat" id="cPa-gy-q4n"/>
                     <connections>
@@ -477,7 +478,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.96042054889999995" green="0.96842461820000003" blue="0.98492521050000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="JCB-iH-2Cd" firstAttribute="top" secondItem="8VU-5a-NZj" secondAttribute="bottom" constant="29" id="Gqj-1e-lra"/>
                             <constraint firstItem="His-TG-Ch6" firstAttribute="centerY" secondItem="1R4-fu-aLP" secondAttribute="centerY" constant="-8.5" id="PqI-UW-EnH"/>
