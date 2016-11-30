@@ -17,23 +17,30 @@
 #import "LGPersonListSingleton.h"
 #import "LGPerson.h"
 
+#import "LGForgotPasswordView.h"
+
 typedef enum {
     LGAuthViewControllerButtonTypeJoin = 1,
     LGAuthViewControllerButtonTypeChangePass = 2
 } LGAuthViewControllerButtonType;
 
-@interface LGAuthViewController () <UITextFieldDelegate, UIResponderStandardEditActions> {
+@interface LGAuthViewController () <UITextFieldDelegate, UIResponderStandardEditActions, LGForgotPasswordViewDelegate> {
     NSNumber *_loginID;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *loginTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+
 @property (strong, nonatomic) UITextField *changePasswordTextField;
 @property (strong, nonatomic) UITextField *changeRepeatedPasswordTextField;
+
 @property (weak, nonatomic) IBOutlet UILabel *responseLabel;
 
-@property (strong, nonatomic) IBOutlet UIView *yellowLayer;
+@property (weak, nonatomic) IBOutlet UIView *yellowAuthLayer;
+@property (weak, nonatomic) LGForgotPasswordView *yellowForgotPassLayer;
+
 @property (strong, nonatomic) IBOutlet UIButton *joinButton;
+@property (weak, nonatomic) IBOutlet UIButton *forgotPassButton;
 
 @end
 
@@ -86,7 +93,7 @@ typedef enum {
                               delay:0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             _yellowLayer.transform = CGAffineTransformMakeTranslation(0, 0);
+                             _yellowAuthLayer.transform = CGAffineTransformMakeTranslation(0, 0);
                          }
                          completion:^(BOOL finished) {
                              
@@ -260,6 +267,36 @@ typedef enum {
          }];
 }
 
+- (void)requestRecoveryPassword {
+    
+    extern NSURL *baseURL;
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSString *string = @"catalog/accounts/reset_password";
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setObject:_yellowForgotPassLayer.eMailTextField.text forKey:@"email"];
+    
+    [manager PUT:string
+      parameters:parameters
+         success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+             
+             [self alertActionWithTitle:@"Новый пароль выслан на указанный eMail" andMessage:nil];
+             
+             NSLog(@"%@", responseObject);
+         }
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+             NSLog(@"Error: %@", error);
+             
+             [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
+             
+         }];
+}
+
 #pragma mark - Alert Methods
 
 - (void)alertActionWithTitle:(NSString *)title andMessage:(NSString *)message {
@@ -330,12 +367,12 @@ typedef enum {
     
     UITextField *newPasswordTextField = [self createTextField];
     newPasswordTextField.returnKeyType = UIReturnKeyNext;
-    [_yellowLayer addSubview:newPasswordTextField];
+    [_yellowAuthLayer addSubview:newPasswordTextField];
     _changePasswordTextField = newPasswordTextField;
     
     UITextField *newRepeatedPasswordTextField = [self createTextField];
     newRepeatedPasswordTextField.returnKeyType = UIReturnKeyJoin;
-    [_yellowLayer addSubview:newRepeatedPasswordTextField];
+    [_yellowAuthLayer addSubview:newRepeatedPasswordTextField];
     _changeRepeatedPasswordTextField = newRepeatedPasswordTextField;
     
     [_changePasswordTextField becomeFirstResponder];
@@ -353,11 +390,11 @@ typedef enum {
                          
                          NSInteger space = 9;
                          
-                         _yellowLayer.transform = CGAffineTransformMakeTranslation(0, -155);
-                         _yellowLayer.frame = CGRectMake(CGRectGetMinX(_yellowLayer.frame),
-                                                         CGRectGetMinY(_yellowLayer.frame),
-                                                         CGRectGetWidth(_yellowLayer.frame),
-                                                         CGRectGetHeight(_yellowLayer.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
+                         _yellowAuthLayer.transform = CGAffineTransformMakeTranslation(0, -155);
+                         _yellowAuthLayer.frame = CGRectMake(CGRectGetMinX(_yellowAuthLayer.frame),
+                                                             CGRectGetMinY(_yellowAuthLayer.frame),
+                                                             CGRectGetWidth(_yellowAuthLayer.frame),
+                                                             CGRectGetHeight(_yellowAuthLayer.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
                          
                          _joinButton.center = CGPointMake(CGRectGetMidX(_joinButton.frame),
                                                           CGRectGetMidY(_joinButton.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
@@ -420,6 +457,52 @@ typedef enum {
     return YES;
 }
 
+- (void)createYellowForgotPassLayer {
+    
+    LGForgotPasswordView *yellowForgodPassLayer = [[LGForgotPasswordView alloc] initWithFrame:CGRectMake(CGRectGetWidth([UIScreen mainScreen].bounds),
+                                                                                                         CGRectGetMinY(_yellowAuthLayer.frame),
+                                                                                                         CGRectGetWidth(_yellowAuthLayer.frame),
+                                                                                                         CGRectGetHeight(_yellowAuthLayer.frame))];
+    yellowForgodPassLayer.backgroundColor = _yellowAuthLayer.backgroundColor;
+    yellowForgodPassLayer.delegate = self;
+    
+    [self.view addSubview:yellowForgodPassLayer];
+    self.yellowForgotPassLayer = yellowForgodPassLayer;
+    
+}
+
+#pragma mark - Animate Methods
+
+- (void)animateForgotPasswordOpen:(BOOL)flag {
+    
+    [UIView animateWithDuration:2
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         
+                         NSInteger spaceTranslation = CGRectGetWidth(_yellowAuthLayer.frame) + (CGRectGetWidth([UIScreen mainScreen].bounds) - CGRectGetWidth(_yellowAuthLayer.frame)) / 2;
+                         
+                         CGAffineTransform traslation;
+                         
+                         if (flag) {
+                             traslation = CGAffineTransformMakeTranslation(-spaceTranslation, 0);
+                         } else {
+                             traslation = CGAffineTransformMakeTranslation(0, 0);
+                         }
+                         
+                         _yellowAuthLayer.transform = traslation;
+                         _yellowForgotPassLayer.transform = traslation;
+                     }
+                     completion:^(BOOL finished) {
+                         if (flag) {
+                             [_forgotPassButton setTitle:@"Назад" forState:UIControlStateNormal];
+                         } else {
+                             [_yellowForgotPassLayer removeFromSuperview];
+                             [_forgotPassButton setTitle:@"Забыл пароль?" forState:UIControlStateNormal];
+                         }
+                     }];
+}
+
 #pragma mark - Archiving
 
 - (void)archiveCurrentSetting {
@@ -468,6 +551,29 @@ typedef enum {
     }
 }
 
+- (IBAction)actionForgotPassword:(id)sender {
+    
+    if (!_yellowForgotPassLayer) {
+        
+        [self createYellowForgotPassLayer];
+        
+        [self animateForgotPasswordOpen:YES];
+        
+    } else {
+        
+        [self animateForgotPasswordOpen:NO];
+    
+    }
+}
+
+- (void)actionRecoveryPassword:(id)sender {
+    [self requestRecoveryPassword];
+}
+
+- (void)actionBackToAuth:(id)sender {
+    [self animateForgotPasswordOpen:NO];
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -478,7 +584,7 @@ typedef enum {
                               delay:0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             _yellowLayer.transform = CGAffineTransformMakeTranslation(0, -155);
+                             _yellowAuthLayer.transform = CGAffineTransformMakeTranslation(0, -155);
                          }
                          completion:^(BOOL finished) {
                              

@@ -18,6 +18,7 @@
 		44F0F2B11DE0B71E00A25E03 /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2AF1DE0B71E00A25E03 /* bg.png */; };
 		44F0F2B21DE0B71E00A25E03 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B01DE0B71E00A25E03 /* logo.png */; };
 		44F0F2B41DE0BD6000A25E03 /* lines.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B31DE0BD6000A25E03 /* lines.png */; };
+		58126AE91DEF25A300D1F895 /* LGForgotPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58126AE81DEF25A300D1F895 /* LGForgotPasswordView.m */; };
 		5849AA9F1DEB17E500B61199 /* LGSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5849AA9E1DEB17E500B61199 /* LGSettingsTableViewController.m */; };
 		5849AAA21DEB254700B61199 /* LGChangePassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5849AAA11DEB254700B61199 /* LGChangePassViewController.m */; };
 		58A149FD1DE26EEB00439EAC /* NSString+Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A149FC1DE26EEB00439EAC /* NSString+Request.m */; };
@@ -49,6 +50,8 @@
 		44F0F2AF1DE0B71E00A25E03 /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bg.png; path = images/bg.png; sourceTree = "<group>"; };
 		44F0F2B01DE0B71E00A25E03 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		44F0F2B31DE0BD6000A25E03 /* lines.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lines.png; path = images/lines.png; sourceTree = "<group>"; };
+		58126AE71DEF25A300D1F895 /* LGForgotPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGForgotPasswordView.h; sourceTree = "<group>"; };
+		58126AE81DEF25A300D1F895 /* LGForgotPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGForgotPasswordView.m; sourceTree = "<group>"; };
 		5849AA9D1DEB17E500B61199 /* LGSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSettingsTableViewController.h; sourceTree = "<group>"; };
 		5849AA9E1DEB17E500B61199 /* LGSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSettingsTableViewController.m; sourceTree = "<group>"; };
 		5849AAA01DEB254700B61199 /* LGChangePassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGChangePassViewController.h; sourceTree = "<group>"; };
@@ -200,6 +203,8 @@
 		58F7D89A1DDD37C600EA542E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				58126AE71DEF25A300D1F895 /* LGForgotPasswordView.h */,
+				58126AE81DEF25A300D1F895 /* LGForgotPasswordView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -389,6 +394,7 @@
 				9FD179391DE0E10F00AD9809 /* LGTabBarController.m in Sources */,
 				44D396461DD38F4B008D9F27 /* LGDailyStatsController.m in Sources */,
 				9F5AE4BE1DDE0B6300EAC350 /* LGSiteListSingleton.m in Sources */,
+				58126AE91DEF25A300D1F895 /* LGForgotPasswordView.m in Sources */,
 				58A14A071DE9B4CF00439EAC /* UIImage+UISegmentIconAndText.m in Sources */,
 				5849AAA21DEB254700B61199 /* LGChangePassViewController.m in Sources */,
 				9F5AE4BB1DDE0B3700EAC350 /* LGPersonListSingleton.m in Sources */,
