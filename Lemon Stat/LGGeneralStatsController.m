@@ -23,7 +23,7 @@
 }
 
 @property (weak, nonatomic) UITableView *tableView;
-@property (weak, nonatomic) PNBarChart *barChart;
+@property (weak, nonatomic) UIScrollView *barChart;
 
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
@@ -84,12 +84,24 @@
                      
                      /************* Убрать этот кусок кода *************/
                      // фейковые данные
-                     _responseJSON = @[@{@"numberOfMentions" : @"10",
-                                         @"person" : @"Путин"},
-                                       @{@"numberOfMentions" : @"232",
-                                         @"person" : @"Навальный"},
-                                       @{@"numberOfMentions" : @"66",
-                                         @"person" : @"Медведев"}
+                     _responseJSON = @[@{@"numberOfMentions" : @"10", @"person" : @"Путин"},
+                                       @{@"numberOfMentions" : @"232", @"person" : @"Навальный"},
+                                       @{@"numberOfMentions" : @"66", @"person" : @"Медведев"},
+                                       @{@"numberOfMentions" : @"1", @"person" : @"Путин"},
+//                                       @{@"numberOfMentions" : @"23", @"person" : @"Навальный"},
+//                                       @{@"numberOfMentions" : @"112", @"person" : @"Медведев"},
+//                                       @{@"numberOfMentions" : @"34", @"person" : @"Путин"},
+//                                       @{@"numberOfMentions" : @"54", @"person" : @"Навальный"},
+//                                       @{@"numberOfMentions" : @"99", @"person" : @"Медведев"},
+//                                       @{@"numberOfMentions" : @"150", @"person" : @"Путин"},
+//                                       @{@"numberOfMentions" : @"34", @"person" : @"Навальный"},
+//                                       @{@"numberOfMentions" : @"123", @"person" : @"Медведев"},
+//                                       @{@"numberOfMentions" : @"12", @"person" : @"Путин"},
+//                                       @{@"numberOfMentions" : @"199", @"person" : @"Навальный"},
+//                                       @{@"numberOfMentions" : @"54", @"person" : @"Медведев"},
+//                                       @{@"numberOfMentions" : @"74", @"person" : @"Путин"},
+//                                       @{@"numberOfMentions" : @"74", @"person" : @"Навальный"},
+//                                       @{@"numberOfMentions" : @"75", @"person" : @"Медведев"}
                                        ];
                      
                      NSLog(@"JSON: %@", _responseJSON);
@@ -109,6 +121,40 @@
                  NSLog(@"Error: %@", error);
                  
                  [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
+                 
+                 /************* Убрать этот кусок кода *************/
+                 // фейковые данные
+                 _responseJSON = @[@{@"numberOfMentions" : @"10", @"person" : @"Путин"},
+                                   @{@"numberOfMentions" : @"232", @"person" : @"Навальный"},
+                                   @{@"numberOfMentions" : @"66", @"person" : @"Медведев"},
+                                   @{@"numberOfMentions" : @"1", @"person" : @"Путин"},
+                                   @{@"numberOfMentions" : @"23", @"person" : @"Навальный"},
+                                   @{@"numberOfMentions" : @"112", @"person" : @"Медведев"},
+                                   @{@"numberOfMentions" : @"34", @"person" : @"Путин"},
+                                   @{@"numberOfMentions" : @"54", @"person" : @"Навальный"},
+                                   @{@"numberOfMentions" : @"99", @"person" : @"Медведев"},
+                                   @{@"numberOfMentions" : @"150", @"person" : @"Путин"},
+                                   @{@"numberOfMentions" : @"34", @"person" : @"Навальный"},
+                                   @{@"numberOfMentions" : @"123", @"person" : @"Медведев"},
+                                   @{@"numberOfMentions" : @"12", @"person" : @"Путин"},
+                                   @{@"numberOfMentions" : @"199", @"person" : @"Навальный"},
+                                   @{@"numberOfMentions" : @"54", @"person" : @"Медведев"},
+                                   @{@"numberOfMentions" : @"74", @"person" : @"Путин"},
+                                   @{@"numberOfMentions" : @"74", @"person" : @"Навальный"},
+                                   @{@"numberOfMentions" : @"75", @"person" : @"Медведев"}
+                                   ];
+                 
+                 NSLog(@"JSON: %@", _responseJSON);
+         
+                 switch (_multipleType) {
+                     case MultipleTypeTable:
+                         [self.tableView reloadData];
+                         break;
+                     case MultipleTypeChart:
+                         [self reloadChart];
+                         break;
+                 }
+                 /**************************************************/
              }];
     }
 }
@@ -135,16 +181,7 @@
 
 - (void)reloadChart {
     
-    PNBarChart *barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 102, SCREEN_WIDTH, 513)];
-    barChart.labelMarginTop = 30.0;
-    barChart.barWidth = 40;
-    barChart.isGradientShow = NO;
-    barChart.strokeColor = [UIColor blueColor];
-    barChart.showChartBorder = YES;
-    
-    [self.view addSubview:barChart];
-    
-    self.barChart = barChart;
+    [self.barChart removeFromSuperview];
     
     if (_responseJSON) {
         
@@ -159,12 +196,80 @@
             [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
         }
         
+        NSInteger valueWidth = 60;
+        NSInteger maxValuesOnScreen = 6;
+        NSInteger contentWidth;
+        
+        if (persons.count > maxValuesOnScreen) {
+            contentWidth = valueWidth * (persons.count + 1);
+        } else {
+            contentWidth = SCREEN_WIDTH;
+        }
+        
+        // create ScrollView
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 102, SCREEN_WIDTH, 513)];
+        scrollView.contentSize = CGSizeMake(contentWidth, 513);
+        
+        // create Chart
+        PNBarChart *barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, 513)];
+        barChart.isGradientShow = NO;
+        barChart.strokeColor = [UIColor blueColor];
+        barChart.showChartBorder = YES;
+        
+        if (persons.count > 4) {
+            barChart.rotateForXAxisText = YES;
+            barChart.labelMarginTop = -20.0;
+            barChart.chartMarginBottom = 70;
+        } else if (persons.count > maxValuesOnScreen) {
+            barChart.xLabelWidth = valueWidth;
+        } else {
+            barChart.chartMarginBottom = 50;
+        }
         
         [barChart setXLabels:persons];
         [barChart setYValues:numberOfMentions];
+        
+        
+        
+        [barChart strokeChart];
+        
+        [self.view addSubview:scrollView];
+        [scrollView addSubview:barChart];
+        self.barChart = scrollView;
+        
     }
     
-    [barChart strokeChart];
+    
+//    PNBarChart *barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 102, SCREEN_WIDTH, 513)];
+//    barChart.labelMarginTop = 30.0;
+//    barChart.barWidth = 40;
+//    barChart.isGradientShow = NO;
+//    barChart.strokeColor = [UIColor blueColor];
+//    barChart.showChartBorder = YES;
+//    
+//    [self.view addSubview:barChart];
+//    
+//    self.barChart = barChart;
+    
+//    if (_responseJSON) {
+    
+//        NSMutableArray *persons = [NSMutableArray array];
+//        NSMutableArray *numberOfMentions = [NSMutableArray array];
+//        
+//        for (id obj in _responseJSON) {
+//            [persons addObject:[obj valueForKey:@"person"]];
+//        }
+//        
+//        for (id obj in _responseJSON) {
+//            [numberOfMentions addObject:[obj valueForKey:@"numberOfMentions"]];
+//        }
+        
+        
+//        [barChart setXLabels:persons];
+//        [barChart setYValues:numberOfMentions];
+//    }
+//    
+//    [barChart strokeChart];
 }
 
 #pragma mark - UITableViewDataSource

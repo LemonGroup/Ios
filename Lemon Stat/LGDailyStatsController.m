@@ -270,9 +270,7 @@ typedef enum {
         [scrollView addSubview:lineChart];
         
         self.lineChart = scrollView;
-        
     }
-    
 }
 
 #pragma mark - UITableViewDataSource
