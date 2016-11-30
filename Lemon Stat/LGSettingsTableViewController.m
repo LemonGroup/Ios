@@ -33,13 +33,13 @@
     
     [self requestGetAccount];
     
-    /*********** Удалить этот кусок кода ************/
-    //fake data
-    _responseJSON = @{@"id" : @30,
-                      @"username" : @"fakeLogin",
-                      @"email" : @"fakeEMail",
-                      @"privilege" : @2};
-    /************************************************/
+//    /*********** Удалить этот кусок кода ************/
+//    //fake data
+//    _responseJSON = @{@"id" : @30,
+//                      @"username" : @"fakeLogin",
+//                      @"email" : @"fakeEMail",
+//                      @"privilege" : @2};
+//    /************************************************/
 }
 
 - (void)didReceiveMemoryWarning {
