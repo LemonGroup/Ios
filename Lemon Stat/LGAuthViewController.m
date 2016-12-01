@@ -589,8 +589,12 @@ typedef enum {
 
 #pragma mark - UITextFieldDelegate
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     _responseLabel.text = @"";
+    return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
     
     if (_changePasswordTextField) {     // если поле существует
         [UIView animateWithDuration:0.3
