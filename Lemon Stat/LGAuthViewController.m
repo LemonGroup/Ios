@@ -58,12 +58,17 @@ typedef enum {
     // если пользователь заходил в приложение, он минует окно входа
     extern NSString *gToken;
     
-    if (![gToken isEqualToString:@"notToken"]) {
-        [self requestGetSites];
-        [self requestGetPersons];
-        [self presentNavigationController];
-    } else {
-        [self archiveCurrentSetting];
+    NSLog(@"%@", gToken);
+    
+    if (gToken) {
+        
+        if (![gToken isEqualToString:@"notToken"]) {
+            [self requestGetSites];
+            [self requestGetPersons];
+            [self presentNavigationController];
+        } else {
+            [self archiveCurrentSetting];
+        }
     }
     
     /*
