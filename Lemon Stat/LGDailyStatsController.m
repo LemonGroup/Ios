@@ -30,14 +30,15 @@ typedef enum {
     TextFieldTypeEndDate = 4
 } TextFieldType;
 
-@interface LGDailyStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate> {
+@interface LGDailyStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate, PNChartDelegate> {
     UITextField *_currentTextField;
     NSDate *_selectedStartDate;
     NSDate *_selectedEndDate;
 }
 
 @property (weak, nonatomic) UITableView *tableView;
-@property (weak, nonatomic) UIScrollView *lineChart;
+@property (weak, nonatomic) UIScrollView *scrollChartView;
+@property (weak, nonatomic) PNLineChart *lineChart;
 
 @property (weak, nonatomic) IBOutlet UITextField *siteField;
 @property (weak, nonatomic) IBOutlet UITextField *personField;
@@ -60,6 +61,10 @@ typedef enum {
 
 @property (weak, nonatomic) UIActivityIndicatorView *activityIndecatorView;
 
+@property (strong, nonatomic) NSArray *months;
+
+@property (strong, nonatomic) UILabel *poinLabel;
+
 @end
 
 @implementation LGDailyStatsController
@@ -76,6 +81,10 @@ typedef enum {
     activityIndicatorView.center = self.view.center;
     [self.view addSubview:activityIndicatorView];
     self.activityIndecatorView = activityIndicatorView;
+    
+    self.months = @[@"Январь", @"Февраль", @"Март", @"Апрель",
+                    @"Май", @"Июнь", @"Июль", @"Август",
+                    @"Сентябрь", @"Октябрь", @"Ноябрь", @"Декабрь"];
     
 }
 
@@ -117,9 +126,19 @@ typedef enum {
                  
                  for (id obj in responseObject) {
                      LGDailyRow *dailyRow = [[LGDailyRow alloc] init];
-                     dailyRow.date = [obj valueForKey:@"date"];
+                     
+                     // create date from string
+                     NSString *dateString = [obj valueForKey:@"date"];
+                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+                     NSDate *dateFromString = [[NSDate alloc] init];
+                     dateFromString = [dateFormatter dateFromString:dateString];
+                     
                      dailyRow.numberOfNewPages = [[obj valueForKey:@"numberOfNewPages"] stringValue];
+                     dailyRow.date = dateFromString;
+                     
                      [dailyRows addObject:dailyRow];
+                     
                  }
                  self.dailyRows = dailyRows;
                  
@@ -136,15 +155,15 @@ typedef enum {
                  // фейковые данные
                  NSArray *responseJSON = @[@{@"date" : @"2016-11-29", @"numberOfNewPages" : @57},
                                            @{@"date" : @"2016-11-30", @"numberOfNewPages" : @94},
-                                           @{@"date" : @"2016-12-1", @"numberOfNewPages" : @23},
-                                           @{@"date" : @"2016-12-2", @"numberOfNewPages" : @94},
-                                           @{@"date" : @"2016-12-3", @"numberOfNewPages" : @121},
-                                           @{@"date" : @"2016-12-4", @"numberOfNewPages" : @34},
-                                           @{@"date" : @"2016-12-5", @"numberOfNewPages" : @65},
-                                           @{@"date" : @"2016-12-6", @"numberOfNewPages" : @69},
-                                           @{@"date" : @"2016-12-7", @"numberOfNewPages" : @11},
-                                           @{@"date" : @"2016-12-8", @"numberOfNewPages" : @26},
-                                           @{@"date" : @"2016-12-9", @"numberOfNewPages" : @30},
+                                           @{@"date" : @"2016-12-01", @"numberOfNewPages" : @23},
+                                           @{@"date" : @"2016-12-02", @"numberOfNewPages" : @94},
+                                           @{@"date" : @"2016-12-03", @"numberOfNewPages" : @121},
+                                           @{@"date" : @"2016-12-04", @"numberOfNewPages" : @34},
+                                           @{@"date" : @"2016-12-05", @"numberOfNewPages" : @65},
+                                           @{@"date" : @"2016-12-06", @"numberOfNewPages" : @69},
+                                           @{@"date" : @"2016-12-07", @"numberOfNewPages" : @11},
+                                           @{@"date" : @"2016-12-08", @"numberOfNewPages" : @26},
+                                           @{@"date" : @"2016-12-09", @"numberOfNewPages" : @30},
                                            @{@"date" : @"2016-12-10", @"numberOfNewPages" : @30},
                                            @{@"date" : @"2016-12-11", @"numberOfNewPages" : @57},
                                            @{@"date" : @"2016-12-12", @"numberOfNewPages" : @94},
@@ -166,18 +185,28 @@ typedef enum {
                                            @{@"date" : @"2016-12-28", @"numberOfNewPages" : @65},
                                            @{@"date" : @"2016-12-29", @"numberOfNewPages" : @69},
                                            @{@"date" : @"2016-12-30", @"numberOfNewPages" : @11},
-                                           @{@"date" : @"2017-01-1", @"numberOfNewPages" : @26},
-                                           @{@"date" : @"2017-01-2", @"numberOfNewPages" : @30},
-                                           @{@"date" : @"2017-01-23", @"numberOfNewPages" : @30}];
+                                           @{@"date" : @"2017-01-01", @"numberOfNewPages" : @26},
+                                           @{@"date" : @"2017-01-02", @"numberOfNewPages" : @30},
+                                           @{@"date" : @"2017-01-03", @"numberOfNewPages" : @30}];
                  
                  for (id obj in responseJSON) {
                      LGDailyRow *dailyRow = [[LGDailyRow alloc] init];
-                     dailyRow.date = [obj valueForKey:@"date"];
+                     
+                     // create date from string
+                     NSString *dateString = [obj valueForKey:@"date"];
+                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+                     NSDate *dateFromString = [[NSDate alloc] init];
+                     dateFromString = [dateFormatter dateFromString:dateString];
+                     
                      dailyRow.numberOfNewPages = [[obj valueForKey:@"numberOfNewPages"] stringValue];
+                     dailyRow.date = dateFromString;
+                     
                      [dailyRows addObject:dailyRow];
+                     
                  }
                  self.dailyRows = dailyRows;
-                     
+                 
                  [self setTotalNumber];
                  
                  NSLog(@"JSON: %@", responseJSON);
@@ -239,12 +268,16 @@ typedef enum {
 
 - (void)reloadChart {
     
-    [self.lineChart removeFromSuperview];
+    [self.scrollChartView removeFromSuperview];
     
     UIScrollView *scrollView;
     PNLineChart *lineChart;
     
     CGRect contentFrame = [self contentFrame];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"ru"];
+    [dateFormatter setDateFormat:@"d MMM"];
     
     if (_dailyRows) {
         
@@ -252,12 +285,12 @@ typedef enum {
         NSMutableArray *numberOfNewPages = [NSMutableArray array];
         
         for (LGDailyRow *row in _dailyRows) {
-            [dates addObject:row.date];
+            [dates addObject:[dateFormatter stringFromDate:row.date]];
             [numberOfNewPages addObject:row.numberOfNewPages];
         }
         
-        NSInteger valueWidth = 60;
-        NSInteger maxValuesOnScreen = 6;
+        NSInteger valueWidth = 30;
+        NSInteger maxValuesOnScreen = 12;
         NSInteger contentWidth;
         
         if (dates.count > maxValuesOnScreen) {
@@ -273,6 +306,7 @@ typedef enum {
         // create Chart
         lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, CGRectGetHeight(contentFrame))];
         lineChart.showCoordinateAxis = YES;
+        lineChart.delegate = self;
         
         if (dates.count > maxValuesOnScreen) {
             [lineChart setXLabels:dates withWidth:valueWidth];
@@ -283,7 +317,7 @@ typedef enum {
         // Line Chart No.1
         NSArray * data01Array = numberOfNewPages;
         PNLineChartData *data01 = [PNLineChartData new];
-        data01.showPointLabel = YES;
+        data01.showPointLabel = NO;
         data01.inflexionPointStyle = PNLineChartPointStyleCircle;
         data01.pointLabelFont = [UIFont systemFontOfSize:12];
         data01.color = [UIColor blueColor];
@@ -306,12 +340,42 @@ typedef enum {
         lineChart.showCoordinateAxis = YES;
     }
     
+    NSLog(@"pathPoints = %@", lineChart.pathPoints);
+    
     [lineChart strokeChart];
     
     [self.view insertSubview:scrollView belowSubview:_activityIndecatorView];
     [scrollView addSubview:lineChart];
     
-    self.lineChart = scrollView;
+    self.scrollChartView = scrollView;
+    self.lineChart = lineChart;
+}
+
+#pragma mark - PNChartDelegate
+
+- (void)userClickedOnLineKeyPoint:(CGPoint)point lineIndex:(NSInteger)lineIndex pointIndex:(NSInteger)pointIndex {
+    
+    if (_poinLabel) {
+        
+        if ((CGRectGetMidX(_poinLabel.frame) > point.x + 20) ||
+            (CGRectGetMidX(_poinLabel.frame) < point.x - 20)) {
+            
+            [_poinLabel removeFromSuperview];
+            _poinLabel = nil;
+            
+            [self creaPointLabelWithTitel:_dailyRows[pointIndex].numberOfNewPages
+                                andCenter:[[_lineChart.pathPoints firstObject][pointIndex] CGPointValue]];
+        }
+    
+    } else {
+        
+        [self creaPointLabelWithTitel:_dailyRows[pointIndex].numberOfNewPages
+                            andCenter:[[_lineChart.pathPoints firstObject][pointIndex] CGPointValue]];
+    }
+}
+
+- (void)userClickedOnLinePoint:(CGPoint)point lineIndex:(NSInteger)lineIndex {
+    
 }
 
 #pragma mark - UITableViewDataSource
@@ -339,7 +403,11 @@ typedef enum {
     LGDailyRow *row = [self.sections[indexPath.section] rows][indexPath.row];
     
     // set textLabel
-    cell.textLabel.text = row.date;
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"ru"];
+    [dateFormatter setDateFormat:@"d MMM"];
+    
+    cell.textLabel.text = [dateFormatter stringFromDate:row.date];
     
     // set detailTextLabel
     cell.detailTextLabel.text = row.numberOfNewPages;
@@ -367,7 +435,7 @@ typedef enum {
 }
 
 - (void)createTableView {
-    [self.lineChart removeFromSuperview];
+    [self.scrollChartView removeFromSuperview];
     
     if (!_sections) {
         [self generateSectionsInBackgroundFromArray:_dailyRows];
@@ -384,7 +452,7 @@ typedef enum {
 
 - (void) createChart {
     [self.tableView removeFromSuperview];
-    [self.lineChart removeFromSuperview];
+    [self.scrollChartView removeFromSuperview];
     
     [self reloadChart];
 }
@@ -509,23 +577,42 @@ typedef enum {
 
 - (NSArray *)generateSectionsFromArray:(NSArray *)array {
     
-    NSString *currentYear = 0;
+    //NSString *currentYear;
+    NSInteger currentMonth = 0;
     
     NSMutableArray *sectionsArray = [NSMutableArray array];
     
     for (LGDailyRow *row in array) {
         
-        NSString *year = [row.date substringToIndex:7];
+//        NSString *year = [row.date substringToIndex:7];
+        
+        NSCalendar* calendar = [NSCalendar currentCalendar];
+        NSDateComponents* components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:row.date]; // Get necessary date components
+        
+        //[components month]; //gives you month
+        //[components day]; //gives you day
+        //[components year]; // gives you year
+        
+        NSInteger month = [components month];
         
         LGSection *section = nil;
         
-        if (![currentYear isEqualToString:year]) {
+        if (currentMonth != month) {
             
             section = [[LGSection alloc] init];
-            section.name = year;
+            
+            // set name
+//            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//            dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"ru"];
+//            [dateFormatter setDateFormat:@"MMMM-yyyy"];
+//            section.name = [dateFormatter stringFromDate:row.ddate];
+            
+            section.name = [NSString stringWithFormat:@"%@ %ld", _months[month - 1], [components year]];
+            
+            // set rows
             section.rows = [NSMutableArray array];
             
-            currentYear = year;
+            currentMonth = month;
             
             [sectionsArray addObject:section];
             
@@ -557,6 +644,21 @@ typedef enum {
     heigth = CGRectGetMinY(_totalNumberLabel.frame) - y - space;
     
     return CGRectMake(0, y, SCREEN_WIDTH, heigth);
+}
+
+- (void)creaPointLabelWithTitel:(NSString *)title andCenter:(CGPoint)center {
+    
+    UILabel *label = [[UILabel alloc] init];
+    label.backgroundColor = [UIColor colorWithWhite:1 alpha:0.85];
+    label.font = [UIFont systemFontOfSize:14];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.text = title;
+    [label sizeToFit];
+    label.center = center;
+    label.textColor = [UIColor blackColor];
+    [_lineChart addSubview:label];
+    
+    _poinLabel = label;
 }
 
 #pragma mark - Alert Methods
@@ -672,6 +774,7 @@ typedef enum {
 - (void)dateChange:(UIDatePicker *)datePicker {
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.locale = datePicker.locale;
     [dateFormatter setDateFormat:@"dd MMMM YYYY"];
     
     switch (_currentTextField.tag) {

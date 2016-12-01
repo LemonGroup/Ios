@@ -10,7 +10,7 @@
 
 @interface LGDailyRow : NSObject
 
-@property (strong, nonatomic) NSString *date;
+@property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) NSString *numberOfNewPages;
 
 @end

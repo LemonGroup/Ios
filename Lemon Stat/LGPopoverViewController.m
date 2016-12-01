@@ -125,6 +125,9 @@
     
     UIDatePicker *datePicker = [[UIDatePicker alloc] initWithFrame:rect];
     
+    // set localized
+    datePicker.locale = [NSLocale localeWithLocaleIdentifier:@"ru"];
+    
     // set mode
     datePicker.datePickerMode = UIDatePickerModeDate;
     
