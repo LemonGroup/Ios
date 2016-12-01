@@ -63,7 +63,7 @@ typedef enum {
 
 @property (strong, nonatomic) NSArray *months;
 
-@property (strong, nonatomic) UILabel *poinLabel;
+@property (weak, nonatomic) UILabel *poinLabel;
 
 @end
 
