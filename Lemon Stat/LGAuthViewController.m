@@ -50,6 +50,7 @@ typedef enum {
     // Do any additional setup after loading the view.
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -67,6 +68,8 @@ typedef enum {
             [self requestGetPersons];
             [self presentNavigationController];
         } else {
+            [[LGPersonListSingleton sharedPersonList].persons removeAllObjects];
+            [[LGSiteListSingleton sharedSiteList].sites removeAllObjects];
             [self archiveCurrentSetting];
         }
     }
@@ -145,6 +148,9 @@ typedef enum {
                  [self requestGetSites];
                  [self requestGetPersons];
                  [self presentNavigationController];
+                 
+                 _loginTextField.text = @"";
+                 _passwordTextField.text = @"";
                  
                  /*
                  extern NSMutableArray *gTokens;
@@ -285,20 +291,22 @@ typedef enum {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setObject:_yellowForgotPassLayer.eMailTextField.text forKey:@"email"];
     
-    [manager PUT:string
-      parameters:parameters
-         success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-             
-             [self alertActionWithTitle:@"Новый пароль выслан на указанный eMail" andMessage:nil];
-             
-             NSLog(@"%@", responseObject);
-         }
-         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-             NSLog(@"Error: %@", error);
-             
-             [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
-             
-         }];
+    [manager POST:string
+       parameters:parameters
+         progress:nil
+          success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+              
+              [self alertActionWithTitle:@"Новый пароль выслан на указанный eMail" andMessage:nil];
+              _yellowForgotPassLayer.eMailTextField.text = @"";
+              
+              NSLog(@"%@", responseObject);
+          }
+          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+              
+              [self alertActionWithTitle:@"Ошибка" andMessage:@"Неверный eMail"];
+              
+              NSLog(@"Error: %@", error);
+          }];
 }
 
 #pragma mark - Alert Methods
