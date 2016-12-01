@@ -49,6 +49,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *totalNumberLabel;
 
 @property (weak, nonatomic) UIButton *applyButton;
+@property (weak, nonatomic) UIButton *refreshButton;
 
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
@@ -68,6 +69,8 @@ typedef enum {
     if (_multipleType != MultipleTypeTable && _multipleType != MultipleTypeChart) {
         _multipleType = MultipleTypeTable;
     }
+    
+    
     
 }
 
@@ -117,6 +120,7 @@ typedef enum {
              } else {
                  
                  _dailyRows = nil;
+                 _sections = nil;
                  
                  [self alertActionWithTitle:@"Нет данных" andMessage:nil];
                  {
@@ -158,7 +162,7 @@ typedef enum {
                                            @{@"date" : @"2017-01-2", @"numberOfNewPages" : @30},
                                            @{@"date" : @"2017-01-23", @"numberOfNewPages" : @30}];
                  
-                 for (id obj in responseJSON) {    // заменить _responseJSON на responseObject
+                 for (id obj in responseJSON) {
                      LGDailyRow *dailyRow = [[LGDailyRow alloc] init];
                      dailyRow.date = [obj valueForKey:@"date"];
                      dailyRow.numberOfNewPages = [[obj valueForKey:@"numberOfNewPages"] stringValue];
@@ -222,77 +226,14 @@ typedef enum {
 
 #pragma mark - Chart Methods
 
-- (void)generateSectionsInBackgroundFromArray:(NSArray *)array {
-    
-    if (array.count > 0) {
-        
-        [self.currentOperation cancel];
-        
-        __weak LGDailyStatsController *weakSelf = self;
-        
-        self.currentOperation = [NSBlockOperation blockOperationWithBlock:^{
-            
-            NSArray *sectionsArray = [self generateSectionsFromArray:array];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                weakSelf.sections = sectionsArray;
-                [weakSelf.tableView reloadData];
-                
-                self.currentOperation = nil;
-            });
-        }];
-        
-        [self.currentOperation start];
-        
-    } else {
-        
-        [self.tableView reloadData];
-        
-    }
-}
-
-- (NSArray *)generateSectionsFromArray:(NSArray *)array {
-    
-    NSString *currentYear = 0;
-    
-    NSMutableArray *sectionsArray = [NSMutableArray array];
-    
-    for (LGDailyRow *row in array) {
-        
-        NSString *year = [row.date substringToIndex:7];
-        
-        LGSection *section = nil;
-        
-        if (![currentYear isEqualToString:year]) {
-            
-            section = [[LGSection alloc] init];
-            section.name = year;
-            section.rows = [NSMutableArray array];
-            
-            currentYear = year;
-            
-            [sectionsArray addObject:section];
-            
-        } else {
-            
-            section = [sectionsArray lastObject];
-            
-        }
-        
-        [section.rows addObject:row];
-    
-    }
-    
-    return sectionsArray;
-}
-
 - (void)reloadChart {
     
     [self.lineChart removeFromSuperview];
     
     UIScrollView *scrollView;
     PNLineChart *lineChart;
+    
+    CGRect contentFrame = [self contentFrame];
     
     if (_dailyRows) {
         
@@ -311,17 +252,16 @@ typedef enum {
         if (dates.count > maxValuesOnScreen) {
             contentWidth = valueWidth * (dates.count + 1);
         } else {
-            contentWidth = SCREEN_WIDTH;
+            contentWidth = CGRectGetWidth(contentFrame);
         }
         
         // create ScrollView
-        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 253.0, SCREEN_WIDTH, 328)];
-        scrollView.contentSize = CGSizeMake(contentWidth, 328);
+        scrollView = [[UIScrollView alloc] initWithFrame:contentFrame];
+        scrollView.contentSize = CGSizeMake(contentWidth, CGRectGetHeight(contentFrame));
         
         // create Chart
-        lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, 328)];
+        lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, CGRectGetHeight(contentFrame))];
         lineChart.showCoordinateAxis = YES;
-        
         
         if (dates.count > maxValuesOnScreen) {
             [lineChart setXLabels:dates withWidth:valueWidth];
@@ -347,11 +287,11 @@ typedef enum {
     } else {
         
         // create ScrollView
-        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 253.0, SCREEN_WIDTH, 328)];
-        scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, 328);
+        scrollView = [[UIScrollView alloc] initWithFrame:contentFrame];
+        scrollView.contentSize = contentFrame.size;
         
         // create Chart
-        lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 328)];
+        lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(scrollView.frame), CGRectGetHeight(scrollView.frame))];
         lineChart.showCoordinateAxis = YES;
     }
     
@@ -418,7 +358,11 @@ typedef enum {
 - (void)createTableView {
     [self.lineChart removeFromSuperview];
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 253.0, SCREEN_WIDTH, 328)];
+    if (!_sections) {
+        [self generateSectionsInBackgroundFromArray:_dailyRows];
+    }
+    
+    UITableView *tableView = [[UITableView alloc] initWithFrame:[self contentFrame]];
     tableView.dataSource = self;
     tableView.delegate = self;
     
@@ -495,12 +439,13 @@ typedef enum {
         [button addTarget:self
                    action:@selector(actionRefresh:)
          forControlEvents:UIControlEventTouchUpInside];
-        button.frame = CGRectMake(0, 0, 100, 20);
+        button.frame = CGRectMake(0, 0, 100, CGRectGetHeight(_responseLabel.frame));
         button.center = _responseLabel.center;
         
         _applyButton = button;
         
         [self.view addSubview:button];
+        self.refreshButton = button;
     }
 }
 
@@ -519,6 +464,88 @@ typedef enum {
             break;
         }
     }
+}
+
+- (void)generateSectionsInBackgroundFromArray:(NSArray *)array {
+    
+    if (array.count > 0) {
+        
+        [self.currentOperation cancel];
+        
+        __weak LGDailyStatsController *weakSelf = self;
+        
+        self.currentOperation = [NSBlockOperation blockOperationWithBlock:^{
+            
+            NSArray *sectionsArray = [self generateSectionsFromArray:array];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                weakSelf.sections = sectionsArray;
+                [weakSelf.tableView reloadData];
+                
+                self.currentOperation = nil;
+            });
+        }];
+        
+        [self.currentOperation start];
+        
+    } else {
+        
+        [self.tableView reloadData];
+        
+    }
+}
+
+- (NSArray *)generateSectionsFromArray:(NSArray *)array {
+    
+    NSString *currentYear = 0;
+    
+    NSMutableArray *sectionsArray = [NSMutableArray array];
+    
+    for (LGDailyRow *row in array) {
+        
+        NSString *year = [row.date substringToIndex:7];
+        
+        LGSection *section = nil;
+        
+        if (![currentYear isEqualToString:year]) {
+            
+            section = [[LGSection alloc] init];
+            section.name = year;
+            section.rows = [NSMutableArray array];
+            
+            currentYear = year;
+            
+            [sectionsArray addObject:section];
+            
+        } else {
+            
+            section = [sectionsArray lastObject];
+            
+        }
+        
+        [section.rows addObject:row];
+        
+    }
+    
+    return sectionsArray;
+}
+
+- (CGRect)contentFrame {
+    
+    CGFloat space = 8;
+    CGFloat y;
+    CGFloat heigth;
+    
+    if (_responseLabel) {
+        y = CGRectGetMaxY(_responseLabel.frame) + space;
+    } else if (_refreshButton) {
+        y = CGRectGetMaxY(_refreshButton.frame) + space;
+    }
+    
+    heigth = CGRectGetMinY(_totalNumberLabel.frame) - y - space;
+    
+    return CGRectMake(0, y, SCREEN_WIDTH, heigth);
 }
 
 #pragma mark - Alert Methods

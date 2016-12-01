@@ -238,6 +238,8 @@
     UIScrollView *scrollView;
     PNBarChart *barChart;
     
+    CGRect contentFrame = [self contentFrame];
+    
     if (_generalRows) {
         
         NSMutableArray *persons = [NSMutableArray array];
@@ -255,15 +257,15 @@
         if (persons.count > maxValuesOnScreen) {
             contentWidth = valueWidth * (persons.count + 1);
         } else {
-            contentWidth = SCREEN_WIDTH;
+            contentWidth = CGRectGetWidth(contentFrame);
         }
         
         // create ScrollView
-        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 110, SCREEN_WIDTH, 513)];
-        scrollView.contentSize = CGSizeMake(contentWidth, 513);
+        scrollView = [[UIScrollView alloc] initWithFrame:contentFrame];
+        scrollView.contentSize = CGSizeMake(contentWidth, CGRectGetHeight(contentFrame));
         
         // create Chart
-        barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, 513)];
+        barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, CGRectGetHeight(contentFrame))];
         barChart.isGradientShow = NO;
         barChart.strokeColor = [UIColor blueColor];
         barChart.showChartBorder = YES;
@@ -284,11 +286,11 @@
     } else {
         
         // create ScrollView
-        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 110, SCREEN_WIDTH, 513)];
-        scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, 513);
+        scrollView = [[UIScrollView alloc] initWithFrame:contentFrame];
+        scrollView.contentSize = contentFrame.size;
         
         // create Chart
-        barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 513)];
+        barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(contentFrame), CGRectGetHeight(contentFrame))];
         barChart.showChartBorder = YES;
         
     }
@@ -366,7 +368,7 @@
 - (void)createTableView {
     [self.barChart removeFromSuperview];
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 110, SCREEN_WIDTH, 513)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:[self contentFrame]];
     tableView.dataSource = self;
     tableView.delegate = self;
     
@@ -401,6 +403,19 @@
     presentationController.sourceRect = sender.bounds;
     
     [self presentViewController:destNav animated:YES completion:nil];
+}
+
+- (CGRect)contentFrame {
+    
+    CGFloat space = 8;
+    CGFloat y;
+    CGFloat heigth;
+    
+    y = CGRectGetMaxY(_siteLabel.frame) + space;
+    
+    heigth = CGRectGetMinY(self.tabBarController.tabBar.frame) - y;
+    
+    return CGRectMake(0, y, SCREEN_WIDTH, heigth);
 }
 
 #pragma mark - Alert Methods
