@@ -15,7 +15,8 @@
 #import "LGPerson.h"
 
 
-NSURL *baseURL;
+NSURL *gBaseURL;
+NSString *gContentType;
 
 @interface AppDelegate ()
 
@@ -27,12 +28,10 @@ NSURL *baseURL;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    extern NSURL *baseURL;
-//    extern NSMutableArray *gTokens;
     extern NSString *gToken;
     
-    baseURL = [NSURL URLWithString:@"http://yrsoft.cu.cc:8080"];
-    
+    gBaseURL = [NSURL URLWithString:@"http://yrsoft.cu.cc:8080"];
+    gContentType = @"application/json";
     
     // разархивируем массив токенов и текущий токен
     NSString *path = [NSString stringWithFormat:@"%@/tokens.arch", NSTemporaryDirectory()];
@@ -43,37 +42,7 @@ NSURL *baseURL;
         
         NSLog(@"%@", dict);
         
-//        gTokens = [dict objectForKey:@"tokens"];
         gToken = [dict objectForKey:@"currentToken"];
-        
-    } else {
-        
-//        gTokens = [NSMutableArray array];
-        
-//        // fake
-//        gToken = @"token";
-//        [gTokens addObject:@"token"];
-        
-    }
-    
-    
-    LGSiteListSingleton *siteList = [LGSiteListSingleton sharedSiteList];
-    
-    for (int i = 0; i < 4; i++) {
-        
-        LGSite *site = [LGSite siteWithID:@1 andURL:@"www.site.ru"];
-        
-        [siteList.sites addObject:site];
-        
-    }
-    
-    LGPersonListSingleton *personList = [LGPersonListSingleton sharedPersonList];
-    
-    for (int i = 0; i < 4; i++) {
-        
-        LGPerson *person = [LGPerson personWithID:@2 andName:@"Персонаж"];
-        
-        [personList.persons addObject:person];
         
     }
     

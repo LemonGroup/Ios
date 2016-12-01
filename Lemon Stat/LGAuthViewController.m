@@ -41,6 +41,8 @@ typedef enum {
 
 @property (strong, nonatomic) IBOutlet UIButton *joinButton;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndecatorView;
+
 @end
 
 @implementation LGAuthViewController
@@ -50,7 +52,6 @@ typedef enum {
     // Do any additional setup after loading the view.
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -64,32 +65,18 @@ typedef enum {
     if (gToken) {
         
         if (![gToken isEqualToString:@"notToken"]) {
+            [self disablTouch];
+            [_activityIndecatorView startAnimating];
             [self requestGetSites];
             [self requestGetPersons];
             [self presentNavigationController];
+            [_activityIndecatorView stopAnimating];
         } else {
             [[LGPersonListSingleton sharedPersonList].persons removeAllObjects];
             [[LGSiteListSingleton sharedSiteList].sites removeAllObjects];
             [self archiveCurrentSetting];
         }
     }
-    
-    /*
-    extern NSMutableArray *gTokens;
-    NSLog(@"gTokens %@", gTokens);
-    
-    if ([gTokens containsObject:gToken]) {
-        
-        [self requestGetSites];
-        [self requestGetPersons];
-        [self presentNavigationController];
-        
-    } else {
-        
-        [self archiveCurrentSetting];
-        
-    }
-     */
 }
 
 - (void)onKeyboardHide:(NSNotification *)notification {
@@ -127,9 +114,11 @@ typedef enum {
 
 - (void)requestAuth {
     
-    extern NSURL *baseURL;
+    [self disablTouch];
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
+    extern NSURL *gBaseURL;
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
     
     NSString *urlString = [self stringForRequestAuth];
     
@@ -137,6 +126,11 @@ typedef enum {
       parameters:nil
         progress:nil
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
+             
+             [self.view endEditing:YES];
+             
+             [_activityIndecatorView startAnimating];
+             
              if (responseObject) {
                  
                  NSLog(@"-------------------TOKEN-JSON: %@", responseObject);
@@ -152,34 +146,19 @@ typedef enum {
                  _loginTextField.text = @"";
                  _passwordTextField.text = @"";
                  
-                 /*
-                 extern NSMutableArray *gTokens;
-                 extern NSInteger gGroupID;
-                 extern NSInteger gPrivilege;
+             } else {
                  
-                 gGroupID = [[responseObject valueForKey:@"groupId"] integerValue];
-                 gPrivilege = [[responseObject valueForKey:@"privilege"] integerValue];
-                 
-                 if (![gTokens containsObject:gToken]) {
-                     [gTokens addObject:gToken];
-                 }
-                 
-                 // Архивируем токены
-                 
-                 // Проверка на первый запуск приложения
-                 static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
-                 NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-                 if ([defaults boolForKey:hasRunAppOnceKey] == NO) {
-                     // Some code you want to run on first use...
-                     [self setNewPassword];
-                     [_passwordTextField resignFirstResponder];
-                 }
-                 */
+                 [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
                  
              }
+             
+             [_activityIndecatorView stopAnimating];
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
+             
+             [_activityIndecatorView stopAnimating];
+             
              _responseLabel.text = @"Неверные логин и/или пароль";
          }];
 }
@@ -194,10 +173,11 @@ typedef enum {
 - (void)requestGetSites {
     
     extern NSString *gToken;
-    extern NSURL *baseURL;
+    extern NSURL *gBaseURL;
+    extern NSString *gContentType;
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
+    [manager.requestSerializer setValue:gContentType forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
     NSString *string = @"catalog/sites";
@@ -220,10 +200,11 @@ typedef enum {
 - (void)requestGetPersons {
     
     extern NSString *gToken;
-    extern NSURL *baseURL;
+    extern NSURL *gBaseURL;
+    extern NSString *gContentType;
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
+    [manager.requestSerializer setValue:gContentType forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
     NSString *string = @"catalog/persons";
@@ -246,12 +227,13 @@ typedef enum {
 - (void)requestChangePassword {
     
     extern NSString *gToken;
-    extern NSURL *baseURL;
+    extern NSURL *gBaseURL;
+    extern NSString *gContentType;
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    [manager.requestSerializer setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"%@; charset=UTF-8", gContentType] forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
     
     NSString *string = @"catalog/accounts/password";
@@ -279,12 +261,15 @@ typedef enum {
 
 - (void)requestRecoveryPassword {
     
-    extern NSURL *baseURL;
+    [self disablTouch];
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
+    extern NSURL *gBaseURL;
+    extern NSString *gContentType;
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:gContentType forHTTPHeaderField:@"Content-Type"];
     
     NSString *string = @"catalog/accounts/reset_password";
     
@@ -295,7 +280,7 @@ typedef enum {
        parameters:parameters
          progress:nil
           success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-              
+              [self.view endEditing:YES];
               [self alertActionWithTitle:@"Новый пароль выслан на указанный eMail" andMessage:nil];
               _yellowForgotPassLayer.eMailTextField.text = @"";
               
@@ -437,7 +422,11 @@ typedef enum {
     
     UINavigationController *navigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
     
-    [self presentViewController:navigationController animated:YES completion:nil];
+    [self presentViewController:navigationController animated:YES completion:^{
+        if (_activityIndecatorView.isAnimating) {
+            [_activityIndecatorView stopAnimating];
+        }
+    }];
     
 }
 

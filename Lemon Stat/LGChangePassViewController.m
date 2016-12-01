@@ -50,13 +50,14 @@
 - (void)requestChangePassword {
     
     extern NSString *gToken;
-    extern NSURL *baseURL;
+    extern NSURL *gBaseURL;
+    extern NSString *gContentType;
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    [manager.requestSerializer setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"%@; charset=UTF-8", gContentType] forHTTPHeaderField:@"Content-Type"];
     
     NSString *string = @"catalog/accounts/password";
     

@@ -383,16 +383,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="topRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lines.png" translatesAutoresizingMaskIntoConstraints="NO" id="T7B-bW-MP0">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="JCB-iH-2Cd">
-                                <rect key="frame" x="98" y="49" width="178" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="gb6-Vk-nb1"/>
-                                    <constraint firstAttribute="width" constant="178" id="zly-Q6-RlX"/>
-                                </constraints>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZeY-Ue-eAA">
+                                <rect key="frame" x="-387" y="-268" width="1485" height="1186"/>
+                                <autoresizingMask key="autoresizingMask"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="His-TG-Ch6">
                                 <rect key="frame" x="43" y="200" width="289" height="250"/>
@@ -477,6 +470,17 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="JCB-iH-2Cd">
+                                <rect key="frame" x="98" y="49" width="178" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="gb6-Vk-nb1"/>
+                                    <constraint firstAttribute="width" constant="178" id="zly-Q6-RlX"/>
+                                </constraints>
+                            </imageView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="XgQ-bC-LPH">
+                                <rect key="frame" x="177" y="298" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -487,6 +491,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndecatorView" destination="XgQ-bC-LPH" id="yyt-oT-waE"/>
                         <outlet property="joinButton" destination="r9m-A5-hkp" id="Re3-qr-qsg"/>
                         <outlet property="loginTextField" destination="7B0-1e-MK9" id="3v2-LT-IPa"/>
                         <outlet property="passwordTextField" destination="LL9-8b-EVJ" id="3Wc-Ym-cj9"/>
@@ -516,6 +521,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="bg.png" width="1485" height="1186"/>
         <image name="lines.png" width="1485" height="866"/>
         <image name="logo.png" width="321" height="264"/>
         <image name="logout" width="22" height="22"/>

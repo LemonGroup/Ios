@@ -58,6 +58,8 @@ typedef enum {
 
 @property (strong, nonatomic) NSOperation *currentOperation;
 
+@property (weak, nonatomic) UIActivityIndicatorView *activityIndecatorView;
+
 @end
 
 @implementation LGDailyStatsController
@@ -70,7 +72,10 @@ typedef enum {
         _multipleType = MultipleTypeTable;
     }
     
-    
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicatorView.center = self.view.center;
+    [self.view addSubview:activityIndicatorView];
+    self.activityIndecatorView = activityIndicatorView;
     
 }
 
@@ -87,12 +92,15 @@ typedef enum {
 
 - (void)requestStat {
     
-    extern NSString *gToken;
-    extern NSURL *baseURL;
+    [_activityIndecatorView startAnimating];
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
+    extern NSString *gToken;
+    extern NSURL *gBaseURL;
+    extern NSString *gContentType;
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:gContentType forHTTPHeaderField:@"Content-Type"];
     
     NSString *urlString = [self stringForRequest];
     
@@ -186,9 +194,12 @@ typedef enum {
                      break;
              }
              
+             [_activityIndecatorView stopAnimating];
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
              NSLog(@"Error: %@", error);
+             
+             [_activityIndecatorView stopAnimating];
              
              [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
          }];
@@ -297,7 +308,7 @@ typedef enum {
     
     [lineChart strokeChart];
     
-    [self.view addSubview:scrollView];
+    [self.view insertSubview:scrollView belowSubview:_activityIndecatorView];
     [scrollView addSubview:lineChart];
     
     self.lineChart = scrollView;
@@ -368,7 +379,7 @@ typedef enum {
     
     self.tableView = tableView;
     
-    [self.view addSubview:tableView];
+    [self.view insertSubview:tableView belowSubview:_activityIndecatorView];
 }
 
 - (void) createChart {

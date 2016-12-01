@@ -20,8 +20,7 @@
 
 #import "NSString+Request.h"
 
-@interface LGGeneralStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate> {
-}
+@interface LGGeneralStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate>
 
 @property (weak, nonatomic) UITableView *tableView;
 @property (weak, nonatomic) UIScrollView *barChart;
@@ -30,10 +29,9 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *siteLabel;
 
-//@property (strong, nonatomic) NSArray *persons;
-//@property (strong, nonatomic) NSArray *numberOfMentions;
-
 @property (strong, nonatomic) NSArray<LGGeneralRow *> *generalRows;
+
+@property (weak, nonatomic) UIActivityIndicatorView *activityIndecatorView;
 
 @end
 
@@ -44,6 +42,11 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     _multipleType = MultipleTypeTable;
+    
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicatorView.center = self.view.center;
+    [self.view addSubview:activityIndicatorView];
+    self.activityIndecatorView = activityIndicatorView;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -59,12 +62,15 @@
 
 - (void)requestStat {
     
-    extern NSString *gToken;
-    extern NSURL *baseURL;
+    [_activityIndecatorView startAnimating];
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
+    extern NSString *gToken;
+    extern NSURL *gBaseURL;
+    extern NSString *gContentType;
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:gContentType forHTTPHeaderField:@"Content-Type"];
     
     NSString *requestString = [self requestString];
     
@@ -152,61 +158,15 @@
                          [self reloadChart];
                          break;
                  }
+                 
+                 [_activityIndecatorView stopAnimating];
              }
              failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                  NSLog(@"Error: %@", error);
                  
+                 [_activityIndecatorView stopAnimating];
+                 
                  [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
-                 {
-                 /************* Убрать этот кусок кода *************/
-                 // фейковые данные
-                 NSArray *responseJSON = @[@{@"numberOfMentions" : @10, @"person" : @"Путин"},
-                                           @{@"numberOfMentions" : @232, @"person" : @"Навальный"},
-                                           @{@"numberOfMentions" : @66, @"person" : @"Медведев"},
-                                           @{@"numberOfMentions" : @1, @"person" : @"Меркель"},
-                                           @{@"numberOfMentions" : @23, @"person" : @"Лукашенко"},
-                                           @{@"numberOfMentions" : @112, @"person" : @"Саакашвилли"},
-                                           @{@"numberOfMentions" : @34, @"person" : @"Обама"},
-                                           @{@"numberOfMentions" : @54, @"person" : @"Трамп"},
-                                           @{@"numberOfMentions" : @99, @"person" : @"Клинтон"},
-                                           @{@"numberOfMentions" : @150, @"person" : @"Сарксян"},
-                                           @{@"numberOfMentions" : @34, @"person" : @"Жириновский"},
-                                           @{@"numberOfMentions" : @123, @"person" : @"Зюганов"},
-                                           @{@"numberOfMentions" : @12, @"person" : @"Миронов"},
-                                           @{@"numberOfMentions" : @199, @"person" : @"Олландо"},
-                                           @{@"numberOfMentions" : @54, @"person" : @"Черчель"},
-                                           @{@"numberOfMentions" : @74, @"person" : @"Мандела"},
-                                           @{@"numberOfMentions" : @74, @"person" : @"Наполеон"},
-                                           @{@"numberOfMentions" : @75, @"person" : @"Гитлер"}
-                                           ];
-                     
-                 NSMutableArray *generalRows = [NSMutableArray array];
-                 
-                 for (id obj in responseJSON) {
-                     LGGeneralRow *generalRow = [[LGGeneralRow alloc] init];
-                     generalRow.person = [obj valueForKey:@"person"];
-                     generalRow.numberOfMentions = [[obj valueForKey:@"numberOfMentions"] stringValue];
-                     [generalRows addObject:generalRow];
-                 }
-                 self.generalRows = generalRows;
-                 
-                 // сортировка persons
-                 [generalRows sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                     return [[obj1 person] compare:[obj2 person]];
-                 }];
-                 
-                 NSLog(@"JSON: %@", responseJSON);
-         
-                 switch (_multipleType) {
-                     case MultipleTypeTable:
-                         [self.tableView reloadData];
-                         break;
-                     case MultipleTypeChart:
-                         [self reloadChart];
-                         break;
-                 }
-                 /**************************************************/
-                 }
              }];
     }
 }
@@ -224,7 +184,6 @@
     }
     
     NSString *string = [NSString stringWithFormat:@"stat/over_stat?siteId=%ld", siteID];
-//    NSString *string = [NSString stringWithFormat:@"stat/over_stat?siteId=323"];
     
     return [string encodeURLString];
 }
@@ -297,8 +256,9 @@
     
     [barChart strokeChart];
     
-    [self.view addSubview:scrollView];
+    [self.view insertSubview:scrollView belowSubview:_activityIndecatorView];
     [scrollView addSubview:barChart];
+    
     self.barChart = scrollView;
 }
 
@@ -374,7 +334,7 @@
     
     self.tableView = tableView;
     
-    [self.view addSubview:tableView];
+    [self.view insertSubview:tableView belowSubview:_activityIndecatorView];
 }
 
 - (void) createChart {

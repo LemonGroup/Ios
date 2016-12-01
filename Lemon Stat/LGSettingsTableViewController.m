@@ -52,11 +52,12 @@
 - (void)requestGetAccount {
     
     extern NSString *gToken;
-    extern NSURL *baseURL;
+    extern NSURL *gBaseURL;
+    extern NSString *gContentType;
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:baseURL];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
     [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+    [manager.requestSerializer setValue:gContentType forHTTPHeaderField:@"Content-Type"];
     
     NSString *string = @"catalog/accounts/myaccount";
     
