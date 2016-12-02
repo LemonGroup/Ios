@@ -81,7 +81,6 @@ typedef enum {
 
 - (void)onKeyboardHide:(NSNotification *)notification {
     //keyboard will hide
-    
     if (_changePasswordTextField) {     // если поле существует
         [UIView animateWithDuration:0.3
                               delay:0
@@ -89,9 +88,7 @@ typedef enum {
                          animations:^{
                              _yellowAuthLayer.transform = CGAffineTransformMakeTranslation(0, 0);
                          }
-                         completion:^(BOOL finished) {
-                             
-                         }];
+                         completion:nil];
     }
 }
 
@@ -115,6 +112,9 @@ typedef enum {
 - (void)requestAuth {
     
     [self disablTouch];
+    [self authLayerEnable:NO];
+    
+    [_activityIndecatorView startAnimating];
     
     extern NSURL *gBaseURL;
     
@@ -129,9 +129,7 @@ typedef enum {
              
              [self.view endEditing:YES];
              
-             [_activityIndecatorView startAnimating];
-             
-             if (responseObject) {
+             if (responseObject) {      // если пришел ответ с токеном
                  
                  NSLog(@"-------------------TOKEN-JSON: %@", responseObject);
                  
@@ -153,13 +151,24 @@ typedef enum {
              }
              
              [_activityIndecatorView stopAnimating];
+             [self authLayerEnable:YES];
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+             
+             switch (error.code) {
+                 case -1001:
+                     [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Время ожидания от сервера истекло, попробуйте позже"];
+                     break;
+                 default:
+                     [self alertActionWithTitle:@"Сервер не отвечает" andMessage:nil];
+                     break;
+             }
+             NSLog(@"%ld", error.code);
              NSLog(@"Error: %@", error);
              
              [_activityIndecatorView stopAnimating];
+             [self authLayerEnable:YES];
              
-             _responseLabel.text = @"Неверные логин и/или пароль";
          }];
 }
 
@@ -182,7 +191,7 @@ typedef enum {
     
     NSString *string = @"catalog/sites";
     
-    [manager GET:[string encodeURLString]
+    [manager GET:string
       parameters:nil
         progress:nil
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
@@ -209,7 +218,7 @@ typedef enum {
     
     NSString *string = @"catalog/persons";
     
-    [manager GET:[string encodeURLString]
+    [manager GET:string
       parameters:nil
         progress:nil
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
@@ -374,47 +383,7 @@ typedef enum {
     
     [_changePasswordTextField becomeFirstResponder];
     
-    [self animationYellowLayout];
-    
-}
-
-- (void)animationYellowLayout {
-    
-    [UIView animateWithDuration:0.3
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         
-                         NSInteger space = 9;
-                         
-                         _yellowAuthLayer.transform = CGAffineTransformMakeTranslation(0, -155);
-                         _yellowAuthLayer.frame = CGRectMake(CGRectGetMinX(_yellowAuthLayer.frame),
-                                                             CGRectGetMinY(_yellowAuthLayer.frame),
-                                                             CGRectGetWidth(_yellowAuthLayer.frame),
-                                                             CGRectGetHeight(_yellowAuthLayer.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
-                         
-                         _joinButton.center = CGPointMake(CGRectGetMidX(_joinButton.frame),
-                                                          CGRectGetMidY(_joinButton.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
-                         
-                         _responseLabel.center = CGPointMake(CGRectGetMidX(_responseLabel.frame),
-                                                             CGRectGetMidY(_responseLabel.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
-                         
-                         _changePasswordTextField.center = CGPointMake(CGRectGetMidX(_changePasswordTextField.frame),
-                                                                       CGRectGetMidY(_changePasswordTextField.frame) + CGRectGetHeight(_passwordTextField.frame) + space);
-                         _changePasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Введите новый пароль"
-                                                                                                      attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0f]}];
-                         
-                         
-                         _changeRepeatedPasswordTextField.center = CGPointMake(CGRectGetMidX(_changeRepeatedPasswordTextField.frame),
-                                                                               CGRectGetMidY(_changeRepeatedPasswordTextField.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
-                         _changeRepeatedPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Повторите новый пароль"
-                                                                                                              attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0f]}];
-                         
-                     }
-                     completion:^(BOOL finished) {
-                         _joinButton.titleLabel.text = @"Изменить";
-                         _joinButton.tag = LGAuthViewControllerButtonTypeChangePass;
-                     }];
+    [self animationChangePassword];
     
 }
 
@@ -432,15 +401,22 @@ typedef enum {
 
 - (BOOL)verificationFillingOfFields {
     
+    NSString *text;
+    
     if ([_loginTextField.text length] == 0 && [_passwordTextField.text length] == 0) {
-        _responseLabel.text = @"Введите логин и пароль";
+        text = @"Заполните поля \"логин\" и \"пароль\"";
+        [_loginTextField becomeFirstResponder];
     } else if ([_loginTextField.text length] == 0) {
-        _responseLabel.text = @"Введите логин";
+        text = @"Заполните поле \"логин\"";
+        [_loginTextField becomeFirstResponder];
     } else if ([_passwordTextField.text length] == 0) {
-        _responseLabel.text = @"Введите пароль";
+        text = @"Заполните поле \"пароль\"";
+        [_passwordTextField becomeFirstResponder];
     } else {
         return YES;
     }
+    
+    _responseLabel.text = text;
     
     return NO;
 }
@@ -482,6 +458,12 @@ typedef enum {
     });
 }
 
+- (void)authLayerEnable:(BOOL)flag {
+    _loginTextField.enabled = flag;
+    _passwordTextField.enabled = flag;
+    _joinButton.enabled = flag;
+}
+
 #pragma mark - Animate Methods
 
 - (void)animateForgotPasswordOpen:(BOOL)flag {
@@ -513,6 +495,46 @@ typedef enum {
                      }];
 }
 
+- (void)animationChangePassword {
+    
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         
+                         NSInteger space = 9;
+                         
+                         _yellowAuthLayer.transform = CGAffineTransformMakeTranslation(0, -155);
+                         _yellowAuthLayer.frame = CGRectMake(CGRectGetMinX(_yellowAuthLayer.frame),
+                                                             CGRectGetMinY(_yellowAuthLayer.frame),
+                                                             CGRectGetWidth(_yellowAuthLayer.frame),
+                                                             CGRectGetHeight(_yellowAuthLayer.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
+                         
+                         _joinButton.center = CGPointMake(CGRectGetMidX(_joinButton.frame),
+                                                          CGRectGetMidY(_joinButton.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
+                         
+                         _responseLabel.center = CGPointMake(CGRectGetMidX(_responseLabel.frame),
+                                                             CGRectGetMidY(_responseLabel.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
+                         
+                         _changePasswordTextField.center = CGPointMake(CGRectGetMidX(_changePasswordTextField.frame),
+                                                                       CGRectGetMidY(_changePasswordTextField.frame) + CGRectGetHeight(_passwordTextField.frame) + space);
+                         _changePasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Введите новый пароль"
+                                                                                                          attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0f]}];
+                         
+                         
+                         _changeRepeatedPasswordTextField.center = CGPointMake(CGRectGetMidX(_changeRepeatedPasswordTextField.frame),
+                                                                               CGRectGetMidY(_changeRepeatedPasswordTextField.frame) + CGRectGetHeight(_passwordTextField.frame) * 2 + space * 2);
+                         _changeRepeatedPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Повторите новый пароль"
+                                                                                                                  attributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0f]}];
+                         
+                     }
+                     completion:^(BOOL finished) {
+                         _joinButton.titleLabel.text = @"Изменить";
+                         _joinButton.tag = LGAuthViewControllerButtonTypeChangePass;
+                     }];
+    
+}
+
 #pragma mark - Archiving
 
 - (void)archiveCurrentSetting {
@@ -524,12 +546,6 @@ typedef enum {
     
     NSString *path = [NSString stringWithFormat:@"%@/tokens.arch", NSTemporaryDirectory()];
     [NSKeyedArchiver archiveRootObject:dict toFile:path];
-    
-    /*
-    extern NSMutableArray *gTokens;
-    NSDictionary *dict = @{@"tokens" : gTokens,
-                           @"currentToken" : gToken};
-    */
 }
 
 #pragma mark - Actions
@@ -538,27 +554,33 @@ typedef enum {
     
     if ([self verificationFillingOfFields]) {
         
-        switch (sender.tag) {
-            
-            case LGAuthViewControllerButtonTypeJoin: {
-                
-                [self requestAuth];
-            }
-                break;
-            
-            case LGAuthViewControllerButtonTypeChangePass: {
-                
-                if ([self verificationFillingOfFieldsForChangePassword]) {
-                    
-                    [_changeRepeatedPasswordTextField resignFirstResponder];
-                    [self requestChangePassword];
-                    
-                }
-                
-            }
-                break;
-        }
+        [self requestAuth];
+        
     }
+    
+//    if ([self verificationFillingOfFields]) {
+//        
+//        switch (sender.tag) {
+//            
+//            case LGAuthViewControllerButtonTypeJoin: {
+//                
+//                [self requestAuth];
+//            }
+//                break;
+//            
+//            case LGAuthViewControllerButtonTypeChangePass: {
+//                
+//                if ([self verificationFillingOfFieldsForChangePassword]) {
+//                    
+//                    [_changeRepeatedPasswordTextField resignFirstResponder];
+//                    [self requestChangePassword];
+//                    
+//                }
+//                
+//            }
+//                break;
+//        }
+//    }
 }
 
 - (IBAction)actionForgotPassword:(UIButton *)sender {
