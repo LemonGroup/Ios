@@ -69,6 +69,134 @@ typedef enum {
 
 @implementation LGDailyStatsController
 
+/************* Убрать этот кусок кода *************/
+#pragma mark - Fake Method
+- (void)fakeDataMethod{
+    // фейковые данные
+    
+    NSArray *responseJSON = @[@{@"date" : @"2016-11-29", @"numberOfNewPages" : @57},
+                              @{@"date" : @"2016-11-30", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-01", @"numberOfNewPages" : @23},
+                              @{@"date" : @"2016-12-02", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-03", @"numberOfNewPages" : @121},
+                              @{@"date" : @"2016-12-04", @"numberOfNewPages" : @34},
+                              @{@"date" : @"2016-12-05", @"numberOfNewPages" : @65},
+                              @{@"date" : @"2016-12-06", @"numberOfNewPages" : @69},
+                              @{@"date" : @"2016-12-07", @"numberOfNewPages" : @11},
+                              @{@"date" : @"2016-12-08", @"numberOfNewPages" : @26},
+                              @{@"date" : @"2016-12-09", @"numberOfNewPages" : @30},
+                              @{@"date" : @"2016-12-10", @"numberOfNewPages" : @30},
+                              @{@"date" : @"2016-12-11", @"numberOfNewPages" : @57},
+                              @{@"date" : @"2016-12-12", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-13", @"numberOfNewPages" : @23},
+                              @{@"date" : @"2016-12-14", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-15", @"numberOfNewPages" : @121},
+                              @{@"date" : @"2016-12-16", @"numberOfNewPages" : @34},
+                              @{@"date" : @"2016-12-17", @"numberOfNewPages" : @65},
+                              @{@"date" : @"2016-12-18", @"numberOfNewPages" : @69}
+                              ,
+                              @{@"date" : @"2016-11-29", @"numberOfNewPages" : @57},
+                              @{@"date" : @"2016-11-30", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-01", @"numberOfNewPages" : @23},
+                              @{@"date" : @"2016-12-02", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-03", @"numberOfNewPages" : @121},
+                              @{@"date" : @"2016-12-04", @"numberOfNewPages" : @34},
+                              @{@"date" : @"2016-12-05", @"numberOfNewPages" : @65},
+                              @{@"date" : @"2016-12-06", @"numberOfNewPages" : @69},
+                              @{@"date" : @"2016-12-07", @"numberOfNewPages" : @11},
+                              @{@"date" : @"2016-12-08", @"numberOfNewPages" : @26},
+                              @{@"date" : @"2016-12-09", @"numberOfNewPages" : @30},
+                              @{@"date" : @"2016-12-10", @"numberOfNewPages" : @30},
+                              @{@"date" : @"2016-12-11", @"numberOfNewPages" : @57},
+                              @{@"date" : @"2016-12-12", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-13", @"numberOfNewPages" : @23},
+                              @{@"date" : @"2016-12-14", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-15", @"numberOfNewPages" : @121},
+                              @{@"date" : @"2016-12-16", @"numberOfNewPages" : @34},
+                              @{@"date" : @"2016-12-17", @"numberOfNewPages" : @65},
+                              @{@"date" : @"2016-12-18", @"numberOfNewPages" : @69}
+                              ,
+                              @{@"date" : @"2016-11-29", @"numberOfNewPages" : @57},
+                              @{@"date" : @"2016-11-30", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-01", @"numberOfNewPages" : @23},
+                              @{@"date" : @"2016-12-02", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-03", @"numberOfNewPages" : @121},
+                              @{@"date" : @"2016-12-04", @"numberOfNewPages" : @34},
+                              @{@"date" : @"2016-12-05", @"numberOfNewPages" : @65},
+                              @{@"date" : @"2016-12-06", @"numberOfNewPages" : @69},
+                              @{@"date" : @"2016-12-07", @"numberOfNewPages" : @11},
+                              @{@"date" : @"2016-12-08", @"numberOfNewPages" : @26},
+                              @{@"date" : @"2016-12-09", @"numberOfNewPages" : @30},
+                              @{@"date" : @"2016-12-10", @"numberOfNewPages" : @30},
+                              @{@"date" : @"2016-12-11", @"numberOfNewPages" : @57},
+                              @{@"date" : @"2016-12-12", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-13", @"numberOfNewPages" : @23},
+                              @{@"date" : @"2016-12-14", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-15", @"numberOfNewPages" : @121},
+                              @{@"date" : @"2016-12-16", @"numberOfNewPages" : @34},
+                              @{@"date" : @"2016-12-17", @"numberOfNewPages" : @65},
+                              @{@"date" : @"2016-12-18", @"numberOfNewPages" : @69}
+                              ,
+                              @{@"date" : @"2016-11-29", @"numberOfNewPages" : @57},
+                              @{@"date" : @"2016-11-30", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-01", @"numberOfNewPages" : @23},
+                              @{@"date" : @"2016-12-02", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-03", @"numberOfNewPages" : @121},
+                              @{@"date" : @"2016-12-04", @"numberOfNewPages" : @34},
+                              @{@"date" : @"2016-12-05", @"numberOfNewPages" : @65},
+                              @{@"date" : @"2016-12-06", @"numberOfNewPages" : @69},
+                              @{@"date" : @"2016-12-07", @"numberOfNewPages" : @11},
+                              @{@"date" : @"2016-12-08", @"numberOfNewPages" : @26},
+                              @{@"date" : @"2016-12-09", @"numberOfNewPages" : @30},
+                              @{@"date" : @"2016-12-10", @"numberOfNewPages" : @30},
+                              @{@"date" : @"2016-12-11", @"numberOfNewPages" : @57},
+                              @{@"date" : @"2016-12-12", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-13", @"numberOfNewPages" : @23},
+                              @{@"date" : @"2016-12-14", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-15", @"numberOfNewPages" : @121},
+                              @{@"date" : @"2016-12-16", @"numberOfNewPages" : @34},
+                              @{@"date" : @"2016-12-17", @"numberOfNewPages" : @65},
+                              @{@"date" : @"2016-12-18", @"numberOfNewPages" : @69}
+                              ,
+                              @{@"date" : @"2016-11-29", @"numberOfNewPages" : @57},
+                              @{@"date" : @"2016-11-30", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-01", @"numberOfNewPages" : @23},
+                              @{@"date" : @"2016-12-02", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-03", @"numberOfNewPages" : @121},
+                              @{@"date" : @"2016-12-04", @"numberOfNewPages" : @34},
+                              @{@"date" : @"2016-12-05", @"numberOfNewPages" : @65},
+                              @{@"date" : @"2016-12-06", @"numberOfNewPages" : @69},
+                              @{@"date" : @"2016-12-07", @"numberOfNewPages" : @11},
+                              @{@"date" : @"2016-12-08", @"numberOfNewPages" : @26},
+                              @{@"date" : @"2016-12-09", @"numberOfNewPages" : @30},
+                              @{@"date" : @"2016-12-10", @"numberOfNewPages" : @30},
+                              @{@"date" : @"2016-12-11", @"numberOfNewPages" : @57},
+                              @{@"date" : @"2016-12-12", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-13", @"numberOfNewPages" : @23},
+                              @{@"date" : @"2016-12-14", @"numberOfNewPages" : @94},
+                              @{@"date" : @"2016-12-15", @"numberOfNewPages" : @121},
+                              @{@"date" : @"2016-12-16", @"numberOfNewPages" : @34},
+                              @{@"date" : @"2016-12-17", @"numberOfNewPages" : @65},
+                              @{@"date" : @"2016-12-18", @"numberOfNewPages" : @69}];
+    
+    [self createRowsUsingAnJSONArray:responseJSON];
+    
+    [self setTotalNumber];
+    
+    switch (_multipleType) {
+        case MultipleTypeTable:
+            [self generateSectionsInBackgroundFromArray:_dailyRows];
+            break;
+        case MultipleTypeChart:
+            [self reloadChart];
+            break;
+    }
+    
+    NSLog(@"JSON: %@", responseJSON);
+}
+#pragma mark -
+/**************************************************/
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -86,6 +214,9 @@ typedef enum {
                     @"Май", @"Июнь", @"Июль", @"Август",
                     @"Сентябрь", @"Октябрь", @"Ноябрь", @"Декабрь"];
     
+    /************* Убрать этот кусок кода *************/
+    [self fakeDataMethod];
+    /**************************************************/
 }
 
 - (void)didReceiveMemoryWarning {
@@ -120,28 +251,9 @@ typedef enum {
              
              NSLog(@"responseObject JSON: %@", responseObject);
              
-             NSMutableArray *dailyRows = [NSMutableArray array];
-             
              if (responseObject) {
                  
-                 for (id obj in responseObject) {
-                     LGDailyRow *dailyRow = [[LGDailyRow alloc] init];
-                     
-                     // create date from string
-                     NSString *dateString = [obj valueForKey:@"date"];
-                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-                     NSDate *dateFromString = [[NSDate alloc] init];
-                     dateFromString = [dateFormatter dateFromString:dateString];
-                     
-                     dailyRow.numberOfNewPages = [[obj valueForKey:@"numberOfNewPages"] stringValue];
-                     dailyRow.date = dateFromString;
-                     
-                     [dailyRows addObject:dailyRow];
-                     
-                 }
-                 self.dailyRows = dailyRows;
-                 
+                 [self createRowsUsingAnJSONArray:responseObject];
                  [self setTotalNumber];
                  
              } else {
@@ -150,73 +262,15 @@ typedef enum {
                  _sections = nil;
                  
                  [self alertActionWithTitle:@"Нет данных" andMessage:nil];
-                 {
+                 
                  /************* Убрать этот кусок кода *************/
-                 // фейковые данные
-                 NSArray *responseJSON = @[@{@"date" : @"2016-11-29", @"numberOfNewPages" : @57},
-                                           @{@"date" : @"2016-11-30", @"numberOfNewPages" : @94},
-                                           @{@"date" : @"2016-12-01", @"numberOfNewPages" : @23},
-                                           @{@"date" : @"2016-12-02", @"numberOfNewPages" : @94},
-                                           @{@"date" : @"2016-12-03", @"numberOfNewPages" : @121},
-                                           @{@"date" : @"2016-12-04", @"numberOfNewPages" : @34},
-                                           @{@"date" : @"2016-12-05", @"numberOfNewPages" : @65},
-                                           @{@"date" : @"2016-12-06", @"numberOfNewPages" : @69},
-                                           @{@"date" : @"2016-12-07", @"numberOfNewPages" : @11},
-                                           @{@"date" : @"2016-12-08", @"numberOfNewPages" : @26},
-                                           @{@"date" : @"2016-12-09", @"numberOfNewPages" : @30},
-                                           @{@"date" : @"2016-12-10", @"numberOfNewPages" : @30},
-                                           @{@"date" : @"2016-12-11", @"numberOfNewPages" : @57},
-                                           @{@"date" : @"2016-12-12", @"numberOfNewPages" : @94},
-                                           @{@"date" : @"2016-12-13", @"numberOfNewPages" : @23},
-                                           @{@"date" : @"2016-12-14", @"numberOfNewPages" : @94},
-                                           @{@"date" : @"2016-12-15", @"numberOfNewPages" : @121},
-                                           @{@"date" : @"2016-12-16", @"numberOfNewPages" : @34},
-                                           @{@"date" : @"2016-12-17", @"numberOfNewPages" : @65},
-                                           @{@"date" : @"2016-12-18", @"numberOfNewPages" : @69},
-                                           @{@"date" : @"2016-12-19", @"numberOfNewPages" : @11},
-                                           @{@"date" : @"2016-12-20", @"numberOfNewPages" : @26},
-                                           @{@"date" : @"2016-12-21", @"numberOfNewPages" : @30},
-                                           @{@"date" : @"2016-12-22", @"numberOfNewPages" : @30},
-                                           @{@"date" : @"2016-12-23", @"numberOfNewPages" : @94},
-                                           @{@"date" : @"2016-12-24", @"numberOfNewPages" : @23},
-                                           @{@"date" : @"2016-12-25", @"numberOfNewPages" : @94},
-                                           @{@"date" : @"2016-12-26", @"numberOfNewPages" : @121},
-                                           @{@"date" : @"2016-12-27", @"numberOfNewPages" : @34},
-                                           @{@"date" : @"2016-12-28", @"numberOfNewPages" : @65},
-                                           @{@"date" : @"2016-12-29", @"numberOfNewPages" : @69},
-                                           @{@"date" : @"2016-12-30", @"numberOfNewPages" : @11},
-                                           @{@"date" : @"2017-01-01", @"numberOfNewPages" : @26},
-                                           @{@"date" : @"2017-01-02", @"numberOfNewPages" : @30},
-                                           @{@"date" : @"2017-01-03", @"numberOfNewPages" : @30}];
-                 
-                 for (id obj in responseJSON) {
-                     LGDailyRow *dailyRow = [[LGDailyRow alloc] init];
-                     
-                     // create date from string
-                     NSString *dateString = [obj valueForKey:@"date"];
-                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-                     NSDate *dateFromString = [[NSDate alloc] init];
-                     dateFromString = [dateFormatter dateFromString:dateString];
-                     
-                     dailyRow.numberOfNewPages = [[obj valueForKey:@"numberOfNewPages"] stringValue];
-                     dailyRow.date = dateFromString;
-                     
-                     [dailyRows addObject:dailyRow];
-                     
-                 }
-                 self.dailyRows = dailyRows;
-                 
-                 [self setTotalNumber];
-                 
-                 NSLog(@"JSON: %@", responseJSON);
+                 [self fakeDataMethod];
                  /**************************************************/
-                 }
              }
              
              switch (_multipleType) {
                  case MultipleTypeTable:
-                     [self generateSectionsInBackgroundFromArray:dailyRows];
+                     [self generateSectionsInBackgroundFromArray:_dailyRows];
                      break;
                  case MultipleTypeChart:
                      [self reloadChart];
@@ -226,11 +280,24 @@ typedef enum {
              [_activityIndecatorView stopAnimating];
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-             NSLog(@"Error: %@", error);
+             
+             switch (error.code) {
+                 case -1001:
+                     [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Время ожидания от сервера истекло, попробуйте позже"];
+                     break;
+                 default:
+                     [self alertActionWithTitle:@"Сервер не отвечает" andMessage:nil];
+                     break;
+             }
              
              [_activityIndecatorView stopAnimating];
              
-             [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
+             NSLog(@"%ld", error.code);
+             NSLog(@"Error: %@", error);
+             
+             /************* Убрать этот кусок кода *************/
+             [self fakeDataMethod];
+             /**************************************************/
          }];
 }
 
@@ -289,9 +356,11 @@ typedef enum {
             [numberOfNewPages addObject:row.numberOfNewPages];
         }
         
-        NSInteger valueWidth = 20;
+        NSInteger valueWidth;
         NSInteger maxValuesOnScreen = 20;
         NSInteger contentWidth;
+        
+        valueWidth = CGRectGetWidth(contentFrame) / 20;
         
         if (dates.count > maxValuesOnScreen) {
             contentWidth = valueWidth * (dates.count + 1);
@@ -307,8 +376,10 @@ typedef enum {
         lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, CGRectGetHeight(contentFrame))];
         lineChart.showCoordinateAxis = YES;
         lineChart.delegate = self;
-        
+        lineChart.chartMarginLeft = 30;
+        lineChart.chartMarginRight = 0;
         lineChart.chartCavanHeight = CGRectGetHeight(contentFrame) - 100;
+        
         [lineChart setXLabels:dates];
         
         // Line Chart No.1
@@ -414,6 +485,29 @@ typedef enum {
 }
 
 #pragma mark - Methods
+
+- (void)createRowsUsingAnJSONArray:(NSArray *)responseJSON {
+    
+    NSMutableArray *dailyRows = [NSMutableArray array];
+    
+    for (id obj in responseJSON) {
+        LGDailyRow *dailyRow = [[LGDailyRow alloc] init];
+        
+        // create date from string
+        NSString *dateString = [obj valueForKey:@"date"];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSDate *dateFromString = [[NSDate alloc] init];
+        dateFromString = [dateFormatter dateFromString:dateString];
+        
+        dailyRow.numberOfNewPages = [[obj valueForKey:@"numberOfNewPages"] stringValue];
+        dailyRow.date = dateFromString;
+        
+        [dailyRows addObject:dailyRow];
+        
+    }
+    self.dailyRows = dailyRows;
+}
 
 - (void)changeInfoView {
     
@@ -544,7 +638,7 @@ typedef enum {
 
 - (void)generateSectionsInBackgroundFromArray:(NSArray *)array {
     
-    if (array.count > 0) {
+    if (array) {
         
         [self.currentOperation cancel];
         

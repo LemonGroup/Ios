@@ -196,7 +196,7 @@ typedef enum {
         progress:nil
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
              
-             [self createSiteListWithJSONArray:responseObject];
+             [self createSiteListUsingAnJSONArray:responseObject];
              
              NSLog(@"JSON: %@", responseObject);
              
@@ -223,7 +223,7 @@ typedef enum {
         progress:nil
          success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
              
-             [self createPersonListWithJSONArray:responseObject];
+             [self createPersonListUsingAnJSONArray:responseObject];
              
              NSLog(@"JSON: %@", responseObject);
              
@@ -324,7 +324,7 @@ typedef enum {
 
 #pragma mark - Methods
 
-- (void)createSiteListWithJSONArray:(NSArray *)responseJSON {
+- (void)createSiteListUsingAnJSONArray:(NSArray *)responseJSON {
     
     LGSiteListSingleton *siteList = [LGSiteListSingleton sharedSiteList];
     
@@ -338,7 +338,7 @@ typedef enum {
     [siteList sortList];
 }
 
-- (void)createPersonListWithJSONArray:(NSArray *)responseJSON {
+- (void)createPersonListUsingAnJSONArray:(NSArray *)responseJSON {
     
     LGPersonListSingleton *personList = [LGPersonListSingleton sharedPersonList];
     

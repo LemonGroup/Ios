@@ -37,6 +37,46 @@
 
 @implementation LGGeneralStatsController
 
+/************* Убрать этот кусок кода *************/
+#pragma mark - Fake Method
+- (void)fakeDataMethod {
+    // фейковые данные
+    NSArray *responseJSON = @[@{@"numberOfMentions" : @10, @"person" : @"Путин"},
+                              @{@"numberOfMentions" : @232, @"person" : @"Навальный"},
+                              @{@"numberOfMentions" : @66, @"person" : @"Медведев"},
+                              @{@"numberOfMentions" : @1, @"person" : @"Меркель"},
+                              @{@"numberOfMentions" : @23, @"person" : @"Лукашенко"},
+                              @{@"numberOfMentions" : @112, @"person" : @"Саакашвилли"},
+                              @{@"numberOfMentions" : @34, @"person" : @"Обама"},
+                              @{@"numberOfMentions" : @54, @"person" : @"Трамп"},
+                              @{@"numberOfMentions" : @99, @"person" : @"Клинтон"},
+                              @{@"numberOfMentions" : @150, @"person" : @"Сарксян"},
+                              @{@"numberOfMentions" : @34, @"person" : @"Жириновский"},
+                              @{@"numberOfMentions" : @123, @"person" : @"Зюганов"},
+                              @{@"numberOfMentions" : @12, @"person" : @"Миронов"},
+                              @{@"numberOfMentions" : @199, @"person" : @"Олландо"},
+                              @{@"numberOfMentions" : @54, @"person" : @"Черчель"},
+                              @{@"numberOfMentions" : @74, @"person" : @"Мандела"},
+                              @{@"numberOfMentions" : @74, @"person" : @"Наполеон"},
+                              @{@"numberOfMentions" : @75, @"person" : @"Гитлер"}
+                              ];
+    
+    [self createRowsUsingAnJSONArray:responseJSON];
+    
+    NSLog(@"JSON: %@", responseJSON);
+    
+    switch (_multipleType) {
+        case MultipleTypeTable:
+            [self.tableView reloadData];
+            break;
+        case MultipleTypeChart:
+            [self reloadChart];
+            break;
+    }
+}
+#pragma mark -
+/**************************************************/
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -47,6 +87,10 @@
     activityIndicatorView.center = self.view.center;
     [self.view addSubview:activityIndicatorView];
     self.activityIndecatorView = activityIndicatorView;
+    
+    /************* Убрать этот кусок кода *************/
+    [self fakeDataMethod];
+    /**************************************************/
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -78,76 +122,24 @@
         
         [manager GET:requestString
           parameters:nil
-            progress:^(NSProgress * _Nonnull downloadProgress) {
-                
-            }
+            progress:nil
              success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
                  
                  NSLog(@"responseObject JSON: %@", responseObject);
                  
                  if (responseObject) {
                      
-                     NSMutableArray *generalRows = [NSMutableArray array];
-                     
-                     for (id obj in responseObject) {
-                         LGGeneralRow *generalRow = [[LGGeneralRow alloc] init];
-                         generalRow.person = [obj valueForKey:@"person"];
-                         generalRow.numberOfMentions = [[obj valueForKey:@"numberOfMentions"] stringValue];
-                         [generalRows addObject:generalRow];
-                     }
-                     self.generalRows = generalRows;
-                     
-                     // сортировка persons
-                     [generalRows sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                         return [[obj1 person] compare:[obj2 person]];
-                     }];
+                     [self createRowsUsingAnJSONArray:responseObject];
                      
                  } else {
                      
                      _generalRows = nil;
                      
                      [self alertActionWithTitle:@"Нет данных" andMessage:nil];
-                     {
+                     
                      /************* Убрать этот кусок кода *************/
-                     // фейковые данные
-                     NSArray *responseJSON = @[@{@"numberOfMentions" : @10, @"person" : @"Путин"},
-                                               @{@"numberOfMentions" : @232, @"person" : @"Навальный"},
-                                               @{@"numberOfMentions" : @66, @"person" : @"Медведев"},
-                                               @{@"numberOfMentions" : @1, @"person" : @"Меркель"},
-                                               @{@"numberOfMentions" : @23, @"person" : @"Лукашенко"},
-                                               @{@"numberOfMentions" : @112, @"person" : @"Саакашвилли"},
-                                               @{@"numberOfMentions" : @34, @"person" : @"Обама"},
-                                               @{@"numberOfMentions" : @54, @"person" : @"Трамп"},
-                                               @{@"numberOfMentions" : @99, @"person" : @"Клинтон"},
-                                               @{@"numberOfMentions" : @150, @"person" : @"Сарксян"},
-                                               @{@"numberOfMentions" : @34, @"person" : @"Жириновский"},
-                                               @{@"numberOfMentions" : @123, @"person" : @"Зюганов"},
-                                               @{@"numberOfMentions" : @12, @"person" : @"Миронов"},
-                                               @{@"numberOfMentions" : @199, @"person" : @"Олландо"},
-                                               @{@"numberOfMentions" : @54, @"person" : @"Черчель"},
-                                               @{@"numberOfMentions" : @74, @"person" : @"Мандела"},
-                                               @{@"numberOfMentions" : @74, @"person" : @"Наполеон"},
-                                               @{@"numberOfMentions" : @75, @"person" : @"Гитлер"}
-                                               ];
-                     
-                     NSMutableArray *generalRows = [NSMutableArray array];
-                     
-                     for (id obj in responseJSON) {
-                         LGGeneralRow *generalRow = [[LGGeneralRow alloc] init];
-                         generalRow.person = [obj valueForKey:@"person"];
-                         generalRow.numberOfMentions = [[obj valueForKey:@"numberOfMentions"] stringValue];
-                         [generalRows addObject:generalRow];
-                     }
-                     self.generalRows = generalRows;
-                     
-                     // сортировка persons
-                     [generalRows sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                         return [[obj1 person] compare:[obj2 person]];
-                     }];
-                     
-                     NSLog(@"JSON: %@", responseJSON);
+                     [self fakeDataMethod];
                      /**************************************************/
-                     }
                  }
                  
                  switch (_multipleType) {
@@ -162,11 +154,24 @@
                  [_activityIndecatorView stopAnimating];
              }
              failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                 NSLog(@"Error: %@", error);
+                 
+                 switch (error.code) {
+                     case -1001:
+                         [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Время ожидания от сервера истекло, попробуйте позже"];
+                         break;
+                     default:
+                         [self alertActionWithTitle:@"Сервер не отвечает" andMessage:nil];
+                         break;
+                 }
                  
                  [_activityIndecatorView stopAnimating];
                  
-                 [self alertActionWithTitle:@"Сервер не отвечает" andMessage:@"Попробуйте позже"];
+                 NSLog(@"%ld", error.code);
+                 NSLog(@"Error: %@", error);
+                 
+                 /************* Убрать этот кусок кода *************/
+                 [self fakeDataMethod];
+                 /**************************************************/
              }];
     }
 }
@@ -308,6 +313,24 @@
 }
 
 #pragma mark - Methods
+
+- (void)createRowsUsingAnJSONArray:(NSArray *)responseJSON {
+    
+    NSMutableArray *generalRows = [NSMutableArray array];
+    
+    for (id obj in responseJSON) {
+        LGGeneralRow *generalRow = [[LGGeneralRow alloc] init];
+        generalRow.person = [obj valueForKey:@"person"];
+        generalRow.numberOfMentions = [[obj valueForKey:@"numberOfMentions"] stringValue];
+        [generalRows addObject:generalRow];
+    }
+    self.generalRows = generalRows;
+    
+    // сортировка persons
+    [generalRows sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        return [[obj1 person] compare:[obj2 person]];
+    }];
+}
 
 - (void)changeInfoView {
     
