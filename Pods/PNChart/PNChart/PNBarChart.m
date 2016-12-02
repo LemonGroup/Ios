@@ -177,19 +177,24 @@
                 label.textColor = _labelTextColor;
                 [label setTextAlignment:NSTextAlignmentCenter];
                 label.text = labelText;
-                //[label sizeToFit];
+                
                 CGFloat labelXPosition;
                 if (_rotateForXAxisText){
                     label.transform = CGAffineTransformMakeRotation(M_PI / 4);
-                    labelXPosition = (index *  _xLabelWidth + _chartMarginLeft + _xLabelWidth /1.5);
+                    labelXPosition = (index *  _xLabelWidth + _chartMarginLeft + _xLabelWidth /2);
                 }
                 else{
                     labelXPosition = (index *  _xLabelWidth + _chartMarginLeft + _xLabelWidth /2.0 );
                 }
+                
+                label.numberOfLines = 1;
+                [label sizeToFit];
+                
                 label.center = CGPointMake(labelXPosition,
                                            self.frame.size.height - kXLabelHeight - _chartMarginTop + label.frame.size.height /2.0 + _labelMarginTop);
-                labelAddCount = 0;
 
+                labelAddCount = 0;
+                
                 [_xChartLabels addObject:label];
                 [self addSubview:label];
             }

@@ -63,7 +63,7 @@ typedef enum {
 
 @property (strong, nonatomic) NSArray *months;
 
-@property (weak, nonatomic) UILabel *poinLabel;
+@property (weak, nonatomic) UILabel *currentPoinLabel;
 
 @end
 
@@ -335,6 +335,7 @@ typedef enum {
 
 - (void)reloadChart {
     
+    [self.tableView removeFromSuperview];
     [self.scrollChartView removeFromSuperview];
     
     UIScrollView *scrollView;
@@ -356,14 +357,12 @@ typedef enum {
             [numberOfNewPages addObject:row.numberOfNewPages];
         }
         
-        NSInteger valueWidth;
-        NSInteger maxValuesOnScreen = 20;
         NSInteger contentWidth;
-        
-        valueWidth = CGRectGetWidth(contentFrame) / 20;
+        NSInteger maxValuesOnScreen = 20;
+        NSInteger valueWidth = CGRectGetWidth(contentFrame) / maxValuesOnScreen;
         
         if (dates.count > maxValuesOnScreen) {
-            contentWidth = valueWidth * (dates.count + 1);
+            contentWidth = valueWidth * dates.count;
         } else {
             contentWidth = CGRectGetWidth(contentFrame);
         }
@@ -423,27 +422,21 @@ typedef enum {
 
 - (void)userClickedOnLineKeyPoint:(CGPoint)point lineIndex:(NSInteger)lineIndex pointIndex:(NSInteger)pointIndex {
     
-    if (_poinLabel) {
+    if (_currentPoinLabel) {
         
-        if ((CGRectGetMidX(_poinLabel.frame) > point.x + 10) ||
-            (CGRectGetMidX(_poinLabel.frame) < point.x - 10)) {
+        if ((CGRectGetMidX(_currentPoinLabel.frame) > point.x + 10) ||
+            (CGRectGetMidX(_currentPoinLabel.frame) < point.x - 10)) {
             
-            [_poinLabel removeFromSuperview];
-            _poinLabel = nil;
-            
-            [self creaPointLabelWithTitel:_dailyRows[pointIndex].numberOfNewPages
-                                andCenter:[[_lineChart.pathPoints firstObject][pointIndex] CGPointValue]];
+            [_currentPoinLabel removeFromSuperview];
+            _currentPoinLabel = [self createPointLabelWithTitel:_dailyRows[pointIndex].numberOfNewPages
+                                                      andCenter:[[_lineChart.pathPoints firstObject][pointIndex] CGPointValue]];
         }
     
     } else {
         
-        [self creaPointLabelWithTitel:_dailyRows[pointIndex].numberOfNewPages
-                            andCenter:[[_lineChart.pathPoints firstObject][pointIndex] CGPointValue]];
+        _currentPoinLabel = [self createPointLabelWithTitel:_dailyRows[pointIndex].numberOfNewPages
+                                                  andCenter:[[_lineChart.pathPoints firstObject][pointIndex] CGPointValue]];
     }
-}
-
-- (void)userClickedOnLinePoint:(CGPoint)point lineIndex:(NSInteger)lineIndex {
-    
 }
 
 #pragma mark - UITableViewDataSource
@@ -542,9 +535,6 @@ typedef enum {
 }
 
 - (void) createChart {
-    [self.tableView removeFromSuperview];
-    [self.scrollChartView removeFromSuperview];
-    
     [self reloadChart];
 }
 
@@ -675,14 +665,8 @@ typedef enum {
     
     for (LGDailyRow *row in array) {
         
-//        NSString *year = [row.date substringToIndex:7];
-        
         NSCalendar* calendar = [NSCalendar currentCalendar];
         NSDateComponents* components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:row.date]; // Get necessary date components
-        
-        //[components month]; //gives you month
-        //[components day]; //gives you day
-        //[components year]; // gives you year
         
         NSInteger month = [components month];
         
@@ -691,12 +675,6 @@ typedef enum {
         if (currentMonth != month) {
             
             section = [[LGSection alloc] init];
-            
-            // set name
-//            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//            dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"ru"];
-//            [dateFormatter setDateFormat:@"MMMM-yyyy"];
-//            section.name = [dateFormatter stringFromDate:row.ddate];
             
             section.name = [NSString stringWithFormat:@"%@ %ld", _months[month - 1], [components year]];
             
@@ -710,11 +688,9 @@ typedef enum {
         } else {
             
             section = [sectionsArray lastObject];
-            
         }
         
         [section.rows addObject:row];
-        
     }
     
     return sectionsArray;
@@ -737,19 +713,20 @@ typedef enum {
     return CGRectMake(0, y, SCREEN_WIDTH, heigth);
 }
 
-- (void)creaPointLabelWithTitel:(NSString *)title andCenter:(CGPoint)center {
+- (UILabel *)createPointLabelWithTitel:(NSString *)title andCenter:(CGPoint)center {
     
     UILabel *label = [[UILabel alloc] init];
     label.backgroundColor = [UIColor colorWithWhite:1 alpha:0.85];
-    label.font = [UIFont systemFontOfSize:14];
+    label.font = [UIFont systemFontOfSize:20];
     label.textAlignment = NSTextAlignmentCenter;
     label.text = title;
     [label sizeToFit];
     label.center = center;
     label.textColor = [UIColor blackColor];
+        
     [_lineChart addSubview:label];
     
-    _poinLabel = label;
+    return label;
 }
 
 #pragma mark - Alert Methods

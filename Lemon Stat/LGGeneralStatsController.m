@@ -20,10 +20,11 @@
 
 #import "NSString+Request.h"
 
-@interface LGGeneralStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate>
+@interface LGGeneralStatsController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPopoverPresentationControllerDelegate, LGPopoverViewControllerDelegate, PNChartDelegate>
 
 @property (weak, nonatomic) UITableView *tableView;
-@property (weak, nonatomic) UIScrollView *barChart;
+@property (weak, nonatomic) UIScrollView *scrollChartView;
+@property (weak, nonatomic) PNBarChart *barChart;
 
 @property (weak, nonatomic) LGPopoverViewController *popoverViewController;
 
@@ -32,6 +33,10 @@
 @property (strong, nonatomic) NSArray<LGGeneralRow *> *generalRows;
 
 @property (weak, nonatomic) UIActivityIndicatorView *activityIndecatorView;
+
+@property (weak, nonatomic) UILabel *currentBarLabel;
+
+@property (weak, nonatomic) PNBar *selectedBar;
 
 @end
 
@@ -46,11 +51,12 @@
                               @{@"numberOfMentions" : @66, @"person" : @"Медведев"},
                               @{@"numberOfMentions" : @1, @"person" : @"Меркель"},
                               @{@"numberOfMentions" : @23, @"person" : @"Лукашенко"},
+                              @{@"numberOfMentions" : @53, @"person" : @"Дамблдор"},
                               @{@"numberOfMentions" : @112, @"person" : @"Саакашвилли"},
                               @{@"numberOfMentions" : @34, @"person" : @"Обама"},
                               @{@"numberOfMentions" : @54, @"person" : @"Трамп"},
                               @{@"numberOfMentions" : @99, @"person" : @"Клинтон"},
-                              @{@"numberOfMentions" : @150, @"person" : @"Сарксян"},
+                              @{@"numberOfMentions" : @150, @"person" : @"Сноуден"},
                               @{@"numberOfMentions" : @34, @"person" : @"Жириновский"},
                               @{@"numberOfMentions" : @123, @"person" : @"Зюганов"},
                               @{@"numberOfMentions" : @12, @"person" : @"Миронов"},
@@ -197,7 +203,8 @@
 
 - (void)reloadChart {
     
-    [self.barChart removeFromSuperview];
+    [self.tableView removeFromSuperview];
+    [self.scrollChartView removeFromSuperview];
     
     UIScrollView *scrollView;
     PNBarChart *barChart;
@@ -214,12 +221,13 @@
             [numberOfMentions addObject:row.numberOfMentions];
         }
         
-        NSInteger valueWidth = 60;
-        NSInteger maxValuesOnScreen = 6;
         NSInteger contentWidth;
+        NSInteger maxValuesOnScreen = 9;
+        NSInteger minValuesOnScreenForRotateLabel = 5;
+        NSInteger valueWidth = CGRectGetWidth(contentFrame) / maxValuesOnScreen;
         
         if (persons.count > maxValuesOnScreen) {
-            contentWidth = valueWidth * (persons.count + 1);
+            contentWidth = valueWidth * persons.count;
         } else {
             contentWidth = CGRectGetWidth(contentFrame);
         }
@@ -230,18 +238,19 @@
         
         // create Chart
         barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, CGRectGetHeight(contentFrame))];
-        barChart.isGradientShow = NO;
-        barChart.strokeColor = [UIColor blueColor];
+        barChart.delegate = self;
         barChart.showChartBorder = YES;
+        barChart.isGradientShow = NO;
+        barChart.isShowNumbers = NO;
+        barChart.strokeColor = [UIColor blueColor];
         
-        if (persons.count > 4) {
+        if (persons.count >= minValuesOnScreenForRotateLabel) {
             barChart.rotateForXAxisText = YES;
-            barChart.labelMarginTop = -20.0;
-            barChart.chartMarginBottom = 70;
-        } else if (persons.count > maxValuesOnScreen) {
-            barChart.xLabelWidth = valueWidth;
+            barChart.labelMarginTop = -30;
+            barChart.chartMarginBottom = 100;
         } else {
-            barChart.chartMarginBottom = 50;
+            barChart.labelMarginTop = 20;
+            barChart.chartMarginBottom = 40;
         }
         
         [barChart setXLabels:persons];
@@ -256,7 +265,6 @@
         // create Chart
         barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(contentFrame), CGRectGetHeight(contentFrame))];
         barChart.showChartBorder = YES;
-        
     }
     
     [barChart strokeChart];
@@ -264,7 +272,26 @@
     [self.view insertSubview:scrollView belowSubview:_activityIndecatorView];
     [scrollView addSubview:barChart];
     
-    self.barChart = scrollView;
+    self.scrollChartView = scrollView;
+    self.barChart = barChart;
+}
+
+#pragma mark - PNChartDelegate;
+
+- (void)userClickedOnBarAtIndex:(NSInteger)barIndex {
+    
+    PNBar *currentBar = _barChart.bars[barIndex];
+    
+    if (![currentBar isEqual:_selectedBar]) {
+        
+        if (_currentBarLabel) {
+            [_currentBarLabel removeFromSuperview];
+        }
+        
+        [self animateWhenTouchOnBar:currentBar];
+        
+        self.selectedBar = currentBar;
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -349,7 +376,7 @@
 }
 
 - (void)createTableView {
-    [self.barChart removeFromSuperview];
+    [self.scrollChartView removeFromSuperview];
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:[self contentFrame]];
     tableView.dataSource = self;
@@ -361,8 +388,6 @@
 }
 
 - (void) createChart {
-    [self.tableView removeFromSuperview];
-    [self.barChart removeFromSuperview];
     [self reloadChart];
 }
 
@@ -399,6 +424,69 @@
     heigth = CGRectGetMinY(self.tabBarController.tabBar.frame) - y;
     
     return CGRectMake(0, y, SCREEN_WIDTH, heigth);
+}
+
+- (UILabel *)createPointLabelWithTitel:(NSString *)title andCenter:(CGPoint)center {
+    
+    UILabel *label = [[UILabel alloc] init];
+    label.backgroundColor = [UIColor colorWithWhite:1 alpha:0.65];
+    label.font = [UIFont systemFontOfSize:30];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.text = title;
+    [label sizeToFit];
+    label.center = center;
+    label.textColor = [UIColor blackColor];
+    
+    // set shadow
+    label.layer.shadowColor = [UIColor blackColor].CGColor;
+    label.layer.shadowOffset = CGSizeMake(0.5, 0.4);  //Here you control x and y
+    label.layer.shadowOpacity = 0.5;
+    label.layer.shadowRadius = 5.0; //Here your control your blur
+    label.layer.masksToBounds =  NO;
+    
+    [_barChart addSubview:label];
+    
+    return label;
+}
+
+
+#pragma mark - Animation Methods
+
+- (void)animateWhenTouchOnBar:(PNBar *)bar {
+    
+    [UIView animateWithDuration:0.1
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         
+                         // remove all animate
+                         if (_selectedBar) {
+                             CGAffineTransform scale2 = CGAffineTransformMakeScale(1, 1);
+                             CGAffineTransform translate2 = CGAffineTransformMakeTranslation(0, 0);
+                             CGAffineTransform concat2 = CGAffineTransformConcat(scale2, translate2);
+                             _selectedBar.transform = concat2;
+                             _selectedBar.chartLine.strokeColor = bar.chartLine.strokeColor;
+                             _selectedBar.layer.masksToBounds =  YES;
+                         }
+                         
+                         //set shadow
+                         bar.layer.shadowColor = [UIColor blackColor].CGColor;
+                         bar.layer.shadowOffset = CGSizeMake(0.5, 0.4);  //Here you control x and y
+                         bar.layer.shadowOpacity = 0.5;
+                         bar.layer.shadowRadius = 5.0; //Here your control your blur
+                         bar.layer.masksToBounds =  NO;
+                         // set color filling
+                         bar.chartLine.strokeColor = [UIColor redColor].CGColor;
+                         // set scale and translate
+                         CGAffineTransform scale = CGAffineTransformMakeScale(1.3, 1.05);
+                         CGAffineTransform translate = CGAffineTransformMakeTranslation(0, -CGRectGetHeight(bar.frame) / 40);
+                         CGAffineTransform concat = CGAffineTransformConcat(scale, translate);
+                         bar.transform = concat;
+                     }
+                     completion:^(BOOL finished) {
+                         _currentBarLabel = [self createPointLabelWithTitel:_generalRows[[_barChart.bars indexOfObject:bar]].numberOfMentions
+                                                                  andCenter:bar.center];
+                     }];
 }
 
 #pragma mark - Alert Methods
