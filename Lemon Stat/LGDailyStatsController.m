@@ -277,7 +277,7 @@ typedef enum {
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"ru"];
-    [dateFormatter setDateFormat:@"d MMM"];
+    [dateFormatter setDateFormat:@"d MMM yy"];
     
     if (_dailyRows) {
         
@@ -289,8 +289,8 @@ typedef enum {
             [numberOfNewPages addObject:row.numberOfNewPages];
         }
         
-        NSInteger valueWidth = 30;
-        NSInteger maxValuesOnScreen = 12;
+        NSInteger valueWidth = 20;
+        NSInteger maxValuesOnScreen = 20;
         NSInteger contentWidth;
         
         if (dates.count > maxValuesOnScreen) {
@@ -308,11 +308,8 @@ typedef enum {
         lineChart.showCoordinateAxis = YES;
         lineChart.delegate = self;
         
-        if (dates.count > maxValuesOnScreen) {
-            [lineChart setXLabels:dates withWidth:valueWidth];
-        } else {
-            [lineChart setXLabels:dates];
-        }
+        lineChart.chartCavanHeight = CGRectGetHeight(contentFrame) - 100;
+        [lineChart setXLabels:dates];
         
         // Line Chart No.1
         NSArray * data01Array = numberOfNewPages;
@@ -357,8 +354,8 @@ typedef enum {
     
     if (_poinLabel) {
         
-        if ((CGRectGetMidX(_poinLabel.frame) > point.x + 20) ||
-            (CGRectGetMidX(_poinLabel.frame) < point.x - 20)) {
+        if ((CGRectGetMidX(_poinLabel.frame) > point.x + 10) ||
+            (CGRectGetMidX(_poinLabel.frame) < point.x - 10)) {
             
             [_poinLabel removeFromSuperview];
             _poinLabel = nil;

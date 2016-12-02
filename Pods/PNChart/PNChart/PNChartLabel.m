@@ -24,6 +24,7 @@
         /* if you want to see ... in large labels un-comment this line
         self.minimumScaleFactor        = 0.8;
         */
+        self.minimumScaleFactor        = 0.8;
     }
 
     return self;

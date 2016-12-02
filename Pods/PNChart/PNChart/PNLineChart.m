@@ -195,11 +195,16 @@
 
             NSInteger x = (index * _xLabelWidth + _chartMarginLeft);// + _xLabelWidth / 2.0);
             NSInteger y = _chartMarginBottom + _chartCavanHeight;
-
-            PNChartLabel *label = [[PNChartLabel alloc] initWithFrame:CGRectMake(x, y, (NSInteger) _xLabelWidth, (NSInteger) _chartMarginBottom)];
+            
+            NSInteger z = CGRectGetHeight(self.frame);
+            
+            PNChartLabel *label = [[PNChartLabel alloc] initWithFrame:CGRectMake(x, y, (NSInteger) _xLabelWidth, (NSInteger) CGRectGetHeight(self.frame) - _chartCavanHeight - _chartMarginBottom)];
             [label setTextAlignment:NSTextAlignmentCenter];
             label.text = labelText;
+            label.numberOfLines = 1;
+            label.transform = CGAffineTransformMakeRotation(M_PI / 2);
             [self setCustomStyleForXLabel:label];
+            [label sizeToFit];
             [self addSubview:label];
             [_xChartLabels addObject:label];
         }
