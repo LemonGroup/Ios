@@ -157,33 +157,39 @@ NSString *gToken;           // Токен (присваевается при в�
 
 - (void)createSiteListUsingAnJSONArray:(NSArray *)responseJSON {
     
-    NSMutableArray<LGSite *> *array = [NSMutableArray array];
-    
-    for (id obj in responseJSON) {
-        LGSite *site = [LGSite siteWithID:[obj valueForKey:@"id"] andURL:[obj valueForKey:@"site"]];
-        [array addObject:site];
-    }
-    
-    LGSiteListSingleton *siteList = [LGSiteListSingleton sharedSiteList];
-    if (![siteList.sites isEqual:array]) {
-        siteList.sites = array;
-        [siteList sortList];
+    if (responseJSON) {
+        
+        NSMutableArray<LGSite *> *array = [NSMutableArray array];
+        
+        for (id obj in responseJSON) {
+            LGSite *site = [LGSite siteWithID:[obj valueForKey:@"id"] andURL:[obj valueForKey:@"site"]];
+            [array addObject:site];
+        }
+        
+        LGSiteListSingleton *siteList = [LGSiteListSingleton sharedSiteList];
+        if (![siteList.sites isEqual:array]) {
+            siteList.sites = array;
+            [siteList sortList];
+        }
     }
 }
 
 - (void)createPersonListUsingAnJSONArray:(NSArray *)responseJSON {
     
-    NSMutableArray<LGPerson *> *array = [NSMutableArray array];
-    
-    for (id obj in responseJSON) {
-        LGPerson *person = [LGPerson personWithID:[obj valueForKey:@"id"] andName:[obj valueForKey:@"personName"]];
-        [array addObject:person];
-    }
-    
-    LGPersonListSingleton *personList = [LGPersonListSingleton sharedPersonList];
-    if (![personList.persons isEqual:array]) {
-        personList.persons = array;
-        [personList sortList];
+    if (responseJSON) {
+        
+        NSMutableArray<LGPerson *> *array = [NSMutableArray array];
+        
+        for (id obj in responseJSON) {
+            LGPerson *person = [LGPerson personWithID:[obj valueForKey:@"id"] andName:[obj valueForKey:@"personName"]];
+            [array addObject:person];
+        }
+        
+        LGPersonListSingleton *personList = [LGPersonListSingleton sharedPersonList];
+        if (![personList.persons isEqual:array]) {
+            personList.persons = array;
+            [personList sortList];
+        }
     }
 }
 
@@ -207,7 +213,22 @@ NSString *gToken;           // Токен (присваевается при в�
 
 #pragma mark - Alert Methods
 
-- (void)alertAction {
+- (void)alertActionWithTitle:(NSString *)title andMessage:(NSString *)message {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Ок"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:nil];
+    
+    [alert addAction:action];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
+
+- (void)alertActionExit {
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Подтвердите выход из приложения"
                                                                    message:nil
@@ -265,7 +286,7 @@ NSString *gToken;           // Токен (присваевается при в�
 
 - (IBAction)actionLogOut:(id)sender {
     
-    [self alertAction];
+    [self alertActionExit];
     
 }
 

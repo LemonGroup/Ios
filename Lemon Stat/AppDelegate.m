@@ -46,21 +46,21 @@ NSString *gContentType;
         
     }
     
-    NSMutableArray<LGSite *> *sites = [NSMutableArray array];
-    for (int i = 0; i < 4; i++) {
-        LGSite *site = [LGSite siteWithID:@1 andURL:@"www.site.ru"];
-        [sites addObject:site];
-    }
-    LGSiteListSingleton *siteList = [LGSiteListSingleton sharedSiteList];
-    siteList.sites = sites;
-    
-    NSMutableArray<LGPerson *> *persons = [NSMutableArray array];
-    for (int i = 0; i < 4; i++) {
-        LGPerson *person = [LGPerson personWithID:@2 andName:@"Персонаж"];
-        [persons addObject:person];
-    }
-    LGPersonListSingleton *personList = [LGPersonListSingleton sharedPersonList];
-    personList.persons = persons;
+//    NSMutableArray<LGSite *> *sites = [NSMutableArray array];
+//    for (int i = 0; i < 4; i++) {
+//        LGSite *site = [LGSite siteWithID:@1 andURL:@"www.site.ru"];
+//        [sites addObject:site];
+//    }
+//    LGSiteListSingleton *siteList = [LGSiteListSingleton sharedSiteList];
+//    siteList.sites = sites;
+//    
+//    NSMutableArray<LGPerson *> *persons = [NSMutableArray array];
+//    for (int i = 0; i < 4; i++) {
+//        LGPerson *person = [LGPerson personWithID:@2 andName:@"Персонаж"];
+//        [persons addObject:person];
+//    }
+//    LGPersonListSingleton *personList = [LGPersonListSingleton sharedPersonList];
+//    personList.persons = persons;
     
     return YES;
 }

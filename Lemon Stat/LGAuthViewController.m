@@ -12,11 +12,6 @@
 
 #import "NSString+Request.h"
 
-#import "LGSiteListSingleton.h"
-#import "LGSite.h"
-#import "LGPersonListSingleton.h"
-#import "LGPerson.h"
-
 #import "LGForgotPasswordView.h"
 
 typedef enum {
@@ -66,14 +61,8 @@ typedef enum {
         
         if (![gToken isEqualToString:@"notToken"]) {
             [self disablTouch];
-            [_activityIndecatorView startAnimating];
-//            [self requestGetSites];
-//            [self requestGetPersons];
             [self presentNavigationController];
-            [_activityIndecatorView stopAnimating];
         } else {
-//            [[LGPersonListSingleton sharedPersonList].persons removeAllObjects];
-//            [[LGSiteListSingleton sharedSiteList].sites removeAllObjects];
             [self archiveCurrentSetting];
         }
     }
@@ -137,8 +126,6 @@ typedef enum {
                  gToken = [responseObject valueForKey:@"token"];
                  
                  [self archiveCurrentSetting];
-//                 [self requestGetSites];
-//                 [self requestGetPersons];
                  [self presentNavigationController];
                  
                  _loginTextField.text = @"";
@@ -178,60 +165,6 @@ typedef enum {
     
     return [string encodeURLString];
 }
-
-//- (void)requestGetSites {
-//    
-//    extern NSString *gToken;
-//    extern NSURL *gBaseURL;
-//    extern NSString *gContentType;
-//    
-//    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
-//    [manager.requestSerializer setValue:gContentType forHTTPHeaderField:@"Content-Type"];
-//    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
-//    
-//    NSString *string = @"catalog/sites";
-//    
-//    [manager GET:string
-//      parameters:nil
-//        progress:nil
-//         success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
-//             
-//             [self createSiteListUsingAnJSONArray:responseObject];
-//             
-//             NSLog(@"JSON: %@", responseObject);
-//             
-//         }
-//         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//             NSLog(@"Error: %@", error);
-//         }];
-//}
-//
-//- (void)requestGetPersons {
-//    
-//    extern NSString *gToken;
-//    extern NSURL *gBaseURL;
-//    extern NSString *gContentType;
-//    
-//    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
-//    [manager.requestSerializer setValue:gContentType forHTTPHeaderField:@"Content-Type"];
-//    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
-//    
-//    NSString *string = @"catalog/persons";
-//    
-//    [manager GET:string
-//      parameters:nil
-//        progress:nil
-//         success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
-//             
-//             [self createPersonListUsingAnJSONArray:responseObject];
-//             
-//             NSLog(@"JSON: %@", responseObject);
-//             
-//         }
-//         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//             NSLog(@"Error: %@", error);
-//         }];
-//}
 
 - (void)requestChangePassword {
     
@@ -323,34 +256,6 @@ typedef enum {
 }
 
 #pragma mark - Methods
-
-//- (void)createSiteListUsingAnJSONArray:(NSArray *)responseJSON {
-//    
-//    LGSiteListSingleton *siteList = [LGSiteListSingleton sharedSiteList];
-//    
-//    for (id obj in responseJSON) {
-//        
-//        LGSite *site = [LGSite siteWithID:[obj valueForKey:@"id"] andURL:[obj valueForKey:@"site"]];
-//        
-//        [siteList.sites addObject:site];
-//    }
-//    
-//    [siteList sortList];
-//}
-//
-//- (void)createPersonListUsingAnJSONArray:(NSArray *)responseJSON {
-//    
-//    LGPersonListSingleton *personList = [LGPersonListSingleton sharedPersonList];
-//    
-//    for (id obj in responseJSON) {
-//        
-//        LGPerson *person = [LGPerson personWithID:[obj valueForKey:@"id"] andName:[obj valueForKey:@"personName"]];
-//        
-//        [personList.persons addObject:person];
-//    }
-//    
-//    [personList sortList];
-//}
 
 - (UITextField *)createTextField {
     
@@ -555,32 +460,7 @@ typedef enum {
     if ([self verificationFillingOfFields]) {
         
         [self requestAuth];
-        
     }
-    
-//    if ([self verificationFillingOfFields]) {
-//        
-//        switch (sender.tag) {
-//            
-//            case LGAuthViewControllerButtonTypeJoin: {
-//                
-//                [self requestAuth];
-//            }
-//                break;
-//            
-//            case LGAuthViewControllerButtonTypeChangePass: {
-//                
-//                if ([self verificationFillingOfFieldsForChangePassword]) {
-//                    
-//                    [_changeRepeatedPasswordTextField resignFirstResponder];
-//                    [self requestChangePassword];
-//                    
-//                }
-//                
-//            }
-//                break;
-//        }
-//    }
 }
 
 - (IBAction)actionForgotPassword:(UIButton *)sender {
@@ -594,7 +474,6 @@ typedef enum {
     } else {
         
         [self animateForgotPasswordOpen:NO];
-    
     }
 }
 
@@ -647,6 +526,7 @@ typedef enum {
         [self actionJoin:_joinButton];
         
     }
+    
     return YES;
 }
 
