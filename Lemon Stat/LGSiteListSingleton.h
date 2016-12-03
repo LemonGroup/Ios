@@ -12,7 +12,7 @@
 
 @interface LGSiteListSingleton : NSObject
 
-@property (strong, nonatomic) NSMutableArray<LGSite *> *sites;
+@property (strong, nonatomic) NSArray<LGSite *> *sites;
 
 + (LGSiteListSingleton *)sharedSiteList;
 

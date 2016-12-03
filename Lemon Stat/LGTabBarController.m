@@ -8,17 +8,22 @@
 
 #import "LGTabBarController.h"
 
+#import <AFNetworking/AFNetworking.h>
+
 #import "UIImage+UISegmentIconAndText.h"
+
+#import "LGSiteListSingleton.h"
+#import "LGSite.h"
+#import "LGPersonListSingleton.h"
+#import "LGPerson.h"
 
 #import "LGGeneralStatsController.h"
 #import "LGDailyStatsController.h"
 
 NSMutableArray *gTokens;    // Все токены
 NSString *gToken;           // Токен (присваевается при входе в систему)
-//NSInteger gGroupID;         // ID группы (присваевается при входе в систему)
-//NSInteger gPrivilege;       // Привелегия (присваевается при входе в систему)
 
-@interface LGTabBarController ()
+@interface LGTabBarController () <UITabBarDelegate>
 
 @property (strong, nonatomic) LGGeneralStatsController *generalStatController;
 @property (strong, nonatomic) LGDailyStatsController *dailyStatsController;
@@ -37,14 +42,6 @@ NSString *gToken;           // Токен (присваевается при в�
     _generalStatController = self.viewControllers[0];
     _dailyStatsController = self.viewControllers[1];
     
-//    // change rendering mode for UITabBar images
-//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
-//        for (UITabBarItem *tbi in self.tabBar.items) {
-//            tbi.image = [tbi.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//            tbi.selectedImage = [tbi.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//        }
-//    }
-    
     [self createSegmentedControl];
     
     // отслеживаем контрол таблица/график
@@ -53,6 +50,7 @@ NSString *gToken;           // Токен (присваевается при в�
               options:NSKeyValueObservingOptionNew
               context:NULL];
     
+    [self requestGetSites];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,26 +65,127 @@ NSString *gToken;           // Токен (присваевается при в�
 #pragma mark - Observer
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    NSLog(@"\nobserveValueForKeyPath: %@\nofObject: %@\nchange: %@", keyPath, object, change);
     
-    LGGeneralStatsController *generalStatsController = self.viewControllers[0];
-    LGDailyStatsController *dailyStatsController = self.viewControllers[1];
-    
-    generalStatsController.multipleType = _multipleType;
-    dailyStatsController.multipleType = _multipleType;
-    
-    if ([self.selectedViewController isKindOfClass:[LGGeneralStatsController class]]) {
+    if ([keyPath isEqualToString:@"_multipleOptions.selectedSegmentIndex"] &&
+        [object isKindOfClass:[LGTabBarController class]]) {
         
-        [generalStatsController changeInfoView];
+        LGGeneralStatsController *generalStatsController = self.viewControllers[0];
+        LGDailyStatsController *dailyStatsController = self.viewControllers[1];
         
-    } else if ([self.selectedViewController isKindOfClass:[LGDailyStatsController class]]) {
+        generalStatsController.multipleType = _multipleType;
+        dailyStatsController.multipleType = _multipleType;
         
-        [dailyStatsController changeInfoView];
-        
+        if ([self.selectedViewController isKindOfClass:[LGGeneralStatsController class]]) {
+            
+            [generalStatsController changeInfoView];
+            
+        } else if ([self.selectedViewController isKindOfClass:[LGDailyStatsController class]]) {
+            
+            [dailyStatsController changeInfoView];
+        }
     }
 }
 
+#pragma mark - UITabBarDelegate
+
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
+    
+    [self requestGetSites];
+    
+    if ([tabBar.items indexOfObject:item] == 1) {
+        [self requestGetPersons];
+    }
+}
+
+#pragma mark - Request Methods
+
+- (void)requestGetSites {
+    
+    extern NSString *gToken;
+    extern NSURL *gBaseURL;
+    extern NSString *gContentType;
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
+    [manager.requestSerializer setValue:gContentType forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+    
+    NSString *string = @"catalog/sites";
+    
+    [manager GET:string
+      parameters:nil
+        progress:nil
+         success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
+             
+             [self createSiteListUsingAnJSONArray:responseObject];
+             
+             NSLog(@"JSON: %@", responseObject);
+             
+         }
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+             NSLog(@"Error: %@", error);
+         }];
+}
+
+- (void)requestGetPersons {
+    
+    extern NSString *gToken;
+    extern NSURL *gBaseURL;
+    extern NSString *gContentType;
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:gBaseURL];
+    [manager.requestSerializer setValue:gContentType forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:gToken forHTTPHeaderField:@"Auth-Token"];
+    
+    NSString *string = @"catalog/persons";
+    
+    [manager GET:string
+      parameters:nil
+        progress:nil
+         success:^(NSURLSessionTask * _Nonnull task, id  _Nullable responseObject) {
+             
+             [self createPersonListUsingAnJSONArray:responseObject];
+             
+             NSLog(@"JSON: %@", responseObject);
+             
+         }
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+             NSLog(@"Error: %@", error);
+         }];
+}
+
 #pragma mark - Methods
+
+- (void)createSiteListUsingAnJSONArray:(NSArray *)responseJSON {
+    
+    NSMutableArray<LGSite *> *array = [NSMutableArray array];
+    
+    for (id obj in responseJSON) {
+        LGSite *site = [LGSite siteWithID:[obj valueForKey:@"id"] andURL:[obj valueForKey:@"site"]];
+        [array addObject:site];
+    }
+    
+    LGSiteListSingleton *siteList = [LGSiteListSingleton sharedSiteList];
+    if (![siteList.sites isEqual:array]) {
+        siteList.sites = array;
+        [siteList sortList];
+    }
+}
+
+- (void)createPersonListUsingAnJSONArray:(NSArray *)responseJSON {
+    
+    NSMutableArray<LGPerson *> *array = [NSMutableArray array];
+    
+    for (id obj in responseJSON) {
+        LGPerson *person = [LGPerson personWithID:[obj valueForKey:@"id"] andName:[obj valueForKey:@"personName"]];
+        [array addObject:person];
+    }
+    
+    LGPersonListSingleton *personList = [LGPersonListSingleton sharedPersonList];
+    if (![personList.persons isEqual:array]) {
+        personList.persons = array;
+        [personList sortList];
+    }
+}
 
 - (void)createSegmentedControl {
     
@@ -141,6 +240,9 @@ NSString *gToken;           // Токен (присваевается при в�
         
         [segue destinationViewController].navigationItem.title = @"Личные данные";
         
+    } else {
+        [self requestGetSites];
+        [self requestGetPersons];
     }
 }
 

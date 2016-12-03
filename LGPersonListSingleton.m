@@ -17,7 +17,7 @@
     @synchronized(self) {
         if (!_sharedPersonList) {
             _sharedPersonList = [[LGPersonListSingleton alloc] init];
-            _sharedPersonList.persons = [NSMutableArray array];
+            //_sharedPersonList.persons = [NSMutableArray array];
         }
     }
     return _sharedPersonList;
@@ -25,7 +25,10 @@
 }
 
 - (void)sortList {
-    [_persons sortUsingSelector:@selector(compare:)];
+    
+    _persons = [_persons sortedArrayUsingSelector:@selector(compare:)];
+    
+    //[_persons sortUsingSelector:@selector(compare:)];
 }
 
 @end

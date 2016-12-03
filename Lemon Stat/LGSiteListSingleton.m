@@ -17,7 +17,7 @@
     @synchronized(self) {
         if (!_sharedSiteList) {
             _sharedSiteList = [[LGSiteListSingleton alloc] init];
-            _sharedSiteList.sites = [NSMutableArray array];
+            //_sharedSiteList.sites = [NSMutabArray array];
         }
     }
     return _sharedSiteList;
@@ -25,7 +25,10 @@
 }
 
 - (void)sortList {
-    [_sites sortUsingSelector:@selector(compare:)];
+    
+    _sites = [_sites sortedArrayUsingSelector:@selector(compare:)];
+    
+    //[_sites sortUsingSelector:@selector(compare:)];
 }
 
 @end
