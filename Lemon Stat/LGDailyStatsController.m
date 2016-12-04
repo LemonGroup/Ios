@@ -228,6 +228,24 @@ typedef enum {
     [self changeInfoView];
 }
 
+#pragma mark - Rotation
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        
+        if (_lineChart) {
+            [self reloadChart];
+        }
+        
+    }
+                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+                                     
+                                 }];
+    
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+}
+
 #pragma mark - Requests Methods
 
 - (void)requestStat {
@@ -358,8 +376,9 @@ typedef enum {
         }
         
         NSInteger contentWidth;
-        NSInteger maxValuesOnScreen = 20;
-        NSInteger valueWidth = CGRectGetWidth(contentFrame) / maxValuesOnScreen;
+        NSInteger valueWidth = 20;
+        NSInteger maxValuesOnScreen = CGRectGetWidth(contentFrame) / valueWidth;
+        
         
         if (dates.count > maxValuesOnScreen) {
             contentWidth = valueWidth * dates.count;
@@ -528,10 +547,47 @@ typedef enum {
     UITableView *tableView = [[UITableView alloc] initWithFrame:[self contentFrame]];
     tableView.dataSource = self;
     tableView.delegate = self;
+    tableView.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.tableView = tableView;
     
     [self.view insertSubview:tableView belowSubview:_activityIndecatorView];
+    
+    // create constraints
+    
+    NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:tableView
+                                                           attribute:NSLayoutAttributeTop
+                                                           relatedBy:NSLayoutRelationEqual
+                                                              toItem:_responseLabel
+                                                           attribute:NSLayoutAttributeBottom
+                                                          multiplier:1.0
+                                                            constant:8];
+    
+    NSLayoutConstraint *bottom =  [NSLayoutConstraint constraintWithItem:tableView
+                                                               attribute:NSLayoutAttributeBottom
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_totalNumberLabel
+                                                               attribute:NSLayoutAttributeTop
+                                                              multiplier:1.0
+                                                                constant:-8];
+    
+    NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:tableView
+                                                            attribute:NSLayoutAttributeLeft
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:self.view
+                                                            attribute:NSLayoutAttributeLeft
+                                                           multiplier:1.0
+                                                             constant:0];
+    
+    NSLayoutConstraint *rigth = [NSLayoutConstraint constraintWithItem:tableView
+                                                             attribute:NSLayoutAttributeRight
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self.view
+                                                             attribute:NSLayoutAttributeRight
+                                                            multiplier:1.0
+                                                              constant:0];
+    
+    [tableView.superview addConstraints:@[top, bottom, left, rigth]];
 }
 
 - (void) createChart {

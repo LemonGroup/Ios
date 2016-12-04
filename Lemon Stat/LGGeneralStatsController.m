@@ -64,6 +64,25 @@
                               @{@"numberOfMentions" : @54, @"person" : @"Черчель"},
                               @{@"numberOfMentions" : @74, @"person" : @"Мандела"},
                               @{@"numberOfMentions" : @74, @"person" : @"Наполеон"},
+                              @{@"numberOfMentions" : @75, @"person" : @"Гитлер"},
+                              @{@"numberOfMentions" : @10, @"person" : @"Путин"},
+                              @{@"numberOfMentions" : @232, @"person" : @"Навальный"},
+                              @{@"numberOfMentions" : @66, @"person" : @"Медведев"},
+                              @{@"numberOfMentions" : @1, @"person" : @"Меркель"},
+                              @{@"numberOfMentions" : @23, @"person" : @"Лукашенко"},
+                              @{@"numberOfMentions" : @53, @"person" : @"Дамблдор"},
+                              @{@"numberOfMentions" : @112, @"person" : @"Саакашвилли"},
+                              @{@"numberOfMentions" : @34, @"person" : @"Обама"},
+                              @{@"numberOfMentions" : @54, @"person" : @"Трамп"},
+                              @{@"numberOfMentions" : @99, @"person" : @"Клинтон"},
+                              @{@"numberOfMentions" : @150, @"person" : @"Сноуден"},
+                              @{@"numberOfMentions" : @34, @"person" : @"Жириновский"},
+                              @{@"numberOfMentions" : @123, @"person" : @"Зюганов"},
+                              @{@"numberOfMentions" : @12, @"person" : @"Миронов"},
+                              @{@"numberOfMentions" : @199, @"person" : @"Олландо"},
+                              @{@"numberOfMentions" : @54, @"person" : @"Черчель"},
+                              @{@"numberOfMentions" : @74, @"person" : @"Мандела"},
+                              @{@"numberOfMentions" : @74, @"person" : @"Наполеон"},
                               @{@"numberOfMentions" : @75, @"person" : @"Гитлер"}
                               ];
     
@@ -106,6 +125,24 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Rotation
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        
+        if (_barChart) {
+            [self reloadChart];
+        }
+        
+    }
+                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+                                
+                                }];
+    
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
 
 #pragma mark - Requests Methods
@@ -222,9 +259,30 @@
         }
         
         NSInteger contentWidth;
-        NSInteger maxValuesOnScreen = 9;
+        NSInteger valueWidth = 30;
+        NSInteger maxValuesOnScreen = CGRectGetWidth(contentFrame) / valueWidth;
         NSInteger minValuesOnScreenForRotateLabel = 5;
-        NSInteger valueWidth = CGRectGetWidth(contentFrame) / maxValuesOnScreen;
+        
+//        if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait) ||
+//            ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortraitUpsideDown)) {
+//            
+//            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+//                NSLog(@"АЙФОН ПОРТРЕТ");
+//            } else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+//                NSLog(@"АЙПАД ПОРТРЕТ");
+//            }
+//            
+//            
+//        } else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) ||
+//                   ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight)) {
+//            
+//            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+//                NSLog(@"АЙФОН ЛАНДСКЕЙП");
+//            } else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+//                NSLog(@"АЙПАД ЛАНДСКЕЙП");
+//            }
+//            
+//        }
         
         if (persons.count > maxValuesOnScreen) {
             contentWidth = valueWidth * persons.count;
@@ -234,7 +292,7 @@
         
         // create ScrollView
         scrollView = [[UIScrollView alloc] initWithFrame:contentFrame];
-        scrollView.contentSize = CGSizeMake(contentWidth, CGRectGetHeight(contentFrame));
+        scrollView.contentSize = CGSizeMake(contentWidth, 0);
         
         // create Chart
         barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 0, contentWidth, CGRectGetHeight(contentFrame))];
@@ -274,6 +332,7 @@
     
     self.scrollChartView = scrollView;
     self.barChart = barChart;
+    
 }
 
 #pragma mark - PNChartDelegate;
@@ -381,10 +440,47 @@
     UITableView *tableView = [[UITableView alloc] initWithFrame:[self contentFrame]];
     tableView.dataSource = self;
     tableView.delegate = self;
+    tableView.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.tableView = tableView;
     
     [self.view insertSubview:tableView belowSubview:_activityIndecatorView];
+    
+    // create constraints
+    NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:tableView
+                                                           attribute:NSLayoutAttributeTop
+                                                           relatedBy:NSLayoutRelationEqual
+                                                              toItem:_siteLabel
+                                                           attribute:NSLayoutAttributeBottom
+                                                          multiplier:1.0
+                                                            constant:8];
+    
+    NSLayoutConstraint *bottom =  [NSLayoutConstraint constraintWithItem:tableView
+                                                               attribute:NSLayoutAttributeBottom
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:self.view
+                                                               attribute:NSLayoutAttributeBottom
+                                                              multiplier:1.0
+                                                                constant:-CGRectGetHeight(self.tabBarController.tabBar.frame)];
+    
+    NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:tableView
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1.0
+                                                           constant:0];
+    
+    NSLayoutConstraint *rigth = [NSLayoutConstraint constraintWithItem:tableView
+                                                              attribute:NSLayoutAttributeRight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeRight
+                                                             multiplier:1.0
+                                                               constant:0];
+    
+    [tableView.superview addConstraints:@[top, bottom, left, rigth]];
+    
 }
 
 - (void) createChart {

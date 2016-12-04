@@ -68,6 +68,17 @@ typedef enum {
     }
 }
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Observer
+
 - (void)onKeyboardHide:(NSNotification *)notification {
     //keyboard will hide
     if (_changePasswordTextField) {     // если поле существует
@@ -81,13 +92,10 @@ typedef enum {
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+#pragma mark - Orientation
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
 }
 
 #pragma mark - UIResponderStandardEditActions
@@ -339,7 +347,7 @@ typedef enum {
     return YES;
 }
 
-- (void)createYellowForgotPassLayer {
+- (void)showYellowForgotPassLayer {
     
     LGForgotPasswordView *yellowForgodPassLayer = [[LGForgotPasswordView alloc] initWithFrame:CGRectMake(CGRectGetWidth([UIScreen mainScreen].bounds),
                                                                                                          CGRectGetMinY(_yellowAuthLayer.frame),
@@ -392,8 +400,13 @@ typedef enum {
                          
                          _yellowAuthLayer.transform = traslation;
                          _yellowForgotPassLayer.transform = traslation;
+                         
+                         
                      }
                      completion:^(BOOL finished) {
+                         
+                         
+                         
                          if (!flag) {
                              [_yellowForgotPassLayer removeFromSuperview];
                          }
@@ -467,7 +480,7 @@ typedef enum {
     
     if (!_yellowForgotPassLayer) {
         
-        [self createYellowForgotPassLayer];
+        [self showYellowForgotPassLayer];
         
         [self animateForgotPasswordOpen:YES];
         

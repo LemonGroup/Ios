@@ -14,6 +14,8 @@
 
 @interface LGChangePassViewController () <UITextFieldDelegate, UIResponderStandardEditActions>
 
+@property (weak, nonatomic) IBOutlet UIView *layerForgotPass;
+
 @property (weak, nonatomic) IBOutlet UITextField *changePasswordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *changeRepeatedPasswordTextField;
 
@@ -26,7 +28,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    //_currentPasswordTextField.text = _currentPassword;
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillShowNotification object:nil];
     
 }
 
@@ -35,15 +39,29 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-*/
+
+#pragma mark - Observer
+
+- (void)onKeyboardHide:(NSNotification *)notification {
+    //keyboard will hide
+    if (_changePasswordTextField) {     // если поле существует
+        [UIView animateWithDuration:0.3
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             
+                             if ([notification.name isEqualToString:UIKeyboardWillHideNotification]) {
+                                 _layerForgotPass.transform = CGAffineTransformMakeTranslation(0, 0);
+                             } else if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {
+                                 _layerForgotPass.transform = CGAffineTransformMakeTranslation(0, -100);
+                             }
+                         }
+                         completion:nil];
+    }
+}
 
 #pragma mark - Request Methods
 
@@ -71,7 +89,7 @@
              NSLog(@"%@", responseObject);
              NSLog(@"Пароль изменен");
              
-             [self alertActionWithTitle:@"Пароль успешно изменен" andMessage:nil];
+             [self alertActionWithTitle:@"Пароль успешно изменен" andMessage:@"Новый пароль был выслан на e-Mail"];
              
          }
          failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -128,9 +146,9 @@
 
 #pragma mark - UITextFieldDelegate
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     _responseLabel.text = @"";
-    
+    return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

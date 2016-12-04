@@ -40,7 +40,7 @@
     
     UITextField *eMailTextField = [[UITextField alloc] initWithFrame:CGRectMake(34,
                                                                                 CGRectGetMaxY(label1.frame) + space,
-                                                                                220,
+                                                                                CGRectGetWidth(rect) - 34 * 2,
                                                                                 30)];
     eMailTextField.borderStyle = UITextBorderStyleRoundedRect;
     eMailTextField.keyboardType = UIKeyboardTypeEmailAddress;
@@ -60,7 +60,7 @@
     
     UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(34,
                                                                       CGRectGetMaxY(label2.frame) + space,
-                                                                      220,
+                                                                      CGRectGetWidth(rect) - 34 * 2,
                                                                       39)];
     sendButton.backgroundColor = [UIColor blackColor];
     sendButton.titleLabel.textColor = [UIColor whiteColor];
