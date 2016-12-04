@@ -263,27 +263,6 @@
         NSInteger maxValuesOnScreen = CGRectGetWidth(contentFrame) / valueWidth;
         NSInteger minValuesOnScreenForRotateLabel = 5;
         
-//        if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait) ||
-//            ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortraitUpsideDown)) {
-//            
-//            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-//                NSLog(@"АЙФОН ПОРТРЕТ");
-//            } else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-//                NSLog(@"АЙПАД ПОРТРЕТ");
-//            }
-//            
-//            
-//        } else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) ||
-//                   ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight)) {
-//            
-//            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-//                NSLog(@"АЙФОН ЛАНДСКЕЙП");
-//            } else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-//                NSLog(@"АЙПАД ЛАНДСКЕЙП");
-//            }
-//            
-//        }
-        
         if (persons.count > maxValuesOnScreen) {
             contentWidth = valueWidth * persons.count;
         } else {

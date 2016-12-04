@@ -47,19 +47,23 @@
 
 - (void)onKeyboardHide:(NSNotification *)notification {
     //keyboard will hide
-    if (_changePasswordTextField) {     // если поле существует
-        [UIView animateWithDuration:0.3
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             
-                             if ([notification.name isEqualToString:UIKeyboardWillHideNotification]) {
-                                 _layerForgotPass.transform = CGAffineTransformMakeTranslation(0, 0);
-                             } else if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {
-                                 _layerForgotPass.transform = CGAffineTransformMakeTranslation(0, -100);
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        
+        if (_changePasswordTextField) {     // если поле существует
+            [UIView animateWithDuration:0.3
+                                  delay:0
+                                options:UIViewAnimationOptionCurveEaseInOut
+                             animations:^{
+                                 
+                                 if ([notification.name isEqualToString:UIKeyboardWillHideNotification]) {
+                                     _layerForgotPass.transform = CGAffineTransformMakeTranslation(0, 0);
+                                 } else if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {
+                                     _layerForgotPass.transform = CGAffineTransformMakeTranslation(0, -100);
+                                 }
                              }
-                         }
-                         completion:nil];
+                             completion:nil];
+        }
+        
     }
 }
 
