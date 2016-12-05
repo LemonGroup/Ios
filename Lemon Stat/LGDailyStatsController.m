@@ -962,7 +962,8 @@ typedef enum {
         return @"Дальше";
     } else {
         [self createRefreshButton];
-        [_responseLabel removeFromSuperview];
+        _responseLabel.text = @"";
+        //[_responseLabel removeFromSuperview];
         return @"Применить";
     }
 }
