@@ -35,6 +35,16 @@
 		EB22D02DFDEABE11EEF2D978 /* libPods-Lemon Stat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76746111F38473DB376B8929 /* libPods-Lemon Stat.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		580D969F1DF5D690009AFEF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44D396301DD38F4A008D9F27 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 44D396371DD38F4A008D9F27;
+			remoteInfo = "Lemon Stat";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		44D396381DD38F4B008D9F27 /* Lemon Stat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lemon Stat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		44D3963C1DD38F4B008D9F27 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -53,6 +63,7 @@
 		44F0F2AF1DE0B71E00A25E03 /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bg.png; path = images/bg.png; sourceTree = "<group>"; };
 		44F0F2B01DE0B71E00A25E03 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		44F0F2B31DE0BD6000A25E03 /* lines.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lines.png; path = images/lines.png; sourceTree = "<group>"; };
+		580D969A1DF5D690009AFEF7 /* LemonStatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LemonStatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		58126AE71DEF25A300D1F895 /* LGForgotPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGForgotPasswordView.h; sourceTree = "<group>"; };
 		58126AE81DEF25A300D1F895 /* LGForgotPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGForgotPasswordView.m; sourceTree = "<group>"; };
 		58126AEA1DEF6B4E00D1F895 /* LGSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSection.h; sourceTree = "<group>"; };
@@ -95,6 +106,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		580D96971DF5D690009AFEF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -121,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				44D396381DD38F4B008D9F27 /* Lemon Stat.app */,
+				580D969A1DF5D690009AFEF7 /* LemonStatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -258,6 +277,24 @@
 			productReference = 44D396381DD38F4B008D9F27 /* Lemon Stat.app */;
 			productType = "com.apple.product-type.application";
 		};
+		580D96991DF5D690009AFEF7 /* LemonStatTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 580D96A31DF5D690009AFEF7 /* Build configuration list for PBXNativeTarget "LemonStatTests" */;
+			buildPhases = (
+				580D96961DF5D690009AFEF7 /* Sources */,
+				580D96971DF5D690009AFEF7 /* Frameworks */,
+				580D96981DF5D690009AFEF7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				580D96A01DF5D690009AFEF7 /* PBXTargetDependency */,
+			);
+			name = LemonStatTests;
+			productName = LemonStatTests;
+			productReference = 580D969A1DF5D690009AFEF7 /* LemonStatTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -271,6 +308,12 @@
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = CAV9SBW57D;
 						ProvisioningStyle = Automatic;
+					};
+					580D96991DF5D690009AFEF7 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 4W5UZS2FYQ;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 44D396371DD38F4A008D9F27;
 					};
 				};
 			};
@@ -288,6 +331,7 @@
 			projectRoot = "";
 			targets = (
 				44D396371DD38F4A008D9F27 /* Lemon Stat */,
+				580D96991DF5D690009AFEF7 /* LemonStatTests */,
 			);
 		};
 /* End PBXProject section */
@@ -303,6 +347,13 @@
 				44F0F2B11DE0B71E00A25E03 /* bg.png in Resources */,
 				44D396491DD38F4B008D9F27 /* Main.storyboard in Resources */,
 				44F0F2B41DE0BD6000A25E03 /* lines.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		580D96981DF5D690009AFEF7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,7 +479,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		580D96961DF5D690009AFEF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		580D96A01DF5D690009AFEF7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 44D396371DD38F4A008D9F27 /* Lemon Stat */;
+			targetProxy = 580D969F1DF5D690009AFEF7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		44D396471DD38F4B008D9F27 /* Main.storyboard */ = {
@@ -570,6 +636,34 @@
 			};
 			name = Release;
 		};
+		580D96A11DF5D690009AFEF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 4W5UZS2FYQ;
+				INFOPLIST_FILE = LemonStatTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkadiygrigoryanc.LemonStatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lemon Stat.app/Lemon Stat";
+			};
+			name = Debug;
+		};
+		580D96A21DF5D690009AFEF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 4W5UZS2FYQ;
+				INFOPLIST_FILE = LemonStatTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkadiygrigoryanc.LemonStatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lemon Stat.app/Lemon Stat";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -590,6 +684,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		580D96A31DF5D690009AFEF7 /* Build configuration list for PBXNativeTarget "LemonStatTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				580D96A11DF5D690009AFEF7 /* Debug */,
+				580D96A21DF5D690009AFEF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
