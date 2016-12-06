@@ -38,6 +38,26 @@
                ReferencedContainer = "container:Lemon Stat.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "580D96C01DF71E14009AFEF7"
+               BuildableName = "LemonStatTests copy.xctest"
+               BlueprintName = "LemonStatTests copy"
+               ReferencedContainer = "container:Lemon Stat.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "580D96CD1DF71E25009AFEF7"
+               BuildableName = "Lemon StatTests.xctest"
+               BlueprintName = "Lemon StatTests"
+               ReferencedContainer = "container:Lemon Stat.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

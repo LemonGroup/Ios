@@ -196,7 +196,7 @@
             NSInteger x = (index * _xLabelWidth + _chartMarginLeft);// + _xLabelWidth / 2.0);
             NSInteger y = _chartMarginBottom + _chartCavanHeight;
             
-            NSInteger z = CGRectGetHeight(self.frame);
+            //NSInteger z = CGRectGetHeight(self.frame);
             
             PNChartLabel *label = [[PNChartLabel alloc] initWithFrame:CGRectMake(x, y, (NSInteger) _xLabelWidth, (NSInteger) CGRectGetHeight(self.frame) - _chartCavanHeight - _chartMarginBottom)];
             [label setTextAlignment:NSTextAlignmentCenter];

@@ -18,6 +18,8 @@
 		44F0F2B11DE0B71E00A25E03 /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2AF1DE0B71E00A25E03 /* bg.png */; };
 		44F0F2B21DE0B71E00A25E03 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B01DE0B71E00A25E03 /* logo.png */; };
 		44F0F2B41DE0BD6000A25E03 /* lines.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0F2B31DE0BD6000A25E03 /* lines.png */; };
+		580D96D11DF71E25009AFEF7 /* Lemon_StatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 580D96D01DF71E25009AFEF7 /* Lemon_StatTests.m */; };
+		580D96D91DF71E5C009AFEF7 /* LGPersonListSingltonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 580D96D81DF71E5C009AFEF7 /* LGPersonListSingltonTests.m */; };
 		58126AE91DEF25A300D1F895 /* LGForgotPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58126AE81DEF25A300D1F895 /* LGForgotPasswordView.m */; };
 		58126AEC1DEF6B4E00D1F895 /* LGSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 58126AEB1DEF6B4E00D1F895 /* LGSection.m */; };
 		58126AEF1DEF73CE00D1F895 /* LGDailyRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 58126AEE1DEF73CE00D1F895 /* LGDailyRow.m */; };
@@ -36,7 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		580D969F1DF5D690009AFEF7 /* PBXContainerItemProxy */ = {
+		580D96D31DF71E25009AFEF7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 44D396301DD38F4A008D9F27 /* Project object */;
 			proxyType = 1;
@@ -63,7 +65,10 @@
 		44F0F2AF1DE0B71E00A25E03 /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bg.png; path = images/bg.png; sourceTree = "<group>"; };
 		44F0F2B01DE0B71E00A25E03 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = images/logo.png; sourceTree = "<group>"; };
 		44F0F2B31DE0BD6000A25E03 /* lines.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lines.png; path = images/lines.png; sourceTree = "<group>"; };
-		580D969A1DF5D690009AFEF7 /* LemonStatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LemonStatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		580D96CE1DF71E25009AFEF7 /* Lemon StatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Lemon StatTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		580D96D01DF71E25009AFEF7 /* Lemon_StatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Lemon_StatTests.m; sourceTree = "<group>"; };
+		580D96D21DF71E25009AFEF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		580D96D81DF71E5C009AFEF7 /* LGPersonListSingltonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPersonListSingltonTests.m; sourceTree = "<group>"; };
 		58126AE71DEF25A300D1F895 /* LGForgotPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGForgotPasswordView.h; sourceTree = "<group>"; };
 		58126AE81DEF25A300D1F895 /* LGForgotPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGForgotPasswordView.m; sourceTree = "<group>"; };
 		58126AEA1DEF6B4E00D1F895 /* LGSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSection.h; sourceTree = "<group>"; };
@@ -106,7 +111,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		580D96971DF5D690009AFEF7 /* Frameworks */ = {
+		580D96CB1DF71E25009AFEF7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -129,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				44D3963A1DD38F4B008D9F27 /* Lemon Stat */,
+				580D96CF1DF71E25009AFEF7 /* Lemon StatTests */,
 				44D396391DD38F4B008D9F27 /* Products */,
 				09C38A36BCF301B676DC36D5 /* Pods */,
 				87CA58AA612C5371FF338AC8 /* Frameworks */,
@@ -139,7 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				44D396381DD38F4B008D9F27 /* Lemon Stat.app */,
-				580D969A1DF5D690009AFEF7 /* LemonStatTests.xctest */,
+				580D96CE1DF71E25009AFEF7 /* Lemon StatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -179,6 +185,16 @@
 				44F0F2B01DE0B71E00A25E03 /* logo.png */,
 			);
 			name = images;
+			sourceTree = "<group>";
+		};
+		580D96CF1DF71E25009AFEF7 /* Lemon StatTests */ = {
+			isa = PBXGroup;
+			children = (
+				580D96D01DF71E25009AFEF7 /* Lemon_StatTests.m */,
+				580D96D21DF71E25009AFEF7 /* Info.plist */,
+				580D96D81DF71E5C009AFEF7 /* LGPersonListSingltonTests.m */,
+			);
+			path = "Lemon StatTests";
 			sourceTree = "<group>";
 		};
 		58A149FE1DE33C2B00439EAC /* Categories */ = {
@@ -277,22 +293,22 @@
 			productReference = 44D396381DD38F4B008D9F27 /* Lemon Stat.app */;
 			productType = "com.apple.product-type.application";
 		};
-		580D96991DF5D690009AFEF7 /* LemonStatTests */ = {
+		580D96CD1DF71E25009AFEF7 /* Lemon StatTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 580D96A31DF5D690009AFEF7 /* Build configuration list for PBXNativeTarget "LemonStatTests" */;
+			buildConfigurationList = 580D96D51DF71E25009AFEF7 /* Build configuration list for PBXNativeTarget "Lemon StatTests" */;
 			buildPhases = (
-				580D96961DF5D690009AFEF7 /* Sources */,
-				580D96971DF5D690009AFEF7 /* Frameworks */,
-				580D96981DF5D690009AFEF7 /* Resources */,
+				580D96CA1DF71E25009AFEF7 /* Sources */,
+				580D96CB1DF71E25009AFEF7 /* Frameworks */,
+				580D96CC1DF71E25009AFEF7 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				580D96A01DF5D690009AFEF7 /* PBXTargetDependency */,
+				580D96D41DF71E25009AFEF7 /* PBXTargetDependency */,
 			);
-			name = LemonStatTests;
-			productName = LemonStatTests;
-			productReference = 580D969A1DF5D690009AFEF7 /* LemonStatTests.xctest */;
+			name = "Lemon StatTests";
+			productName = "Lemon StatTests";
+			productReference = 580D96CE1DF71E25009AFEF7 /* Lemon StatTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -309,7 +325,7 @@
 						DevelopmentTeam = CAV9SBW57D;
 						ProvisioningStyle = Automatic;
 					};
-					580D96991DF5D690009AFEF7 = {
+					580D96CD1DF71E25009AFEF7 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = 4W5UZS2FYQ;
 						ProvisioningStyle = Automatic;
@@ -331,7 +347,7 @@
 			projectRoot = "";
 			targets = (
 				44D396371DD38F4A008D9F27 /* Lemon Stat */,
-				580D96991DF5D690009AFEF7 /* LemonStatTests */,
+				580D96CD1DF71E25009AFEF7 /* Lemon StatTests */,
 			);
 		};
 /* End PBXProject section */
@@ -350,7 +366,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		580D96981DF5D690009AFEF7 /* Resources */ = {
+		580D96CC1DF71E25009AFEF7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -479,20 +495,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		580D96961DF5D690009AFEF7 /* Sources */ = {
+		580D96CA1DF71E25009AFEF7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				580D96D11DF71E25009AFEF7 /* Lemon_StatTests.m in Sources */,
+				580D96D91DF71E5C009AFEF7 /* LGPersonListSingltonTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		580D96A01DF5D690009AFEF7 /* PBXTargetDependency */ = {
+		580D96D41DF71E25009AFEF7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 44D396371DD38F4A008D9F27 /* Lemon Stat */;
-			targetProxy = 580D969F1DF5D690009AFEF7 /* PBXContainerItemProxy */;
+			targetProxy = 580D96D31DF71E25009AFEF7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -636,29 +654,27 @@
 			};
 			name = Release;
 		};
-		580D96A11DF5D690009AFEF7 /* Debug */ = {
+		580D96D61DF71E25009AFEF7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 4W5UZS2FYQ;
-				INFOPLIST_FILE = LemonStatTests/Info.plist;
+				INFOPLIST_FILE = "Lemon StatTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arkadiygrigoryanc.LemonStatTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.arkadiygrigoryanc.Lemon-StatTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lemon Stat.app/Lemon Stat";
 			};
 			name = Debug;
 		};
-		580D96A21DF5D690009AFEF7 /* Release */ = {
+		580D96D71DF71E25009AFEF7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 4W5UZS2FYQ;
-				INFOPLIST_FILE = LemonStatTests/Info.plist;
+				INFOPLIST_FILE = "Lemon StatTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arkadiygrigoryanc.LemonStatTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.arkadiygrigoryanc.Lemon-StatTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lemon Stat.app/Lemon Stat";
 			};
@@ -685,11 +701,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		580D96A31DF5D690009AFEF7 /* Build configuration list for PBXNativeTarget "LemonStatTests" */ = {
+		580D96D51DF71E25009AFEF7 /* Build configuration list for PBXNativeTarget "Lemon StatTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				580D96A11DF5D690009AFEF7 /* Debug */,
-				580D96A21DF5D690009AFEF7 /* Release */,
+				580D96D61DF71E25009AFEF7 /* Debug */,
+				580D96D71DF71E25009AFEF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
