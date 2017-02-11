@@ -524,7 +524,6 @@
     return label;
 }
 
-
 #pragma mark - Animation Methods
 
 - (void)animateWhenTouchOnBar:(PNBar *)bar {

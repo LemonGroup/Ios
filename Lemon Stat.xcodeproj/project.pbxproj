@@ -197,6 +197,17 @@
 			path = "Lemon StatTests";
 			sourceTree = "<group>";
 		};
+		583CD7711E108EDA007CBBAE /* Rows */ = {
+			isa = PBXGroup;
+			children = (
+				58126AED1DEF73CD00D1F895 /* LGDailyRow.h */,
+				58126AEE1DEF73CE00D1F895 /* LGDailyRow.m */,
+				58126AF01DEF888E00D1F895 /* LGGeneralRow.h */,
+				58126AF11DEF888E00D1F895 /* LGGeneralRow.m */,
+			);
+			name = Rows;
+			sourceTree = "<group>";
+		};
 		58A149FE1DE33C2B00439EAC /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -242,10 +253,7 @@
 				58A14A001DE350DE00439EAC /* LGSite.m */,
 				58126AEA1DEF6B4E00D1F895 /* LGSection.h */,
 				58126AEB1DEF6B4E00D1F895 /* LGSection.m */,
-				58126AED1DEF73CD00D1F895 /* LGDailyRow.h */,
-				58126AEE1DEF73CE00D1F895 /* LGDailyRow.m */,
-				58126AF01DEF888E00D1F895 /* LGGeneralRow.h */,
-				58126AF11DEF888E00D1F895 /* LGGeneralRow.m */,
+				583CD7711E108EDA007CBBAE /* Rows */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -708,6 +716,7 @@
 				580D96D71DF71E25009AFEF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
